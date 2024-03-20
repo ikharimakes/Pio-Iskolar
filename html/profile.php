@@ -1,3 +1,4 @@
+<?php include('../php/functions.php');?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +31,7 @@
 
     <!--LOG OUT-->
     <div class="btnLogOut">
-        <a href="index.html"> Log Out </a> <br> <br>
+        <a href="index.php"> Log Out </a> <br> <br>
     </div>
     
 </body>

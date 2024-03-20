@@ -1,3 +1,4 @@
+<?php include('../php/functions.php');?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,9 +44,9 @@
 
     <div class="info">
         <h1> ACCOUNT CREATION </h1>
-        <form>
-            <button class="btnCreate" style="width: 200px;"> Insert Individual </button> <br> <br>
-            <button class="btnCreate" style="width: 120px;"> Upload </button>
+        <form action="" method="post" enctype="multipart/form-data">
+            <input class="btnCreate" style="width: 500px;" type="file" name="csv" accept=".csv"> <br> <br>
+            <button class="btnCreate" style="width: 120px;" type="submit" name="upload"> Upload </button>
         </form>
     </div>
     <br> <br>

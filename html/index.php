@@ -21,7 +21,7 @@
                 <img class="pic-logo" src="images/pio-logo.png"> <br>
                 <h2> Log In to PioIskolar </h2> </center> <br>
                 
-                <form>
+                <form action="" method="post">
                     <div class="inputs">
                         <span> Username </span>
                         <input type="text" name="user"> <br> <br>
@@ -36,7 +36,7 @@
                         <a href="#"> Forgot Password </a> <br> <br>
                     </div>
                     
-                    <div href="dashboard.html" class="inputs" >
+                    <div class="inputs">
                         <input type="submit" name="login">
                     </div>
                 </form>
