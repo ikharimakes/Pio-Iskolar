@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+* {
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/*HEADER & FOOTER*/
+.header {
+    width: 100%;
+    height: 110px;
+    position: fixed;
+    background: #376FB7;
+}
+.logo {
+    width: 100%;
+    height: 100px;
+    background: #2F3787;
+    overflow: auto;
+    font-size: 13px;
+    position: fixed;
+    top:0;
+    justify-content: center;
+    text-align: center;
+}
+.logo img {
+    padding-top: 10px;
+    width: 60px;
+    height: 70px;
+}
+.logo h1 {
+    font-size: 15px;
+    color: #FFF;
+}
+.footer {
+    width: 100%;
+    height: 50px;
+    background: #2F3787;
+    text-align: center;
+    bottom: 0;
+}
+.footer h6 {
+    font-size: 12px;
+    font-weight: 300;
+    padding-top: 15px;
+    color: #FFF;
+}
+
+/*SIDEBAR */
+nav ul {
+    margin: 0;
+    height: 100%;
+    width: 230px;
+    border-right: #595959;
+    top: 12%;
+    position: fixed;
+    background-color: #FFEFD8;
+}
+nav ul li {
+    list-style: none;
+}
+nav ul li a {
+    padding-top: 10px;
+    display: block;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 500;
+    color: #000000;
+    position: relative;
+    padding: 20px 0 25px 40px;
+}
+nav ul li a:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    width: 0%;
+    height: 70%;
+    background: #FFE4C7;
+    opacity: 70%;
+    border-radius: 15px 0px 0px 15px;
+    z-index: -1;
+    transition: all 300ms ease-in-out;
+}
+nav ul li a:hover {
+    color: black;
+}
+nav ul li a:hover:before {
+    width: 100%;
+    height: 100%;
+}
+.profile{
+    width: 80px;
+    height: 75px;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 5px;
+    float: left;
+}
+.name{
+    color: #2F3787;
+    text-align: left;
+    height: 65px;
+    padding: 30px;
+    font-weight: bold;
+}
+hr {
+    color: #595959;
+}
+
+/*DASHBOARD*/
+.summary {
+    padding-top: 7%;
+    padding-left: 310px;
+    display: grid;
+}
+.title {
+    padding-top: 30px;
+    font-size: 25px;
+    color: #2F3787;
+}
+.caption {
+    text-align: center;
+}
+.captions {
+    padding-top: 30px;
+    padding-right: 80px;
+    font-size: 20px;
+    width: 1500px;
+    text-align: justify;
+}
+.graph {
+    padding-top: 50px;
+    padding-left: 15%;
+}
+.graph img {
+    width: 300px;
+    height: 300px;
+    margin-right: 170px;
+}
+
+/*SCHOLAR INFO*/
+.navBar {
+    padding-top: 140px;
+    padding-left: 280px;
+    width: 100%;
+    height: 70px;
+}
+.navBar ul {
+    overflow: hidden;
+    list-style-type: none;
+}
+.navBar a {
+    font-size: 25px;
+    padding-right: 20px;
+    text-decoration: none;
+    color: #000000;
+}
+.info h1 {
+    text-align: center;
+    color: #2F3787;
+}
+.info form {
+    padding-top: 80px;
+    padding-left: 275px;
+}
+.info input {
+    width: 400px;
+    height: 35px;
+    border: .5%;
+    border-radius: 10px;
+}
+.info .btnCreate {
+    font-size: 20px;
+    width: 120px;
+    height: 35px;
+    background-color: #FFF0E0;
+    margin-right: 950px;
+    border: .5%;
+    border-radius: 10px;
+}
+table {
+    font-size: 20px;
+    padding-top: 20px;
+    padding-left: 270px;
+    width: 100%;
+}
+tr td {
+    width: 100px;
+    border-color: #000000;
+    border-bottom: 1px solid black;
+}
+td button {
+    font-size: 20px;
+    width: 120px;
+    height: 35px;
+    background-color: #BAE2FF;
+}
+td img {
+    padding-top: 10px;
+    width: 30px;
+    height: 40px;
+}
+
+/*ACCOUNT CREATION*/
+
+
