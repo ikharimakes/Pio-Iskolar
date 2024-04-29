@@ -1,11 +1,11 @@
-<?php include('../php/functions.php');?>
+<?php include('../functions/general.php');?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Dashboard </title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/styles.css">
 
 </head>
 
@@ -21,7 +21,7 @@
         <!--NAVIGATION BAR-->
         <nav id="sidebar"> 
             <ul>
-                <li> <a href="dashboard.php" class="nav"> Announcement </a> </li>
+                <li> <a href="announce.php" class="nav"> Announcement </a> </li>
                 <li> <a href="documents.php" class="nav"> Documents </a> </li>
                 <li> <a href="history.php" class="nav"> History </a> </li>
                 <li> <a href="profile.php" class="nav"> My Account </a> </li>
@@ -49,8 +49,8 @@
                     drpioscholarshiphelpdesk@gmail.com. 
                 </p> 
             </div>
-        </section> <hr>
-
+        </section> <hr> 
+        
         <section class="announce">
             <div class="announce-image">
                 <img src="images/pic2.jpg">
@@ -87,7 +87,7 @@
             </div>
         </section>
     </div>
-
+    <br> <br>
 
     <!--FOOTER-->
     <div class="footer">

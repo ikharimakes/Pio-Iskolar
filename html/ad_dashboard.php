@@ -1,10 +1,10 @@
-<?php include('../php/functions.php');?>
+<?php include('../functions/general.php');?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title> Dashboard </title>
     <link rel="stylesheet" href="css/admin_style.css">
 
     <!--SIDEBAR-->
@@ -15,9 +15,9 @@
             <hr>
             <li> <a href="ad_dashboard.php" class="nav"> Dashboard </a> </li>
             <li> <a href="ad_scholar.php" class="nav"> Scholar </a> </li>
-			<li> <a href="" class="nav"> Documents </a> </li>
-			<li> <a href="" class="nav">Announcement </a> </li>
-            <li> <a href="" class="nav">Reports </a> </li>
+			<li> <a href="ad_documents.php" class="nav"> Documents </a> </li>
+			<li> <a href="ad_announce.php" class="nav">Announcement </a> </li>
+            <li> <a href="ad_reports.php" class="nav">Reports </a> </li>
             <li> <a href="index.php" class="nav">Log Out </a> </li>
 		</ul>
 	</nav>
@@ -27,12 +27,12 @@
 
 <body>
     <!--HEADER-->
-    <div class ="header">
-        <div class = "logo" href="admin_dashboard.html">
+    <div class="header">
+        <div class="logo" >
             <img src="images/pio-logo.png" alt="pio">
             <h1> PioIskolar </h1>
         </div>
-    </div>
+    </div> <br> <br> <br>
 
 
     <!--DASHBOARD-->
@@ -54,8 +54,8 @@
         </div> 
 
         <div class="graph">
-            <img src="images/70%.png">
-            <img src="images/50%.png">
+            <img src="./images/70_.png">
+            <img src="./images/50_.png">
         </div> <br> <br>
 
         <h6 class="title"> Lorem Ipsum </h6>
@@ -75,8 +75,8 @@
         </div> 
 
         <div class="graph">
-            <img src="images/90%.png">
-            <img src="images/10%.png">
+            <img src="./images/90_.png">
+            <img src="./images/10_.png">
         </div>
     </div> 
     <br> <br>
