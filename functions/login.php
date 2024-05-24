@@ -10,7 +10,6 @@
 
         if ($result->num_rows == 1) {
             while ($row = $result->fetch_assoc()) {
-                
                 if($row["role_id"] == "1"){
                     $_SESSION['role'] = "admin";
                     header("location: ./ad_dashboard.php");
@@ -31,14 +30,18 @@
             print "<script>alert('Invalid Credentials!')</script>";
         }
     }
+/*
+    $cookie_name = "user";
+    $cookie_value = "John Doe";
+    setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+*/
 
 //* USER LOGOUT *//
     if (isset($_POST['quitting'])){
         // UNSETS GLOBAL VARIABLES 
+        session_unset();
         session_destroy();
-        unset($_SESSION['role']);
-        unset($_SESSION['quitting']);
-
+        
         header('location: ./index.php');
     }
 ?>

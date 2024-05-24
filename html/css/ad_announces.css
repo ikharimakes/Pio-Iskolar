@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+* {
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/*ANNOUNCEMENT*/
+.info form {
+    padding-top: 50px;
+    padding-right: 5vh;
+    float: right;
+}
+.info .btnAnnounce {
+    font-size: 20px;
+    width: 300px;
+    height: 35px;
+    background-color: #FFF0E0;
+    border: .5%;
+    border-radius: 10px;
+}
+
+/*TABLE*/
+table {
+    font-size: 20px;
+    padding-top: 20px;
+    padding-left: 30px;
+    width: 98%;
+}
+tr td {
+    border-color: #000000;
+    border-bottom: 1px solid black;
+}
+.wrap {
+    display: inline-flex;
+}
+.wrap .icon {
+    margin: 0, 20px;
+    padding-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+.wrap .icon span {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    display: block;
+    text-align: center;
+    z-index: 2;
+}
+.wrap .icon span ion-icon {
+    font-size: 30px;
+    line-height: 40px;
+    color: #000;
+}
+.wrap .icon .tooltip {
+    position: absolute;
+    top: 0px;
+    background-color: #fff;
+    font-size: 15px;
+    padding: 10px 18px;
+    border-radius: 25px;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.wrap .icon:hover .tooltip {
+    top: -70px;
+    opacity: 1;
+    pointer-events: auto;
+}
+.wrap .icon .tooltip:before {
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    background-color: #fff;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+}
+.wrap .icon:hover span,
+.wrap .icon:hover .tooltip {
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+}
+.wrap .icon:hover ion-icon {
+    color: #2F3787;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black 0.5;
+    z-index: 1000;
+    padding-left: 50px;
+    padding-right: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+}
+.overlay-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFEFD8;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 10px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
+}
+.overlay h2 {
+    color: #2F3787;
+    padding-top: 30px;
+    font-size: 25px;
+    text-align: center;
+}
+.card {
+    width: 950px;
+    height: 800px;
+    transition: 0.3s;
+    border-radius: 5px;
+    text-align: center;
+}
+.pic {
+    padding-top: 20px;
+    width: 700px;
+    height: 500px;
+}
+.container {
+    text-align: center;
+}
+.caption {
+    padding-top: 30px;
+    font-size: 18px;
+    font-weight: 300;
+    width: 800px;
+    text-align: justify;
+}
+.closeOverlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+    color: #aaa;
+    cursor: pointer;
+}
+.closeOverlay:hover {
+    color: #000;
+}
+
+.announce {
+    display: none;
+    position: fixed;
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+.announce-content {
+    background-color: #FFEFD8;
+    margin: auto;
+    width: 35%; 
+    height: fit-content;
+    padding: 40px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+}
+.infos h1 {
+    text-align: center;
+    font-size: 26px;
+    color: #2F3787;
+    font-weight: 600;
+}
+.announceTitle h3,
+.announceImg h3,
+.announceDetail h3,
+.announceDate h3 {
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 10px;
+}
+.announceTitle input {
+    background-color: transparent;
+    font-size: 18px;
+    font-weight: 400;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #777777;
+}
+.announceImg .lblImg{
+    font-size: 18px;
+    display: inline-block;
+    color: rgb(0, 0, 0);
+    width: 200px;
+    height: 35px;
+    border-bottom: 1px solid #777777;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 0px;
+}
+.announceImg img {
+    width: 15px;
+}
+.announceDetail textarea {
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 10px;
+    opacity: 90%;
+    min-width: 100%;
+    max-width: 100%;
+    max-height: 150px;
+    min-height: 150px;
+    padding-top: 10px;
+}
+.announceDate input {
+    width: 45%;
+    font-size: 18px;
+    font-weight: 400;
+    border: none;
+    border-bottom: 1px solid #777777;
+    background-color: transparent;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 25px;
+    right: 20px;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.btn {
+    text-align: center;
+    margin-top: 40px;
+}
+.publish-button {
+    font-size: 20px;
+    color: white;
+    width: 40%;
+    height: 40px;
+    background-color: #2F3787;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px; 
+}
+.publish-button:hover {
+    background-color: #376FB7;
+}

@@ -1,90 +1,214 @@
 <?php include('../functions/general.php');?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Dashboard </title>
-    <link rel="stylesheet" href="css/admin_style.css">
-
-    <!--SIDEBAR-->
-    <nav id="sidebar">
-		<ul>
-            <li> <img class="profile" src="images/profile.png"> </li>
-            <li> <a href="" class="name"> NAME </a> </li> <br>
-            <hr>
-            <li> <a href="ad_dashboard.php" class="nav"> Dashboard </a> </li>
-            <li> <a href="ad_scholar.php" class="nav"> Scholar </a> </li>
-			<li> <a href="ad_documents.php" class="nav"> Documents </a> </li>
-			<li> <a href="ad_announce.php" class="nav">Announcement </a> </li>
-            <li> <a href="ad_reports.php" class="nav">Reports </a> </li>
-            <li> <a href="index.php" class="nav">Log Out </a> </li>
-		</ul>
-	</nav>
-
+    <title>Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../functions/Chart.js"></script>
+    <link rel="stylesheet" href="css/ad_dash.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/notif.css">
+    <link rel="stylesheet" href="css/error.css">
+    <link rel="stylesheet" href="css/page.css">
 </head>
 
 
 <body>
-    <!--HEADER-->
-    <div class="header">
-        <div class="logo" >
-            <img src="images/pio-logo.png" alt="pio">
-            <h1> PioIskolar </h1>
+    <!-- SIDEBAR -->
+    <?php include('ad_navbar.php');?>
+
+
+    <!-- TOP BAR -->
+    <div class="main">
+        <div class="topBar">
+            <div class="notif">
+                <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+            </div>
+
+            <div class="search">
+            </div>
+
+            <a class="user" href="ad_settings.php">
+                <img src="images/profile.png" alt="" >
+            </a>
+
+            <a class="logOut" href="front_page.php"> 
+                <ion-icon name="log-out-outline"></ion-icon> 
+                <h5> Log  Out </h5>
+            </a>
         </div>
-    </div> <br> <br> <br>
 
+        
+        <!-- DASHBOARD -->
+        <div class="content-grid">
+            <div class="left">
+                <div class="cards">
+                    <div class="card"> 
+                        <div class="container">
+                            <h5 class="detail"> Total Number of Scholars </h5>
+                            <h2 class="num"> 21,350 </h2>
+                        </div>
+                    </div>
 
-    <!--DASHBOARD-->
-    <div class="summary"> 
-        <h6 class="title"> Number of Scholars </h6>
-        <div class="caption">
-            <center> 
-                <p class="captions"> Lorem ipsum dolor sit amet, 
-                    consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna 
-                    aliqua. Ut enim ad minim veniam, quis nostrud 
-                    exercitation ullamco laboris nisi ut aliquip 
-                    ex ea commodo consequat. Duis aute irure dolor 
-                    in reprehenderit in voluptate velit esse cillum 
-                    dolore eu fugiat nulla pariatur. Excepteur sint 
-                    occaecat cupidatat non proident, sunt in culpa 
-                    qui officia deserunt mollit anim id est laborum. </p> 
-            </center>
-        </div> 
+                    <div class="card"> 
+                        <div class="container">
+                            <h5 class="detail"> Current Number of Scholars </h5>
+                            <h2 class="num"> 2,500 </h2>
+                        </div> 
+                    </div>
 
-        <div class="graph">
-            <img src="./images/70_.png">
-            <img src="./images/50_.png">
-        </div> <br> <br>
+                    <div class="card"> 
+                        <div class="container">
+                            <h5 class="detail"> Pending Documents Approval </h5>
+                            <h2 class="num"> 100 </h2>
+                        </div> 
+                    </div>
+                </div> <br> <br>
+                
+                <!-- LINE GRAPH -->
+                <div class="chart-container">
+                    <canvas id="canvas" width="900" height="400"></canvas>
+                </div>
+            </div>
 
-        <h6 class="title"> Lorem Ipsum </h6>
-        <div class="caption">
-            <center> 
-                <p class="captions"> Lorem ipsum dolor sit amet, 
-                    consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna 
-                    aliqua. Ut enim ad minim veniam, quis nostrud 
-                    exercitation ullamco laboris nisi ut aliquip 
-                    ex ea commodo consequat. Duis aute irure dolor 
-                    in reprehenderit in voluptate velit esse cillum 
-                    dolore eu fugiat nulla pariatur. Excepteur sint 
-                    occaecat cupidatat non proident, sunt in culpa 
-                    qui officia deserunt mollit anim id est laborum. </p> 
-            </center>
-        </div> 
+            <div class="right">
+                <!-- CALENDAR -->
+                <div class="calendar">
+                    <div class="month">
+                        <div class="prev">&#10094;</div>
+                        <div class="date">
+                            <h1 id="month"></h1>
+                        </div>
+                        <div class="next">&#10095;</div>
+                    </div>
+                    <div class="weekdays">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    <div class="days" id="days"></div>
+                </div>
 
-        <div class="graph">
-            <img src="./images/90_.png">
-            <img src="./images/10_.png">
+                <div class="event">
+                    <h4>Events and Announcements</h4>
+                    <table>
+                        <tr>
+                            <td style="font-weight: bold;"> 05/20: </td>
+                            <td> Application for Batch 23 </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;"> 06/11: </td>
+                            <td> Contract Signing </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;"> 06/24: </td>
+                            <td> Results for Batch 23 </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;"> 07/01: </td>
+                            <td> Requirement Submission </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div> 
-    <br> <br>
+
+        
+    </div>
+
+
+    <!-- NOTIFICATION -->
+    <?php include('notification.php');?>
 
     
-    <!--FOOTER-->
-    <div class="footer">
-        <h6> ©2023 Dr. Pio Scholarship Manager. @All Rights Reserved. </h6>
-    </div>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="../functions/notif.js"></script>
+    <script>
+        //CHANGE PASS
+        function openPass() {
+            document.getElementById("passOverlay").style.display = "block";
+        }
+        function closePass() {
+            document.getElementById("passOverlay").style.display = "none";
+        }
+        function submitForm() {
+            closePass();
+        }
+
+        //CALENDAR
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+
+        const today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+
+        function generateCalendar() {
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const startingDay = firstDayOfMonth.getDay();
+
+            document.getElementById("month").innerHTML = monthNames[currentMonth] + " " + currentYear;
+
+            let calendarDays = document.getElementById("days");
+            calendarDays.innerHTML = "";
+
+            for (let i = 0; i < startingDay; i++) {
+                let day = document.createElement("div");
+                calendarDays.appendChild(day);
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                let day = document.createElement("div");
+                day.textContent = i;
+                calendarDays.appendChild(day);
+            }
+        }
+
+        document.querySelector(".prev").addEventListener("click", () => {
+            currentMonth -= 1;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear -= 1;
+            }
+            generateCalendar();
+        });
+
+        document.querySelector(".next").addEventListener("click", () => {
+            currentMonth += 1;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear += 1;
+            }
+            generateCalendar();
+        });
+
+        generateCalendar();
+        
+        // LINE GRAPH
+        var lineChartData = {
+            labels : ["Batch 1","Batch 2","Batch 3","Batch 4","Batch 5","Batch 6","Batch 7","Batch 8","Batch 9","Batch 10"],
+            datasets : [
+                {
+                    fillColor : "rgba(220,220,220,0.5)",
+                    strokeColor : "rgba(220,220,220,1)",
+                    pointColor : "rgba(220,220,220,1)",
+                    pointStrokeColor : "#FFF",
+                    data : [200, 195, 250, 257, 270, 186, 204, 237, 178, 241]
+                }
+            ]
+        }
+
+        var myLine = new Chart(document.getElementById("canvas").getContext("2d")).Line(lineChartData);
+    </script>
 </body>
 </html>

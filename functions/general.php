@@ -26,6 +26,36 @@
 	//? else if(($_SESSION["role"] == "1")) { header("location: ./ad_dashboard.php"); } 
 	//? else { header("location: ./announce.php");};
 
+//* DATA LISTS *//
+	function datalisting($column, $table, $id) {
+		global $conn;
+		if($id == "sem"){ 
+			print '	
+				<datalist id="sem">
+					<option value="1">
+					<option value="2">
+					<option value="3"> 
+				</datalist>
+			';
+		} else {
+			$query = "SELECT DISTINCT $column AS a FROM $table";
+			$result = $conn->query($query);
+			if ($result->num_rows > 0) {
+				print '<datalist id="'.$id.'">';
+				while ($row = $result->fetch_assoc()) {
+					print '<option value="'.$row['a'].'">';
+				}
+				print '</datalist>';
+			}
+		}
+	//* SCHOLAR STATUS 	datalisting("status_name", "status", "status");
+	//? SCHOOLS 		datalisting("school", "scholar", "school");
+	//* COURSES 		datalisting("course", "scholar", "course");
+	//? BATCH NUMBER 	datalisting("batch_no", "batch_year", "batch");
+	//* ACADEMIC YEAR 	datalisting("acad_year", "batch_year", "year");
+	//? SEMESTER 		datalisting("", "", "sem");
+	}
+
 //! OUTDATED !//
 //* STRING SANITATION *//
 	function sanitizeString($var){

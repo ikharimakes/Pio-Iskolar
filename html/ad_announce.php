@@ -1,146 +1,285 @@
-<?php include('../functions/general.php');?>
+<?php 
+include('../functions/general.php');
+include('../functions/add_ann.php');
+include('../functions/view_ann.php');
+
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$recordsPerPage = 15;
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+
+$totalRecords = getTotalRecords($search);
+$totalPages = ceil($totalRecords / $recordsPerPage);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Announcements </title>
-    <link rel="stylesheet" href="css/admin_style.css">
-
-    <!--SIDEBAR-->
-    <nav id="sidebar">
-		<ul>
-            <li> <img class="profile" src="images/profile.png"> </li>
-            <li> <a href="" class="name"> NAME </a> </li> <br>
-            <hr>
-            <li> <a href="ad_dashboard.php" class="nav"> Dashboard </a> </li>
-            <li> <a href="ad_scholar.php" class="nav"> Scholar </a> </li>
-			<li> <a href="ad_documents.php" class="nav"> Documents </a> </li>
-			<li> <a href="ad_announce.php" class="nav">Announcement </a> </li>
-            <li> <a href="ad_reports.php" class="nav">Reports </a> </li>
-            <li> <a href="index.php" class="nav">Log Out </a> </li>
-		</ul>
-	</nav>
-
-
+    <title>Announcements</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/ad_announces.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/notif.css">
+    <link rel="stylesheet" href="css/error.css">
+    <link rel="stylesheet" href="css/page.css">
+    <style>
+        .custom-file-upload {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            border: thin solid grey;
+            border-radius: 3px;
+            padding: 0.5rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            color: rgb(112, 112, 112);
+            background-color: #ffffff;
+        }
+    </style>
 </head>
-
-
 <body>
-    <!--HEADER-->
-    <div class="header">
-        <div class="logo" >
-            <img src="images/pio-logo.png" alt="pio">
-            <h1> PioIskolar </h1>
+    <!-- SIDEBAR -->
+    <?php include('ad_navbar.php');?>
+
+    <!-- TOP BAR -->
+    <div class="main">
+        <div class="topBar">
+            <div class="notif">
+                <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+            </div>
+
+            <div class="search">
+                <form action="" method="get">
+                    <label>
+                        <input type="text" name="search" placeholder="Search here" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                        <ion-icon name="search-outline" onclick="this.closest('form').submit();"></ion-icon>
+                    </label>
+                </form>
+            </div>
+
+            <a class="user" href="ad_settings.php">
+                <img src="images/profile.png" alt="">
+            </a>
+
+            <a class="logOut" href="front_page.php"> 
+                <ion-icon name="log-out-outline"></ion-icon> 
+                <h5> Log Out </h5>
+            </a>
         </div>
-    </div> <br> <br> <br>
 
-    <!---->
-    <div class="info">
-        <h1> ANNOUNCEMENTS </h1>
 
-        <form>
-            <button type="button" class="btnAnnounce" href="add.html"> Add Announcement </button> <br>
-        </form> </div> <br>
+        <!-- ANNOUNCEMENTS -->
+        <div class="info">
+            <form>
+                <button type="button" class="btnAnnounce" onclick="openModal('announceModal')"> Add Announcement </button> <br>
+            </form> 
+        </div> <br>
 
         <table>
             <tr style="font-weight: bold;">
-                <td> Date </td>
-                <td> Title </td>
-                <td> Status </td>
-                <td> Action </td>
+                <td style="width:50%"> Title </td>
+                <td style="width:10%"> Status </td>
+                <td style="width:12%"> Start Date <ion-icon name="caret-down-outline"></ion-icon> </td>
+                <td style="width:12%"> End Date <ion-icon name="caret-down-outline"></ion-icon> </td>
+                <td style="width:3%"> Action </td>
             </tr>
-            <tr> 
-                <td> 08/01/2023 </td>
-                <td> Application for Batch 23 </td>
-                <td> ACTIVE </td>
-                <td>
-                    <!-- Trigger/Open The Modal -->
-                    <button type="button" class="iconBtn" id="myBtn"> <img src="images/preview.png" alt="Icon"> </button>
-
-                    <!-- The Modal -->
-                    <div id="myModal" class="modal">
-
-                    <!-- Modal content -->
-                    <div class="modal-contents">
-                        <span class="close">&times;</span>
-                        <div class="card"> 
-                            <h6 class="title"> Application for Batch 23 </h6>
-                            <img class="pic" src="images/pic1.jpg" alt="click here">
-                            <div class="container">
-                                <center> 
-                                    <p class="caption"> The City Government of Valenzuela 
-                                    will start accepting applicants for theDr. Pio Valenzuela
-                                    Scholarship Program on December 13, 2023. Here are the 
-                                    qualifications and requirements for the scholarship program. 
-                                    <br> <br>
-                                    Get the downloadable scholarship application form here: 
-                                    https://www.valenzuela.gov.ph/drpioscholarship 
-                                    <br> <br>
-                                    For other concerns, you may send an email to 
-                                    drpioscholarshiphelpdesk@gmail.com. </p> 
-                                </center>
-                            </div> 
-                        </div>
-                    </div></div>
-                    <button class="iconBtn"> <img src="images/edit.png" alt="Icon"> </button>
-                    <button class="iconBtn"> <img src="images/delete.png" alt="Icon"> </button>
-                </td>
-            </tr>
-            <tr>
-                <td> 08/16/2023 </td>
-                <td> Contract Signing </td>
-                <td> ACTIVE </td>
-                <td>
-                    <button class="iconBtn"> <img src="images/preview.png" alt="Icon"> </button>
-                    <button class="iconBtn"> <img src="images/edit.png" alt="Icon"> </button>
-                    <button class="iconBtn"> <img src="images/delete.png" alt="Icon"> </button>
-                </td>
-            </tr>
-            <tr>
-                <td> 08/29/2023 </td>
-                <td> Results for Batch 26 </td>
-                <td> ACTIVE </td>
-                <td>
-                    <button class="iconBtn"> <img src="images/preview.png" alt="Icon"> </button>
-                    <button class="iconBtn"> <img src="images/edit.png" alt="Icon"> </button>
-                    <button class="iconBtn"> <img src="images/delete.png" alt="Icon"> </button>
-                </td>
-            </tr>
+            <?php annList($currentPage, $recordsPerPage, $search);?>
         </table>
 
+        <!-- PAGINATION -->
+        <?php include('pagination.php');?>
+    </div>
+    
+    <!-- ADD ANNOUNCEMENTS MODAL -->
+    <div id="announceModal" class="announce">
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="announce-content">
+                <div class="infos">
+                    <h1>Publish Announcement</h1>
+                    <span class="close" onclick="closeModal('announceModal')">&times;</span>
+                </div>
+                <br><br>
+
+                <div class="announceTitle">
+                    <h3>Announcement Title</h3>
+                    <input type="text" name="title"> 
+                </div> <br>
+
+                <div class="announceImg">
+                    <h3>Upload an Image</h3>
+                    <label for="choose-file1" class="custom-file-upload">
+                    Upload Image
+                    </label>
+                    <input name="cover" type="file" id="choose-file1" accept="image/png, image/gif, image/jpeg" style="display: none;" /> 
+                </div> <br>
+
+                <div class="announceDetail">
+                    <h3>Announcement Details</h3>
+                    <textarea name="content" rows="2" cols="50"> </textarea>
+                </div> <br>
+
+                <div class="announceDate">
+                    <h3>Start Date</h3>
+                    <input type="date" name="startDate" required> <br> <br> 
+
+                    <h3>End Date</h3>
+                    <input type="date" name="endDate" required>
+                </div>
+
+                <div class="btn">
+                    <button type="submit" name="add_ann" class="publish-button"> Publish </button>
+                </div> <br>
+            </div>
+        </form>
+    </div>
+
+    <!-- VIEW MODAL -->
+    <div id="viewOverlay" class="overlay">
+        <div class="overlay-content">
+            <h2 id="view-title"> Application for Batch 23 </h2>
+            <span class="closeOverlay" onclick="closePrev()">&times;</span>
+
+            <div class="card"> 
+                <img id="view-img" class="pic" src="images/pic1.jpg" alt="click here">
+                <div class="container">
+                    <center> 
+                        <p id="view-content" class="caption"></p> 
+                    </center>
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div id="EditModal" class="announce">
+        <div class="announce-content">
+            <div class="infos">
+                <h1>Edit Announcement</h1>
+                <span class="closeOverlay" onclick="closeEdit()">&times;</span>
+            </div>
+            <br><br>
+
+            <form action="" method="post" enctype="multipart/form-data">
+                <input type="hidden" id="edit-id" name="id">
+                <div class="announceTitle">
+                    <h3>Announcement Title</h3>
+                    <input type="text" id="edit-title" name="title">
+                </div> <br>
+
+                <div class="announceImg">
+                    <h3>Upload an Image</h3>
+
+                    <label for="choose-file2" class="custom-file-upload">
+                    Upload Image
+                    </label>
+                    <input name="cover" type="file" id="choose-file2" accept="image/png, image/gif, image/jpeg" style="display: none;" /> 
+                </div> <br>
+
+                <div class="announceDetail">
+                    <h3>Announcement Details</h3>
+                    <textarea id="edit-content" name="content" rows="2" cols="50"> </textarea>
+                </div> <br>
+
+                <div class="announceDate">
+                    <h3>Start Date</h3>
+                    <input type="date" id="edit-startDate" name="startDate" required> <br> <br> 
+
+                    <h3>End Date</h3>
+                    <input type="date" id="edit-endDate" name="endDate" required>
+                </div>
+
+                <div class="btn">
+                    <button type="submit" name="update_ann" class="publish-button"> Save </button>
+                </div> <br>
+            </form>
+        </div>
+    </div>
+
+    <!-- DELETE MODAL -->
+    <div id="deleteOverlay" class="deleteOverlay">
+        <div class="delete-content">
+            <div class="infos">
+                <h2>Confirm Delete</h2>
+                <span class="closeDelete" onclick="closeDelete()">&times;</span>
+            </div>
+
+            <div class="message">
+                <h4>Are you sure you want to delete this?</h4>
+            </div>
+
+            <div class="button-container">
+                <form id="deleteForm" method="post" action="">
+                    <input type="hidden" id="delete-id" name="id">
+                    <input type="hidden" id="delete-img" name="img">
+                    <button type="submit" name="delete" class="yes-button">Yes</button>
+                    <button class="no-button" onclick="closeDelete()"> No </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <?php include('notification.php');?>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="../functions/page.js"></script>
+    <script src="../functions/notif.js"></script>
     <script>
-        // Get the modal
-        var modal = document.getElementById("myModal");
-
-        // Get the button that opens the modal
-        var btn = document.getElementById("myBtn");
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks the button, open the modal 
-        btn.onclick = function() {
-        modal.style.display = "block";
+        //ADD 
+        function openModal(announceModal) {
+            var modal = document.getElementById(announceModal);
+            modal.style.display = "block";
         }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-        modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-        if (event.target == modal) {
+        function closeModal(announceModal) {
+            var modal = document.getElementById(announceModal);
             modal.style.display = "none";
         }
+    
+        // VIEW
+        function openPrev(elem) {
+            document.getElementById("view-title").innerText = elem.getAttribute("data-title");
+            document.getElementById("view-img").src = 'images/' + elem.getAttribute("data-img");
+            document.getElementById("view-content").innerText = elem.getAttribute("data-content");
+            document.getElementById("viewOverlay").style.display = "block";
         }
+        function closePrev() {
+            document.getElementById("viewOverlay").style.display = "none";
+        }
+
+        //EDIT
+        function openEdit(elem) {
+            document.getElementById("edit-id").value = elem.getAttribute("data-id");
+            document.getElementById("edit-title").value = elem.getAttribute("data-title");
+            document.getElementById("edit-content").value = elem.getAttribute("data-content");
+            document.getElementById("edit-startDate").value = elem.getAttribute("data-st_date");
+            document.getElementById("edit-endDate").value = elem.getAttribute("data-end_date");
+            document.getElementById("EditModal").style.display = "block";
+        }
+        function closeEdit() {
+            document.getElementById("EditModal").style.display = "none";
+        }
+
+        // DELETE
+        function openDelete(elem) {
+            document.getElementById("delete-id").value = elem.getAttribute("data-id");
+            document.getElementById("delete-img").value = elem.getAttribute("data-img");
+            document.getElementById("deleteOverlay").style.display = "block";
+        }
+        function closeDelete() {
+            document.getElementById("deleteOverlay").style.display = "none";
+        }
+        
+        $(document).ready(function () {
+            // Select all input elements with class 'custom-file-upload'
+            $('input[type=file]').change(function () {
+                var file = $(this)[0].files[0].name;
+                // Find the corresponding label by its 'for' attribute
+                var labelFor = $(this).attr('id');
+                $('label[for=' + labelFor + ']').text(file);
+            });
+        });
     </script>
-
-
-    <!--FOOTER
-    <div class="footer">
-        <h6> ©2023 Dr. Pio Scholarship Manager. @All Rights Reserved. </h6>
-    </div>-->
 </body>
 </html>

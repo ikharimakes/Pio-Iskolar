@@ -1,0 +1,399 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+* {
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/*SCHOLAR INFO*/
+.info form {
+    padding-top: 50px;
+    padding-right: 5vh;
+    float: right;
+}
+
+/* SEARCH
+.search-container {
+    position: relative;
+    width: 300px;
+    margin: 0 auto;
+    margin-left: 10px;
+}
+.search-input {
+    width: 300px;
+    height: 35px;
+    padding: 8px 10px 8px 35px;
+    border: .5%;
+    border-radius: 10px;
+    font-size: 16px;
+    background-image: url('images/search.png');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 20px;
+    outline: none;
+}*/
+/*FILTER & SORT
+.info .drop-button {
+    padding-top: 50px;
+    position: absolute;
+    top: 70px;
+    right: 35px;
+    display: flex;
+    align-items: center;
+}
+.info .dropdown {
+    position: relative;
+    display: inline-block;
+}
+.info .dropbtn {
+    background-color: #FFF0E0;
+    font-size: 20px;
+    width: 100px;
+    height: 35px;
+    border: .5%;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+.info .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    right: 0;
+}
+.info .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.info .dropdown-content a:hover {
+    background-color: #ddd;
+}
+.info .dropdown:hover .dropdown-content {
+    display: block;
+}*/
+
+.info .btnAdd {
+    font-size: 20px;
+    width: 200px;
+    height: 35px;
+    background-color: #FFF0E0;
+    border: .5%;
+    border-radius: 10px;
+}
+.info .lblAdd {
+    font-size: 20px;
+    display: inline-block;
+    background-color: #FFF0E0;
+    color: rgb(0, 0, 0);
+    width: 200px;
+    height: 35px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+/*TABLE*/
+.tables table {
+    font-size: 20px;
+    padding-top: 20px;
+    padding-left: 30px;
+    width: 98%;
+}
+.tables tr td {
+    border-color: #000000;
+    border-bottom: 1px solid black;
+}
+.wrap {
+    display: inline-flex;
+}
+.wrap .icon {
+    margin: 0, 20px;
+    padding-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+.wrap .icon span {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    display: block;
+    text-align: center;
+    z-index: 2;
+}
+.wrap .icon span ion-icon {
+    font-size: 30px;
+    line-height: 40px;
+    color: #000;
+}
+.wrap .icon .tooltip {
+    position: absolute;
+    top: 0px;
+    background-color: #fff;
+    font-size: 15px;
+    padding: 10px 18px;
+    border-radius: 25px;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.wrap .icon:hover .tooltip {
+    top: -70px;
+    opacity: 1;
+    pointer-events: auto;
+}
+.wrap .icon .tooltip:before {
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    background-color: #fff;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+}
+.wrap .icon:hover span,
+.wrap .icon:hover .tooltip {
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+}
+.wrap .icon:hover ion-icon {
+    color: #2F3787;
+}
+
+/*ADD SCHOLAR*/
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black 0.5;
+    z-index: 1000;
+    padding-left: 50px;
+    padding-right: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+}
+.overlay-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFEFD8;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 10px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
+}
+.overlay h2 {
+    color: #2F3787;
+    padding-top: 30px;
+    font-size: 25px;
+    text-align: center;
+}
+.table-container {
+    text-align: center;
+}
+.overlay table {
+    width: 100%;
+    padding-top: 20px;
+    border-collapse: collapse;
+    background-color: #FFEFD8;
+}
+.overlay table td {
+    border: 1px solid black;
+}
+.overlay td {
+    padding: 8px;
+}
+textarea {
+    width: 100%;
+    resize: none;
+}
+.details {
+    width: 150px;
+    text-align: right;
+    font-weight: bold;
+}
+.details2 {  
+    font-weight: bold;
+}
+.input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 3px;
+    background-color: transparent;
+    width: 100%;
+}
+.input2 {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 3px;
+    background-color: transparent;
+    width: 100%;
+    text-align: center;
+}
+.input3 {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 3px;
+    background-color: transparent;
+    width: 100%;
+    border: none;
+}
+.button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    align-content: center;
+    background-color: #2F3787; 
+    color: white; 
+    padding: 10px 20px; 
+    border: none; 
+    text-align: center; 
+    text-decoration: none; 
+    display: block; 
+    font-size: 15px; 
+    margin: 0 auto; 
+    cursor: pointer; 
+    border-radius: 8px;
+}
+.button:active {
+    transform: translateY(1px);
+}
+.closeOverlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+    color: #aaa;
+    cursor: pointer;
+}
+.closeOverlay:hover {
+    color: #000;
+}
+
+/* BATCH UPLOAD */
+.batchOverlay {
+    display: none;
+    position: fixed;
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+.batch-content {
+    background-color: #FFEFD8;
+    margin: auto;
+    width: 30%; 
+    height: fit-content;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+}
+.batchOverlay h2 {
+    color: #2F3787;
+    padding-top: 30px;
+    font-size: 25px;
+    text-align: center;
+}
+.closeBatch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+    color: #aaa;
+    cursor: pointer;
+}
+.closeBatch:hover {
+    color: #000;
+}
+.step {
+    padding-left: 30px;
+}
+.step h4 {
+    font-size: 20px;
+    font-weight: 600;
+}
+.step a ion-icon,
+.step label ion-icon {
+    font-size: 20px;
+    padding-right: 10px;
+    padding-top: 5px;
+}
+.step a {
+    padding-top: 10px;
+    font-size: 20px;
+}
+.dl-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 20px;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.dl-button:hover {
+    background-color: #ffffffde;
+}
+.step .lblAdd{
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 20px;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.step .lblAdd:hover {
+    background-color: #ffffffde;
+}
+.enter-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+.enter-button {
+    font-size: 20px;
+    color: white;
+    width: 40%;
+    height: 40px;
+    background-color: #2F3787;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px; 
+}
+.enter-button:hover {
+    background-color: #376FB7;
+}

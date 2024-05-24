@@ -1,96 +1,104 @@
 <?php include('../functions/general.php');?>
+<?php include('../functions/display_prof.php');?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Dashboard </title>
-    <link rel="stylesheet" href="css/styles.css">
-
+    <title>My Profile</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/myAcc.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/notif.css">
+    <link rel="stylesheet" href="css/error.css">
+    <link rel="stylesheet" href="css/page.css">
 </head>
 
 
 <body>
-    <!--HEADER-->
-    <div class ="header">
-        <div class = "logo" >
-            <img src="images/pio-logo.png" alt="pio">
-            <h1> PioIskolar </h1>
+    <!-- SIDEBAR -->
+    <?php include('sk_navbar.php');?>
+
+    <!-- TOP BAR -->
+    <div class="main">
+        <div class="topBar">
+            <div class="notif">
+                <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+            </div>
+
+            <div class="search">
+            </div>
+
+            <div class="user">
+                <a href="profile.php"><img src="images/profile.png" ></a>
+            </div>
+
+            <a class="logOut" href="front_page.php"> 
+                <ion-icon name="log-out-outline"></ion-icon> 
+                <h5> Log  Out </h5>
+            </a>
         </div>
 
-        <!--NAVIGATION BAR-->
-        <nav id="sidebar"> 
-            <ul>
-                <li> <a href="announce.php" class="nav"> Announcement </a> </li>
-                <li> <a href="documents.php" class="nav"> Documents </a> </li>
-                <li> <a href="history.php" class="nav"> History </a> </li>
-                <li> <a href="profile.php" class="nav"> My Account </a> </li>
-            </ul>
-         </nav>
+        <!-- ACCOUNT SETTING -->
+        <div class="info">
+            <h1> MY PROFILE </h1>
+        </div>
+
+        <div class="profile">
+            <?php scholarDisplay($_SESSION['uid']);?>
+        </div>
     </div>
 
 
-    <div class="info">
-        <h1> MY ACCOUNT </h1>
+    <!-- CHANGE PASS -->
+    <div id="passOverlay" class="passOverlay">
+        <div class="pass-content">
+            <div class="infos">
+                <h2>Change Password</h2>
+                <span class="closePass" onclick="closePass()">&times;</span>
+            </div>
+            <br><br>
+
+            <div class="inner-content">
+                <label class="passText" for="oldPassword">Enter Current Password:</label> <br>
+                <input class="input" type="password" id="oldPassword" name="oldPassword" placeholder="Current Password">
+            </div>
+
+            <div class="inner-content">
+                <label class="passText" for="newPassword">Enter New Password:</label> <br>
+                <input class="input" type="password" id="newPassword" name="newPassword" placeholder="New Password">
+            </div>
+
+            <div class="inner-content">
+                <label class="passText" for="confirmPassword">Confirm Password:</label> <br>
+                <input class="input" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+            </div>
+
+            <div class="enter-button-container">
+                <button class="enter-button"> Enter </button>
+            </div>
+        </div>
     </div>
 
-    <div id="profile">
-        <img src="images/profile.png" alt="Profile Picture">
-        <h2>ADRIANO, JESSICA RAYE</h2>
-    </div>
+    <!-- NOTIFICATION -->
+    <?php include('notification.php');?>
 
-    <table border="5">
-            <tr>
-                <td>Student ID:</td>
-                <td>21-0569</td>
-            </tr>
-            <tr>
-                <td>Birthday:</td>
-                <td>05/24/2003</td>
-            </tr>
-            <tr>
-                <td>Civil Status:</td>
-                <td>Single</td>
-            </tr>
-            <tr>
-                <td>Batch:</td>
-                <td>1st</td>
-            </tr>
-            <tr>
-                <td>Age:</td>
-                <td>20</td>
-            </tr>
-            <tr>
-                <td>Gender:</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Address:</td>
-                <td>Marulas, Valenzuela City, Metro Manila, Philippines</td>
-            </tr>
-            <tr>
-                <td>Postal Code:</td>
-                <td>1445</td>
-            </tr>
-            <tr>
-                <td>Contact:</td>
-                <td>0963821954</td>
-            </tr>
-            <tr>
-                <td>Email:</td>
-                <td>j**********@gmail.com</td>
-            </tr>
-            <tr>
-                <td>Change Password</td>
-                <td></td>
-            </tr>
-    </table>
-
-
-    <!--LOG OUT-->
-    <div class="btnLogOut">
-        <a href="index.php"> Log Out </a> <br> <br>
-    </div>
-    
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="../functions/notif.js"></script>
+    <script>
+        //CHANGE PASS
+        function openPass() {
+            document.getElementById("passOverlay").style.display = "block";
+        }
+        function closePass() {
+            document.getElementById("passOverlay").style.display = "none";
+        }
+        function submitForm() {
+            closePass();
+        }
+    </script>
 </body>
 </html>

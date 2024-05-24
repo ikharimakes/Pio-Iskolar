@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+* {
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/*DETAILS*/
+.profile {
+    display: flex;
+    padding-left: 80px;
+    padding-top: 20px;
+}
+.profile_name img {
+    width: 200px;
+    height: 200px;
+    margin-right: 50px;
+}
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+}
+.profile-info table {
+    font-size: 20px;
+}
+.profile-info table td {
+    padding: 5px 10px;
+    border-color: #FFF;
+}
+.profile-info table th {
+    padding-top: 5px 10px;
+    text-align: left;
+}
+
+/*TABLE*/
+.table {
+    padding-left: 80px;
+}
+.table-container {
+    text-align: center;
+}
+.table table {
+    width: 94%;
+    padding-top: 20px;
+    border-collapse: collapse;
+}
+.table table td {
+    border: 1px solid black;
+}
+.table td {
+    padding: 8px;
+}
+.details2 {  
+    font-weight: bold;
+}
+.input2 {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 3px;
+    background-color: transparent;
+    width: 100%;
+    text-align: center;
+}
+.input3 {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 3px;
+    background-color: transparent;
+    width: 100%;
+    border: none;
+}
+
+
+.info{
+    padding-top: 50px;
+    padding-right: 5vh;
+    float: right;
+}
+.info .btnAnnounce {
+    font-size: 20px;
+    width: 150px;
+    height: 35px;
+    background-color: #FFF0E0;
+    border: .5%;
+    border-radius: 10px;
+}

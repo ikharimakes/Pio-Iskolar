@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+* {
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* TOP BAR */
+.main {
+    position: absolute;
+    width: calc(100% - 270px);
+    left: 270px;
+    min-height: 100vh;
+    background-color: #fff;
+    transition: 0.5s;
+}
+.topBar {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    margin-top: 10px;
+}
+.notif {
+    position: relative;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    padding-left: 10px;
+}
+.notif ion-icon {
+    color: black;
+    font-size: 30px;
+}
+.badge {
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search {
+    position: relative;
+    width: 500px;
+    margin-left: 50vh;
+}
+.search label {
+    position: relative;
+    width: 100%;
+}
+.search label input {
+    width: 100%;
+    height: 40px;
+    border-radius: 40px;
+    padding: 5px 20px;
+    padding-left: 35px;
+    font-size: 18px;
+    outline: none;
+    border: 1px solid black;
+}
+.search label ion-icon {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    font-size: 1.2rem;
+}
+.user {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 60px;
+    cursor: pointer;
+    padding-left: 500px;
+}
+.user img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+.logOut {
+    width: 200px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: transparent;
+    background-color: transparent;
+    margin-right: 10px;
+    color: #000;
+    text-decoration: none;
+}
+.logOut ion-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+}
+.logOut h5 {
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0;
+}
+
+/*TOP NAV*/
+.details h1 {
+    margin-top: 50px;
+    font-size: 26px;
+    color: #2F3787;
+}
+.topnav {
+    overflow: hidden;
+    display: inline-block;
+}
+.topnav a {
+    float: left;
+    display: block;
+    color: #000;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+}
+.topnav a:hover {
+    border-bottom: 3px solid #2F3787;
+}
+.topnav a.active {
+    border-bottom: 3px solid #2F3787;
+}
