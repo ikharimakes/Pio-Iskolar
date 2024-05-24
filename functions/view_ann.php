@@ -29,7 +29,7 @@
         $display = "SELECT announce_id, st_date, end_date, title, _status, img_name, content 
                     FROM announcements 
                     $searchQuery
-                    ORDER BY end_date 
+                    ORDER BY _status ASC, st_date 
                     LIMIT $recordsPerPage OFFSET $offset";
         $result = $conn->query($display);
 

@@ -59,7 +59,7 @@
                 <tr style="font-weight: bold;">
                     <td style="width:13%"> Batch Number </td>
                     <td style="width:60%"> Type of Report </td>
-                    <td style="width:15%"> Date <ion-icon name="caret-down-outline"></ion-icon> </td>
+                    <td style="width:15%"> Date </td>
                     <td style="width:3%"> Actions </td>
                 </tr>
                 <tr>

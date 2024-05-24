@@ -24,6 +24,8 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <link rel="stylesheet" href="css/notif.css">
     <link rel="stylesheet" href="css/error.css">
     <link rel="stylesheet" href="css/page.css">
+    <style>
+</style>
 </head>
 <body>
     <!-- SIDEBAR -->
@@ -62,12 +64,11 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         <div class="table">
             <table>
                 <tr style="font-weight: bold;">
-                    <td style="width:10%"> Control No. </td>
-                    <td style="width:50%"> Document Name </td>
-                    <td style="width:12%"> Date <ion-icon name="caret-down-outline"></ion-icon></td>
+                    <td> Document Name </td>
+                    <td style="width:12%"> Date </td>
                     <td style="width:10%"> Type </td>
                     <td style="width:10%"> Status </td>
-                    <td style="text-align: right;"> Actions </td>
+                    <td style="width:8%; text-align: right;"> Actions </td>
                 </tr>
                 <?php docxList($currentPage, $recordsPerPage, $search)?>
             </table>
@@ -79,19 +80,28 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     
     <!-- VIEW MODAL -->
     <div id="viewOverlay" class="view">
-    <div class="view-content">
-        <h2 id="view-scholar_id">Scholar ID</h2>
-        <span class="closeView" onclick="closePrev()">&times;</span>
-        <h4 id="view-doc_name">Document Name</h4>
-        <form id="updateForm" method="post" action="">
-            <input type="hidden" id="update-doc_id" name="doc_id">
-            <input type="hidden" id="update-status" name="status" value="APPROVED">
-            <button id="approveButton" type="submit" name="approve" class="update">Approve</button>
-        </form>
-        <br>
-        <div id="pdfViewer" style="width: 700px; height: 100%; border: 1px solid #ccc;"></div>
+        <div class="view-content">
+            <h2 id="view-doc_name">Document Name</h2>
+            <span class="closeView" onclick="closePrev()">&times;</span>
+            <form id="updateForm" method="post" action="">
+                <input type="hidden" id="update-doc_id" name="doc_id">
+                <select id="update-status" name="status">
+                    <option value="" disabled selected>CLICK TO UPDATE STATUS</option>
+                    <option value="APPROVED">APPROVED</option>
+                    <option value="DECLINED">DECLINED</option>
+                </select>
+                <div id="denialReason" style="display: none;">
+                    <h3>DECLINED: REASON</h3>
+                    <textarea name="reason" id="denialReasonText"></textarea>
+                </div>
+                <center>
+                <button id="updateButton" type="submit" name="update" class="btnAdd">Update</button>
+                </center>
+            </form>
+            <br>
+            <div id="pdfViewer" style="width: 700px; height: 100%; border: 1px solid #ccc;"></div>
+        </div>
     </div>
-</div>
 
     <!-- DELETE MODAL -->
     <div id="deleteOverlay" class="deleteOverlay">
@@ -128,21 +138,38 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         // VIEW
         function openPrev(elem) {
             const status = elem.getAttribute("data-doc_status");
-            document.getElementById("view-scholar_id").innerText = elem.getAttribute("data-scholar_id");
+            const reason = elem.getAttribute("data-doc_reason") || "";
+
             document.getElementById("view-doc_name").innerText = elem.getAttribute("data-doc_name");
             document.getElementById("update-doc_id").value = elem.getAttribute("data-submit_id");
 
-            if (status == "APPROVED") {
-                document.getElementById("approveButton").style.display = "none";
+            if (status === "PENDING") {
+                document.getElementById("update-status").style.display = "block";
+                document.getElementById("updateButton").style.display = "block";
             } else {
-                document.getElementById("approveButton").style.display = "block";
+                document.getElementById("update-status").style.display = "none";
+                document.getElementById("updateButton").style.display = "none";
             }
 
-            const pdfPath = '../assets/' + elem.getAttribute("data-doc_name"); // Adjust the path as needed
+            document.getElementById("denialReason").style.display = status === "DECLINED" ? "block" : "none";
+            document.getElementById("denialReasonText").innerText = reason;
+            document.getElementById("denialReasonText").readOnly = true;
+
+            const pdfPath = '../assets/' + elem.getAttribute("data-doc_name");
             loadPDF(pdfPath);
 
             document.getElementById("viewOverlay").style.display = "block";
         }
+
+document.getElementById("update-status").addEventListener("change", function() {
+    const denialReason = document.getElementById("denialReason");
+    if (this.value === "DECLINED") {
+        denialReason.style.display = "block";
+    } else {
+        denialReason.style.display = "none";
+    }
+});
+
 
         function loadPDF(pdfPath) {
             var pdfjsLib = window['pdfjs-dist/build/pdf'];
@@ -183,6 +210,15 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         function closePrev() {
             document.getElementById("viewOverlay").style.display = "none";
         }
+
+        document.getElementById("update-status").addEventListener("change", function() {
+            const denialReason = document.getElementById("denialReason");
+            if (this.value === "DECLINED") {
+                denialReason.style.display = "block";
+            } else {
+                denialReason.style.display = "none";
+            }
+        });
 
         // DELETE
         function openDelete(elem) {

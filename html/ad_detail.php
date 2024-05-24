@@ -42,9 +42,10 @@
         <?php navDisplay();?>
         
         <?php adminDisplay();?>
-        
+
         <br> <br>
         <div class="table">
+
             <table class = "table-container">
                 <tr>
                     <td rowspan="2" class="details2">ACADEMIC YEAR</td>
@@ -124,7 +125,7 @@
                     <td><input type="text" class="input2"></td>
                 </tr>
             </table>
-<!--
+            
             <br> <br>
             <table class = "table-container">
                 <tr>
@@ -167,7 +168,7 @@
                     <td><input type="text" class="input2"></td>
                 </tr>
             </table>
--->
+
             <br> <br>
             <table class = "table-container">
                 <tr>
@@ -178,9 +179,11 @@
                 </tr>
             </table>  
         </div> <br>
+<!--
         <div class="info">
             <button type="button" class="btnAnnounce"> Update </button> <br> <br> <br> <br>
         </div></form>
+-->
     </div>
 
     <!-- NOTIFICATION -->

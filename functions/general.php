@@ -6,6 +6,8 @@
 	$sweetAlert = array();
 	$warnAlert = array();
 
+	require '../vendor/autoload.php';
+
 //* DATABASE CONNECTION *//
     // Credentials                              //* align the comments with this comment !!
     $serv = "localhost";                        //! replace: null
@@ -25,6 +27,47 @@
     //? if (empty($_SESSION["role"])) { header("location: ./index.php"); }
 	//? else if(($_SESSION["role"] == "1")) { header("location: ./ad_dashboard.php"); } 
 	//? else { header("location: ./announce.php");};
+
+//* PARAMETER PULL *//
+	//? ACADEMIC YEAR
+	function academic() {
+		global $conn;
+		$query = "SELECT acad_year AS acad FROM batch_year ORDER BY batch_no DESC LIMIT 1";
+		$result = $conn->query($query);
+		if ($result->num_rows > 0) {
+			return $result->fetch_assoc()['acad'];
+		}
+	}
+
+	$year = academic();
+
+	//? BATCH NUMBER
+	function batch() {
+		global $conn;
+		$query = "SELECT batch_no AS batch FROM batch_year ORDER BY batch_no DESC LIMIT 1";
+		$result = $conn->query($query);
+		if ($result->num_rows > 0) {
+			return $result->fetch_assoc()['batch'];
+		}
+	}
+
+	$batch = batch();
+
+	//? SEMESTER SWITCH
+	function semester() {
+		$current_month = date('n'); // Get the current month (1 to 12)
+		
+		// Check if the current month falls within Semester 1 (July to December)
+		if ($current_month >= 7 && $current_month <= 12) {
+			return 1; // Semester 1
+		} else {
+			return 2; // Semester 2
+		}
+	}
+
+	// Test the function
+	$sem = semester();
+
 
 //* DATA LISTS *//
 	function datalisting($column, $table, $id) {

@@ -1,4 +1,18 @@
-<?php include('../functions/general.php');?>
+<?php
+include('../functions/general.php');
+
+// Fetch announcement data
+global $conn;
+$announcements = [];
+$query = "SELECT announce_id, title, st_date, end_date FROM announcements WHERE _status = 'ACTIVE'";
+$result = $conn->query($query);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $announcements[] = $row;
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,8 +29,6 @@
     <link rel="stylesheet" href="css/error.css">
     <link rel="stylesheet" href="css/page.css">
 </head>
-
-
 <body>
     <!-- SIDEBAR -->
     <?php include('ad_navbar.php');?>
@@ -49,14 +61,16 @@
                 <div class="cards">
                     <div class="card"> 
                         <div class="container">
-                            <h5 class="detail"> Total Number of Scholars </h5>
+                            <h5 class="detail"> Total Scholars </h5>
+                            <br>
                             <h2 class="num"> 21,350 </h2>
                         </div>
                     </div>
 
                     <div class="card"> 
                         <div class="container">
-                            <h5 class="detail"> Current Number of Scholars </h5>
+                            <h5 class="detail"> Current Scholars </h5>
+                            <br>
                             <h2 class="num"> 2,500 </h2>
                         </div> 
                     </div>
@@ -99,23 +113,8 @@
 
                 <div class="event">
                     <h4>Events and Announcements</h4>
-                    <table>
-                        <tr>
-                            <td style="font-weight: bold;"> 05/20: </td>
-                            <td> Application for Batch 23 </td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold;"> 06/11: </td>
-                            <td> Contract Signing </td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold;"> 06/24: </td>
-                            <td> Results for Batch 23 </td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold;"> 07/01: </td>
-                            <td> Requirement Submission </td>
-                        </tr>
+                    <table id="eventTable">
+                        <!-- Dynamic content will be inserted here -->
                     </table>
                 </div>
             </div>
@@ -124,15 +123,15 @@
         
     </div>
 
-
     <!-- NOTIFICATION -->
     <?php include('notification.php');?>
 
-    
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="../functions/notif.js"></script>
     <script>
+        const announcements = <?php echo json_encode($announcements); ?>;
+
         //CHANGE PASS
         function openPass() {
             document.getElementById("passOverlay").style.display = "block";
@@ -170,8 +169,46 @@
             for (let i = 1; i <= daysInMonth; i++) {
                 let day = document.createElement("div");
                 day.textContent = i;
+
+                // Check if the current day has any announcements
+                let currentDate = new Date(currentYear, currentMonth, i);
+                announcements.forEach(announcement => {
+                    let startDate = new Date(announcement.st_date);
+                    let endDate = new Date(announcement.end_date);
+                    if (currentDate >= startDate && currentDate <= endDate) {
+                        day.style.backgroundColor = "#FFEB3B"; // Highlight day
+                        day.title = announcement.title; // Add tooltip
+                    }
+                });
+
                 calendarDays.appendChild(day);
             }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${month}/${day}`;
+        }
+
+        function populateEvents() {
+            let eventTable = document.getElementById("eventTable");
+            eventTable.innerHTML = ""; // Clear existing content
+
+            announcements.forEach(announcement => {
+                let row = document.createElement("tr");
+                let dateCell = document.createElement("td");
+                let titleCell = document.createElement("td");
+
+                dateCell.style.fontWeight = "bold";
+                dateCell.textContent = `${formatDate(announcement.st_date)} - ${formatDate(announcement.end_date)}`;
+                titleCell.textContent = announcement.title;
+
+                row.appendChild(dateCell);
+                row.appendChild(titleCell);
+                eventTable.appendChild(row);
+            });
         }
 
         document.querySelector(".prev").addEventListener("click", () => {
@@ -193,6 +230,7 @@
         });
 
         generateCalendar();
+        populateEvents();
         
         // LINE GRAPH
         var lineChartData = {

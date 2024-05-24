@@ -1,6 +1,13 @@
 <?php 
 include('../functions/general.php');
-include('../functions/add_docx.php')
+include('../functions/add_docx.php');
+
+// Assume $scholar_id is set from the session or another reliable source
+$scholar_id = $_SESSION['uid'];
+
+function disableUploadIfPending($scholar_id, $doc_type) {
+    return hasPendingDocument($scholar_id, $doc_type) ? 'hidden' : '';
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +34,10 @@ include('../functions/add_docx.php')
             color: rgb(112, 112, 112);
             background-color: #ffffff;
         }
+        .custom-file-upload:disabled {
+            background-color: #e0e0e0;
+            color: #a0a0a0;
+        }
     </style>
 </head>
 <body>
@@ -52,7 +63,6 @@ include('../functions/add_docx.php')
                 <h5> Log  Out </h5>
             </a>
         </div>
-
 
         <!-- TOP NAV -->
         <div class="details">
@@ -81,7 +91,7 @@ include('../functions/add_docx.php')
                     <label for="choose-file1" class="custom-file-upload">
                     Upload PDF
                     </label>
-                    <input name="register" type="file" id="choose-file1" accept=".pdf" style="display: none;" /> 
+                    <input name="COR" type="file" id="choose-file1" accept=".pdf" style="display: none;" <?php echo disableUploadIfPending($scholar_id, 'COR'); ?> /> 
                 </div> <br> <hr> <br>
 
                 <div class="container">
@@ -93,7 +103,7 @@ include('../functions/add_docx.php')
                     <label for="choose-file2" class="custom-file-upload">
                     Upload PDF
                     </label>
-                    <input name="grades" type="file" id="choose-file2" accept=".pdf" style="display: none;" /> 
+                    <input name="TOR" type="file" id="choose-file2" accept=".pdf" style="display: none;" <?php echo disableUploadIfPending($scholar_id, 'TOR'); ?> /> 
                 </div> <br> <hr> <br>
 
                 <div class="container">
@@ -105,7 +115,7 @@ include('../functions/add_docx.php')
                     <label for="choose-file3" class="custom-file-upload">
                     Upload PDF
                     </label>
-                    <input name="contract" type="file" id="choose-file3" accept=".pdf" style="display: none;" /> 
+                    <input name="SCF" type="file" id="choose-file3" accept=".pdf" style="display: none;" <?php echo disableUploadIfPending($scholar_id, 'SCF'); ?> /> 
                 </div> <br> <hr> <br>
 
                 <div class="submit">

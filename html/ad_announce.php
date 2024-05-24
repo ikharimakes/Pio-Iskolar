@@ -80,8 +80,8 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
             <tr style="font-weight: bold;">
                 <td style="width:50%"> Title </td>
                 <td style="width:10%"> Status </td>
-                <td style="width:12%"> Start Date <ion-icon name="caret-down-outline"></ion-icon> </td>
-                <td style="width:12%"> End Date <ion-icon name="caret-down-outline"></ion-icon> </td>
+                <td style="width:12%"> Start Date </td>
+                <td style="width:12%"> End Date </td>
                 <td style="width:3%"> Action </td>
             </tr>
             <?php annList($currentPage, $recordsPerPage, $search);?>
@@ -240,7 +240,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         // VIEW
         function openPrev(elem) {
             document.getElementById("view-title").innerText = elem.getAttribute("data-title");
-            document.getElementById("view-img").src = 'images/' + elem.getAttribute("data-img");
+            document.getElementById("view-img").src = '../assets/' + elem.getAttribute("data-img");
             document.getElementById("view-content").innerText = elem.getAttribute("data-content");
             document.getElementById("viewOverlay").style.display = "block";
         }

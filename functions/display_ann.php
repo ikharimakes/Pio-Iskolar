@@ -4,7 +4,7 @@
 //* FRONT PAGE ANNOUNCEMENTS *//
     function annFront() {
         global $conn;
-        $display = "SELECT img_name, title, content, _status FROM announcements WHERE _status = 'ACTIVE' ORDER BY end_date";
+        $display = "SELECT img_name, title, content, _status FROM announcements WHERE _status = 'ACTIVE' ORDER BY st_date";
         $result = $conn->query($display);
 
         if ($result->num_rows > 0) {
@@ -39,7 +39,7 @@
 //* SCHOLAR PAGE ANNOUNCEMENTS *//
     function annDisplay() {
         global $conn;
-        $display = "SELECT img_name, title, content, _status FROM announcements WHERE _status = 'ACTIVE' ORDER BY end_date";
+        $display = "SELECT img_name, title, content, _status FROM announcements WHERE _status = 'ACTIVE' ORDER BY st_date";
         $result = $conn->query($display);
 
         if ($result->num_rows > 0) {
@@ -49,7 +49,7 @@
                 print '
                     <section class="announce">
                         <div class="announce-image">
-                            <img src="images/'.$row["img_name"].'">
+                            <img src="../assets/'.$row["img_name"].'">
                         </div>
                         <div class="announce-content">
                             <h2> '.$row["title"].' </h2> 

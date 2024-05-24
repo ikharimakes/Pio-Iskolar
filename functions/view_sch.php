@@ -10,7 +10,7 @@
                     FROM scholar 
                     LEFT JOIN status ON scholar.status_id = status.status_id
                     $searchQuery
-                    ORDER BY scholar.scholar_id
+                    ORDER BY batch_num DESC, scholar.scholar_id
                     LIMIT $recordsPerPage OFFSET $offset";
         
         $result = $conn->query($display);
@@ -24,7 +24,6 @@
                         <td> '.$row["last_name"].' </td>
                         <td> '.$row["first_name"].' </td>
                         <td> '.substr($row["middle_name"], 0, 1).' </td>
-                        <td> Placeholder </td>
                         <td> '.$row["status_name"].' </td>
                         <td style="text-align: right;" class="wrap"> 
                             <form style="display:inline" action="ad_detail.php" method="post"><div class="icon">

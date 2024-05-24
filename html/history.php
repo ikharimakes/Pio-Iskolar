@@ -70,11 +70,11 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         <div class="table">
             <table>
                 <tr style="font-weight: bold;">
-                    <td style="width:8%"> Date </td>
+                    <td style="width:15%"> Submission Date </td>
                     <td style="width:50%"> Document Name </td>
                     <td style="width:10%"> Type </td>
-                    <td style="width:10%"> Status </td>
-                    <td style="width:3%"> Actions </td>
+                    <td style="width:18%"> Status </td>
+                    <td> Actions </td>
                 </tr>
                 <?php docxDisplay($_SESSION["uid"], $currentPage, $recordsPerPage, $search)?>
             </table>
@@ -82,6 +82,20 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         
         <!-- PAGINATION -->
         <?php include('pagination.php');?>
+    </div>
+    
+    <!-- VIEW MODAL -->
+    <div id="viewOverlay" class="view">
+        <div class="view-content">
+            <h2 id="view-doc_name">Document Name</h2>
+            <span class="closeView" onclick="closePrev()">&times;</span>
+            <div id="denialReason" style="display: none;">
+                <h3>DECLINED: REASON</h3>
+                <textarea id="denialReasonText" readonly></textarea>
+            </div>
+            <br>
+            <div id="pdfViewer" style="width: 700px; height: 100%; border: 1px solid #ccc;"></div>
+        </div>
     </div>
 
     <!-- DELETE MODAL -->
@@ -112,9 +126,70 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.min.js"></script>
     <script src="../functions/page.js"></script>
     <script src="../functions/notif.js"></script>
     <script>
+        function openPrev(elem) {
+            document.getElementById("viewOverlay").style.display = "block";
+            
+            const status = elem.getAttribute("data-doc_status");
+            const reason = elem.getAttribute("data-doc_reason") || "";
+
+            document.getElementById("view-doc_name").innerText = elem.getAttribute("data-doc_name");
+
+            // Show reason for denial if status is "DECLINED"
+            if (status === "DECLINED") {
+                document.getElementById("denialReason").style.display = "block";
+                document.getElementById("denialReasonText").value = reason;
+            } else {
+                document.getElementById("denialReason").style.display = "none";
+            }
+
+            const pdfPath = '../assets/' + elem.getAttribute("data-doc_name");
+            loadPDF(pdfPath);
+        }
+
+        function closePrev() {
+            document.getElementById("viewOverlay").style.display = "none";
+        }
+
+        function loadPDF(pdfPath) {
+            var pdfjsLib = window['pdfjs-dist/build/pdf'];
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.worker.min.js';
+
+            var loadingTask = pdfjsLib.getDocument(pdfPath);
+            loadingTask.promise.then(function(pdf) {
+                console.log('PDF loaded');
+
+                pdf.getPage(1).then(function(page) {
+                    console.log('Page loaded');
+
+                    var scale = 1.5;
+                    var viewport = page.getViewport({ scale: scale });
+
+                    var canvas = document.createElement('canvas');
+                    var context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    var renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    var renderTask = page.render(renderContext);
+                    renderTask.promise.then(function() {
+                        console.log('Page rendered');
+                        var pdfViewer = document.getElementById('pdfViewer');
+                        pdfViewer.innerHTML = '';
+                        pdfViewer.appendChild(canvas);
+                    });
+                });
+            }, function (reason) {
+                console.error(reason);
+            });
+        }
+
         // DELETE
         function openDelete(elem) {
             document.getElementById("delete-id").value = elem.getAttribute("data-id");

@@ -66,11 +66,10 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
             <table>
                 <tr style="font-weight: bold;">
                     <td style="width:5%"> Batch</td>
-                    <td style="width:10%"> Control No. <ion-icon name="caret-down-outline"></ion-icon> </td>
-                    <td style="width:12%"> Last Name <ion-icon name="caret-down-outline"></ion-icon> </td>
+                    <td style="width:10%"> Scholar No. </td>
+                    <td style="width:12%"> Last Name </td>
                     <td> First Name </td>
-                    <td style="width:12%"> Middle Initial </td>
-                    <td style="width:12%"> Year Level</td>
+                    <td style="width:20%"> Middle Initial </td>
                     <td style="width:10%"> Status </td>
                     <td style="width:3%"> Actions </td>
                 </tr>
