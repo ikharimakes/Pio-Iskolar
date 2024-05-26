@@ -7,33 +7,72 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/*ANNOUNCEMENT*/
+/*SCHOLAR INFO*/
 .info {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 35px 20px 35px;
 }
-.info form {
-    float: right;
+.search {
+    flex: 1;
+    display: flex;
+    align-items: center;
 }
-.info .btnAnnounce {
+.search label {
+    position: relative;
+    width: 100%;
+}
+.search label input {
+    width: 100%;
+    height: 40px;
+    border-radius: 40px;
+    padding: 5px 20px;
+    padding-left: 35px;
+    font-size: 18px;
+    outline: none;
+    border: 1px solid black;
+}
+.search label ion-icon {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    font-size: 1.2rem;
+}
+.add-buttons {
+    display: flex;
+    gap: 10px;
+}
+.info .btnAdd {
     font-size: 20px;
-    width: 300px;
+    width: 200px;
     height: 35px;
     background-color: #FFF0E0;
     border: .5%;
     border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
 }
-
+.info .lblAdd {
+    font-size: 20px;
+    display: inline-block;
+    background-color: #FFF0E0;
+    color: rgb(0, 0, 0);
+    width: 200px;
+    height: 35px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+}
 /*TABLE*/
-table {
+.tables table {
     font-size: 20px;
     padding-top: 20px;
     padding-left: 30px;
     width: 98%;
 }
-tr td {
+.tables tr td {
     border-color: #000000;
     border-bottom: 1px solid black;
 }
@@ -99,6 +138,7 @@ tr td {
     color: #2F3787;
 }
 
+/*ADD SCHOLAR*/
 .overlay {
     display: none;
     position: fixed;
@@ -133,27 +173,76 @@ tr td {
     font-size: 25px;
     text-align: center;
 }
-.card {
-    width: 950px;
-    height: 800px;
-    transition: 0.3s;
-    border-radius: 5px;
+.table-container {
     text-align: center;
 }
-.pic {
+.overlay table {
+    width: 100%;
     padding-top: 20px;
-    width: 700px;
-    height: 500px;
+    border-collapse: collapse;
+    background-color: #FFEFD8;
 }
-.container {
+.overlay table td {
+    border: 1px solid black;
+}
+.overlay td {
+    padding: 8px;
+}
+textarea {
+    width: 100%;
+    resize: none;
+}
+.details {
+    width: 150px;
+    text-align: right;
+    font-weight: bold;
+}
+.details2 {  
+    font-weight: bold;
+}
+.input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 3px;
+    background-color: transparent;
+    width: 100%;
+}
+.input2 {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 3px;
+    background-color: transparent;
+    width: 100%;
     text-align: center;
 }
-.caption {
-    padding-top: 30px;
-    font-size: 18px;
-    font-weight: 300;
-    width: 800px;
-    text-align: justify;
+.input3 {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 3px;
+    background-color: transparent;
+    width: 100%;
+    border: none;
+}
+.button {
+    font-weight: bold;
+    align-content: center;
+    background-color: #2F3787; 
+    color: white; 
+    padding: 10px 20px; 
+    border: none; 
+    text-align: center; 
+    text-decoration: none; 
+    display: block; 
+    font-size: 15px; 
+    margin: 0 auto; 
+    cursor: pointer; 
+    border-radius: 8px;
+}
+.button:active {
+    transform: translateY(1px);
 }
 .closeOverlay {
     position: absolute;
@@ -167,7 +256,8 @@ tr td {
     color: #000;
 }
 
-.announce {
+/* BATCH UPLOAD */
+.batchOverlay {
     display: none;
     position: fixed;
     z-index: 1; 
@@ -179,12 +269,12 @@ tr td {
     background-color: rgba(0,0,0,0.4);
     padding-top: 60px;
 }
-.announce-content {
+.batch-content {
     background-color: #FFEFD8;
     margin: auto;
-    width: 35%; 
+    width: 30%; 
     height: fit-content;
-    padding: 40px;
+    padding: 20px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     position: absolute;
     top: 50%;
@@ -192,117 +282,83 @@ tr td {
     transform: translate(-50%, -50%);
     border-radius: 15px;
 }
-.infos h1 {
-    text-align: center;
-    font-size: 26px;
+.batchOverlay h2 {
     color: #2F3787;
-    font-weight: 600;
+    padding-top: 30px;
+    font-size: 25px;
+    text-align: center;
 }
-.announceTitle h3,
-.announceImg h3,
-.announceDetail h3,
-.announceDate h3 {
+.closeBatch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+    color: #aaa;
+    cursor: pointer;
+}
+.closeBatch:hover {
+    color: #000;
+}
+.step {
+    padding-left: 30px;
+}
+.step h4 {
     font-size: 20px;
     font-weight: 600;
-    padding-bottom: 10px;
 }
-.announceTitle input {
-    background-color: transparent;
-    font-size: 18px;
-    font-weight: 400;
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid #777777;
+.step a ion-icon,
+.step label ion-icon {
+    font-size: 20px;
+    padding-right: 10px;
+    padding-top: 5px;
 }
-.announceImg .lblImg{
-    font-size: 18px;
-    display: inline-block;
-    color: rgb(0, 0, 0);
-    width: 200px;
-    height: 35px;
-    border-bottom: 1px solid #777777;
-    cursor: pointer;
-    text-align: center;
-    padding-top: 0px;
-}
-.announceImg img {
-    width: 15px;
-}
-.announceDetail textarea {
-    font-size: 16px;
-    font-weight: 400;
-    border-radius: 10px;
-    opacity: 90%;
-    min-width: 100%;
-    max-width: 100%;
-    max-height: 150px;
-    min-height: 150px;
+.step a {
     padding-top: 10px;
+    font-size: 20px;
 }
-.announceDate input {
-    width: 45%;
-    font-size: 18px;
-    font-weight: 400;
-    border: none;
-    border-bottom: 1px solid #777777;
+.dl-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 20px;
+    color: #000;
     background-color: transparent;
-}
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    position: absolute;
-    top: 25px;
-    right: 20px;
-}
-.close:hover,
-.close:focus {
-    color: black;
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 5px;
     text-decoration: none;
     cursor: pointer;
 }
-.btn {
-    text-align: center;
-    margin-top: 40px;
+.dl-button:hover {
+    background-color: #ffffffde;
 }
-.publish-button {
+.step .lblAdd{
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 20px;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.step .lblAdd:hover {
+    background-color: #ffffffde;
+}
+.enter-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+.enter-button {
     font-size: 20px;
     color: white;
-    width: 40%;
+    width: 40px;
     height: 40px;
     background-color: #2F3787;
     border: none;
     cursor: pointer;
     border-radius: 15px; 
 }
-.publish-button:hover {
+.enter-button:hover {
     background-color: #376FB7;
-}
-
-
-.search {
-    flex: 1;
-    display: flex;
-    align-items: center;
-}
-.search label {
-    position: relative;
-    width: 100%;
-}
-.search label input {
-    width: 100%;
-    height: 40px;
-    border-radius: 40px;
-    padding: 5px 20px;
-    padding-left: 35px;
-    font-size: 18px;
-    outline: none;
-    border: 1px solid black;
-}
-.search label ion-icon {
-    position: absolute;
-    top: 0;
-    left: 10px;
-    font-size: 1.2rem;
 }

@@ -1,5 +1,5 @@
 <?php 
-include('../functions/general.php');
+include_once('../functions/general.php');
 include('../functions/view_docx.php');
 include('../functions/display_prof.php');
 
@@ -34,10 +34,27 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <div class="notif">
-                <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
-            </div>
+            <button class="headerBack" href="./ad_scholar.php" id="clickableIcon">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+                <h1>Back</h1>
+            </button>
 
+            <div class="headerRight">
+                <div class="notif">
+                    <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+                </div>
+
+                <a class="user" href="ad_settings.php">
+                    <img src="images/profile.png" alt="">
+                </a>
+            </div>
+        </div>
+
+        <!-- TOP NAV -->
+        <?php navDisplay();?>
+
+        
+        <div class="info">
             <div class="search">
                 <form action="" method="get">
                     <label>
@@ -45,20 +62,8 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                         <ion-icon name="search-outline" onclick="this.closest('form').submit();"></ion-icon>
                     </label>
                 </form>
-            </div>
-
-            <a class="user" href="ad_settings.php">
-                <img src="images/profile.png" alt="">
-            </a>
-
-            <a class="logOut" href="front_page.php"> 
-                <ion-icon name="log-out-outline"></ion-icon> 
-                <h5> Log Out </h5>
-            </a>
+            </div> 
         </div>
-
-        <!-- TOP NAV -->
-        <?php navDisplay();?>
 
         <!-- DOCUMENTS -->
         <div class="table">
@@ -100,6 +105,47 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
             </form>
             <br>
             <div id="pdfViewer" style="width: 700px; height: 100%; border: 1px solid #ccc;"></div>
+        </div>
+    </div>
+
+   <!-- APPROVE MODAL -->
+    <div id="approveOverlay" class="deleteOverlay">
+        <div class="delete-content">
+            <div class="infos">
+                <h2>Confirm Approval</h2>
+                <span class="closeDelete" onclick="closeApprove()">&times;</span>
+            </div>
+            <div class="message">
+                <h4>Are you sure you want to approve this document?</h4>
+            </div>
+            <div class="button-container">
+                <form id="approveForm" method="post" action="">
+                    <input type="hidden" id="approve-id" name="doc_id">
+                    <button type="submit" name="approve" class="yes-button">Yes</button>
+                    <button type="button" class="no-button" onclick="closeApprove()">No</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- DECLINE MODAL -->
+    <div id="declineOverlay" class="deleteOverlay">
+        <div class="delete-content">
+            <div class="infos">
+                <h2>Confirm Decline</h2>
+                <span class="closeDecline" onclick="closeDecline()">&times;</span>
+            </div>
+            <div class="message">
+                <h4>Are you sure you want to decline this document?</h4>
+                <textarea name="reason" id="declineReasonText" placeholder="Reason for declining"></textarea>
+            </div>
+            <div class="button-container">
+                <form id="declineForm" method="post" action="">
+                    <input type="hidden" id="decline-id" name="doc_id">
+                    <button type="submit" name="decline" class="yes-button">Yes</button>
+                    <button type="button" class="no-button" onclick="closeDecline()">No</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -161,14 +207,14 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
             document.getElementById("viewOverlay").style.display = "block";
         }
 
-document.getElementById("update-status").addEventListener("change", function() {
-    const denialReason = document.getElementById("denialReason");
-    if (this.value === "DECLINED") {
-        denialReason.style.display = "block";
-    } else {
-        denialReason.style.display = "none";
-    }
-});
+        document.getElementById("update-status").addEventListener("change", function() {
+            const denialReason = document.getElementById("denialReason");
+            if (this.value === "DECLINED") {
+                denialReason.style.display = "block";
+            } else {
+                denialReason.style.display = "none";
+            }
+        });
 
 
         function loadPDF(pdfPath) {
@@ -219,6 +265,26 @@ document.getElementById("update-status").addEventListener("change", function() {
                 denialReason.style.display = "none";
             }
         });
+
+        // APPROVE
+        function openApprove(elem) {
+            document.getElementById("approve-id").value = elem.getAttribute("data-id");
+            document.getElementById("approveOverlay").style.display = "block";
+        }
+
+        function closeApprove() {
+            document.getElementById("approveOverlay").style.display = "none";
+        }
+
+        // DECLINE
+        function openDecline(elem) {
+            document.getElementById("decline-id").value = elem.getAttribute("data-id");
+            document.getElementById("declineOverlay").style.display = "block";
+        }
+
+        function closeDecline(elem) {
+            document.getElementById("declineOverlay").style.display = "none";
+        }
 
         // DELETE
         function openDelete(elem) {

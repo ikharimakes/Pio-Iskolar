@@ -7,6 +7,17 @@
     font-family: 'Poppins', sans-serif;
 }
 
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 35px 20px 35px;
+}
+.info form {
+    float: right;
+}
+
 /*TABLE*/
 .table table {
     font-size: 20px;

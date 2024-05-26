@@ -1,5 +1,5 @@
 <?php
-include('../functions/general.php');
+include_once('../functions/general.php');
 include('../functions/view_sch.php');
 include('../functions/add_sch.php');
 
@@ -31,10 +31,23 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <div class="notif">
-                <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+            <div class="headerName">
+                <h1>SCHOLARS</h1>
             </div>
 
+            <div class="headerRight">
+                <div class="notif">
+                    <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+                </div>
+
+                <a class="user" href="ad_settings.php">
+                    <img src="images/profile.png" alt="">
+                </a>
+            </div>
+        </div>
+
+        <!-- SCHOLAR LIST -->
+        <div class="info">
             <div class="search">
                 <form action="" method="get">
                     <label>
@@ -44,22 +57,8 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                 </form>
             </div>
 
-            <a class="user" href="ad_settings.php">
-                <img src="images/profile.png" alt="">
-            </a>
-
-            <a class="logOut" href="front_page.php"> 
-                <ion-icon name="log-out-outline"></ion-icon> 
-                <h5> Log Out </h5>
-            </a>
-        </div>
-
-        <!-- SCHOLAR LIST -->
-        <div class="info">
-            <form action="" method="post" enctype="multipart/form-data">
-                <button type="button" class="btnAdd" onclick="openAdd()"> Add Scholar </button>
-                <button type="button" class="btnAdd" onclick="openBatch()"> Batch Creation </button>
-            </form> 
+            <button type="button" class="btnAdd" style="margin-right: 1vh;"onclick="openAdd()"> Add Scholar </button>
+            <button type="button" class="btnAdd" onclick="openBatch()"> Batch Creation </button>
         </div> <br>
 
         <div class="tables">
@@ -131,7 +130,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                 </table>
                 
                 <br><br>
-                <button name="individual" type="submit" class="button">SUBMIT</button>
+                <button name="individual" type="submit" class="button">SAVE</button>
             </div>
         </form>
     </div>
@@ -165,11 +164,8 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                         <input type="file" name="csv" accept=".csv" id="upload" onchange="form.submit()" hidden/>
                     </label>
                 </form>
-            </div> <br>
-
-            <div class="enter-button-container">
-                <button class="enter-button"> Upload </button>
             </div>
+            <br> <br>
         </div>
     </div>
 

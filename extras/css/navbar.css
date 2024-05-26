@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+* {
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 270px;
+    padding: 10px 14px;
+    background: #2F3787;
+    overflow: hidden;
+}
+.sidebar header {
+    position: relative;
+}
+.sidebar .sideHeader {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    margin-left: 10px;
+}
+.sidebar header .sideHeader {
+    display: flex;
+    align-items: center;
+}
+.sidebar .headerLogo {
+    min-width: 50px;
+    display: flex;
+    align-items: center;
+}
+.sidebar .sideHeader img {
+    width: 75px;
+}
+header .sideHeader .headerText {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.headerText h1 {
+    font-weight: 600;
+    color: white;
+}
+.sidebar .navBar {
+    height: calc(100% - 215px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.sidebar li {
+    height: 50px;
+    margin-top: 10px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+.sidebar li a {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: 0.4s;
+}
+.sidebar li a:hover {
+    background: #FFEFD8;
+}
+.sidebar li.active a {
+    background: #FFEFD8;
+}
+.sidebar li .text {
+    color: #fff;
+    transition: 0.2s;
+    font-size: 23px;
+    margin-left: 10px;
+}
+.sidebar li a:hover .text {
+    color: #376FB7;
+}
+.sidebar li.active a .text {
+    color: #376FB7;
+}
+.sidebar li .icon {
+    margin-bottom: 5px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    font-size: 27px;
+    color: rgb(255, 255, 255);
+    transition: 0.2s;
+} 
+.sidebar li a:hover .icon {
+    color: #376FB7;
+}
+.sidebar li.active a .icon {
+    color: #376FB7;
+}

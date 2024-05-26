@@ -4,7 +4,7 @@
 //* SCHOLAR PROFILE DISPLAY *//
     function scholarDisplay($id) {
         global $conn;
-        $display = "SELECT * FROM scholar LEFT JOIN status ON scholar.status_id = status.status_id WHERE scholar_id = '$id'";
+        $display = "SELECT * FROM scholar WHERE scholar_id = '$id'";
         $result = $conn->query($display);
 
         if ($result->num_rows > 0) {
@@ -31,7 +31,7 @@
                         </tr>
                         <tr>
                             <th>Scholar Status:</th>
-                            <td>'.$row['status_name'].'</td>
+                            <td>'.$row['status'].'</td>
                         </tr>
                         <tr style="height: 40px;">
                             <th> </th>
@@ -70,7 +70,7 @@
         if(isset($_POST['scholar_id'])) {$_SESSION['id'] = $_POST['scholar_id'];}
         $id = $_SESSION['id'];
         // SCHOLAR DETAILS
-        $display = "SELECT * FROM scholar LEFT JOIN status ON scholar.status_id = status.status_id WHERE scholar_id = '$id'";
+        $display = "SELECT * FROM scholar WHERE scholar_id = '$id'";
         $result = $conn->query($display);
 
         if ($result->num_rows > 0) {
@@ -95,7 +95,7 @@
         if(isset($_POST['scholar_id'])) {$_SESSION['id'] = $_POST['scholar_id'];}
         $id = $_SESSION['id'];
         // SCHOLAR DETAILS
-        $display = "SELECT * FROM scholar LEFT JOIN status ON scholar.status_id = status.status_id WHERE scholar_id = '$id'";
+        $display = "SELECT * FROM scholar WHERE scholar_id = '$id'";
         $result = $conn->query($display);
 
         if ($result->num_rows > 0) {
@@ -104,7 +104,7 @@
                     'Batch ID' => $row['batch_num'],
                     'School' => $row['school'],
                     'Course' => $row['course'],
-                    'Scholar Status' => $row['status_name'],
+                    'Scholar Status' => $row['status'],
                     '' => '',
                     'Address' => $row['_address'],
                     'Contact' => $row['contact'],

@@ -1,5 +1,5 @@
 <?php 
-include('../functions/general.php');
+include_once('../functions/general.php');
 include('../functions/add_docx.php');
 
 // Assume $scholar_id is set from the session or another reliable source
@@ -47,21 +47,18 @@ function disableUploadIfPending($scholar_id, $doc_type) {
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <div class="notif">
-                <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+            <div class="headerName">
             </div>
 
-            <div class="search">
-            </div>
+            <div class="headerRight">
+                <div class="notif">
+                    <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+                </div>
 
-            <div class="user">
-                <a href="profile.php"><img src="images/profile.png" ></a>
+                <a class="user" href="profile.php">
+                    <img src="images/profile.png" alt="">
+                </a>
             </div>
-
-            <a class="logOut" href="front_page.php"> 
-                <ion-icon name="log-out-outline"></ion-icon> 
-                <h5> Log  Out </h5>
-            </a>
         </div>
 
         <!-- TOP NAV -->

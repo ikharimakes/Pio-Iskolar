@@ -1,4 +1,4 @@
-<?php include('../functions/general.php');?>
+<?php include_once('../functions/general.php');?>
 <?php include('../functions/display_ann.php');?>
 
 <!DOCTYPE html>
@@ -24,21 +24,18 @@
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <div class="notif">
-                <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+            <div class="headerName">
             </div>
 
-            <div class="search">
-            </div>
-            
-            <div class="user">
-                <a href="profile.php"><img src="images/profile.png" ></a>
-            </div>
+            <div class="headerRight">
+                <div class="notif">
+                    <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+                </div>
 
-            <a class="logOut" href="front_page.php"> 
-                <ion-icon name="log-out-outline"></ion-icon> 
-                <h5> Log  Out </h5>
-            </a>
+                <a class="user" href="profile.php">
+                    <img src="images/profile.png" alt="">
+                </a>
+            </div>
         </div>
 
 

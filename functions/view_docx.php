@@ -55,57 +55,82 @@
 	}
 
 //* DOCUMENT DISPLAY - ADMIN *//
-	function docxList($currentPage = 1, $recordsPerPage = 15, $search = ''){ 
-		global $conn;
+function docxList($currentPage = 1, $recordsPerPage = 15, $search = ''){ 
+    global $conn;
 
-		$offset = ($currentPage - 1) * $recordsPerPage;
-		$searchQuery = $search ? " AND (doc_name LIKE '%$search%' OR doc_type LIKE '%$search%' OR doc_status LIKE '%$search%')" : '';
-		$id = $_SESSION['id'];
+    $offset = ($currentPage - 1) * $recordsPerPage;
+    $searchQuery = $search ? " AND (doc_name LIKE '%$search%' OR doc_type LIKE '%$search%' OR doc_status LIKE '%$search%')" : '';
+    $id = $_SESSION['id'];
 
-		$displayQuery = "SELECT * FROM submission WHERE scholar_id = '$id' $searchQuery ORDER BY sub_date LIMIT $recordsPerPage OFFSET $offset";
-		
-		$result = $conn->query($displayQuery);
+    $displayQuery = "SELECT * FROM submission WHERE scholar_id = '$id' $searchQuery ORDER BY sub_date LIMIT $recordsPerPage OFFSET $offset";
+    
+    $result = $conn->query($displayQuery);
 
-		if ($result && $result->num_rows > 0) {
-			while ($row = $result->fetch_assoc()) {
-				echo '
-					<tr> 
-						<td>'.$row["doc_name"].'</td>
-						<td>'.$row["sub_date"].'</td>
-						<td>'.$row["doc_type"].'</td>
-						<td>'.$row["doc_status"].'</td>
-						<td style="float: right;" class="wrap"> 
-							<div class="icon">
-								<div class="tooltip">View</div>
-								<span> <ion-icon name="eye-outline" onclick="openPrev(this)"
-									data-submit_id="'.$row["submit_id"].'"  
-									data-doc_name="'.$row["doc_name"].'" 
-									data-doc_status="'.$row["doc_status"].'"
-									data-doc_reason="'.$row["reason"].'"></ion-icon> </span>
-							</div>
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            // Determine the color based on status
+            $style = "";
+            if ($row["doc_status"] == "PENDING") {
+				$style = "color: rgb(212, 120, 0);
+				font-weight: 600;";
+            } elseif ($row["doc_status"] == "APPROVED") {
+				$style = "color: rgb(0, 136, 0);
+				font-weight: 600;";
+            } elseif ($row["doc_status"] == "DECLINED") {
+				$style = "color: rgb(189, 0, 0);
+				font-weight: 600;";
+            }
 
-							<div class="icon">
-								<div class="tooltip">Download</div>
-								<a href="../assets/'.$row["doc_name"].'" download="'.$row["doc_name"].'">
-									<span> <ion-icon name="download-outline"></ion-icon> </span>
-								</a>
-							</div>
+            echo '
+                <tr> 
+                    <td>'.$row["doc_name"].'</td>
+                    <td>'.$row["sub_date"].'</td>
+                    <td>'.$row["doc_type"].'</td>
+                    <td style="'.$style.'">'.$row["doc_status"].'</td>
+                    <td style="float: right;" class="wrap"> 
+                        <div class="icon">
+                            <div class="tooltip">View</div>
+                            <span> <ion-icon name="eye-outline" onclick="openPrev(this)"
+                                data-submit_id="'.$row["submit_id"].'"  
+                                data-doc_name="'.$row["doc_name"].'" 
+                                data-doc_status="'.$row["doc_status"].'"
+                                data-doc_reason="'.$row["reason"].'"></ion-icon> </span>
+                        </div>
 
-							<div class="icon">
-								<div class="tooltip">Delete</div>
+                        <div class="icon">
+                            <div class="tooltip">Download</div>
+                            <a href="../assets/'.$row["doc_name"].'" download="'.$row["doc_name"].'">
+                                <span> <ion-icon name="download-outline"></ion-icon> </span>
+                            </a>
+                        </div>
 
-								<span> <ion-icon name="trash-outline" onclick="openDelete(this)" 
-									data-id="'.$row["submit_id"].'" 
-									data-name="'.$row["doc_name"].'"></ion-icon> </span>
-							</div>
-						</td>
-					</tr>
-				';
-			}
-		} else {
-			echo "<tr><td colspan='6'>No records found</td></tr>";
-		}
-	}
+                        <div class="icon">
+                            <div class="tooltip"> Approve</div>
+                            <span> <ion-icon name="checkmark-circle-outline" onclick="openApprove(this)" 
+                                data-id="'.$row["submit_id"].'"></ion-icon> </span>
+                        </div>
+
+                        <div class="icon">
+                            <div class="tooltip"> Decline</div>
+                            <span> <ion-icon name="close-circle-outline" onclick="openDecline(this)" 
+                                data-id="'.$row["submit_id"].'"></ion-icon> </span>
+                        </div>
+
+                        <div class="icon">
+                            <div class="tooltip">Delete</div>
+
+                            <span> <ion-icon name="trash-outline" onclick="openDelete(this)" 
+                                data-id="'.$row["submit_id"].'" 
+                                data-name="'.$row["doc_name"].'"></ion-icon> </span>
+                        </div>
+                    </td>
+                </tr>
+            ';
+        }
+    } else {
+        echo "<tr><td colspan='6'>No records found</td></tr>";
+    }
+}
 
 function getTotalRecords($search = '') {
     global $conn;
@@ -132,8 +157,38 @@ function getTotalRecords($search = '') {
 		$update = "UPDATE submission SET doc_status = '$status', reason = '$reason' WHERE submit_id = '$doc_id'";
 		$result = $conn->query($update);
 		header('Location: '.$_SERVER['PHP_SELF']);
+		
+		$conn -> close();
 		die;
 	}
+
+//* DOCUMENT APPROVAL/DENIAL *//
+	if (isset($_POST['approve'])) {
+		$doc_id = $_POST['doc_id'];
+		$status = "APPROVED";
+		$reason = null;
+
+		$approve = "UPDATE submission SET doc_status = '$status', reason = '$reason' WHERE submit_id = '$doc_id'";
+		$result = $conn->query($approve);
+		header('Location: '.$_SERVER['PHP_SELF']);
+		
+		$conn -> close();
+		die;
+	}
+
+	if (isset($_POST['decline'])) {
+		$doc_id = $_POST['doc_id'];
+		$status = "DECLINED";
+		$reason = isset($_POST['reason']) ? $_POST['reason'] : '';
+
+		$decline = "UPDATE submission SET doc_status = '$status', reason = '$reason' WHERE submit_id = '$doc_id'";
+		$result = $conn->query($decline);
+		header('Location: '.$_SERVER['PHP_SELF']);
+		
+		$conn -> close();
+		die;
+	}
+
 	
 //* DOCUMENT DELETION *//
 	if(isset($_POST['delete'])){
@@ -144,6 +199,8 @@ function getTotalRecords($search = '') {
 		$delete = "DELETE FROM submission WHERE submit_id = '$id'";
 		$result = $conn->query($delete);
 		header('Location: '.$_SERVER['PHP_SELF']);
+		
+		$conn -> close();
 		die;
 	}
 ?>

@@ -1,4 +1,5 @@
 <?php
+global $conn;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -52,7 +53,6 @@ function sendEmailNotification($email, $username, $password, $name,) {
     }
 }
 
-global $conn;
 //* INDIVIDUAL CREATION IS HELL *//
 if(isset($_POST['individual'])){
     $last_name = strtoupper($_POST['last_name']);
@@ -79,11 +79,11 @@ if(isset($_POST['individual'])){
 
     // inserts into scholar
     //! CHANGE BATCH NUMBER
-    $insert = "INSERT INTO scholar (scholar_id, batch_num, user_id, status_id, last_name, first_name, middle_name, school, course, _address, contact, email, remarks) VALUES ('$scholar_id', '$batch_no', '$uid', '1', '$last_name', '$first_name', '$middle_name', '$school', '$course', '$address', '$contact', '$email', NULL)";
+    $insert = "INSERT INTO scholar (scholar_id, batch_num, user_id, status, last_name, first_name, middle_name, school, course, _address, contact, email, remarks) VALUES ('$scholar_id', '$batch_no', '$uid', 'ACTIVE', '$last_name', '$first_name', '$middle_name', '$school', '$course', '$address', '$contact', '$email', NULL)";
     $run = $conn->query($insert);
 
-    // Send email notification
-    sendEmailNotification($email, $last_name, $password, $last_name);
+    //! Send email notification - DISABLED
+    //sendEmailNotification($email, $last_name, $password, $last_name);
 }
 
 //* BATCH CREATION *//
@@ -153,16 +153,16 @@ if(isset($_FILES['csv'])){
                 while ($row = $result->fetch_assoc()){
                     $uid = $row['user_id'];
                 }
-
                 // inserts into scholar
                 //! CHANGE BATCH NUMBER
                 $sid = '27' . sprintf('%03d', $data[0]);
-                $number = '+63' . '$data[7]';
-                $insert = "INSERT INTO scholar (scholar_id, batch_num, user_id, status_id, last_name, first_name, middle_name, school, course, _address, contact, email, remarks) VALUES ('$sid', '27', '$uid', '1', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$number', '$data[8]', NULL)";
+                $string = str_replace(' ', '', $data['7']);
+                $number = '+63' . $string;
+                $insert = "INSERT INTO scholar (scholar_id, batch_num, user_id, status, last_name, first_name, middle_name, school, course, _address, contact, email, remarks) VALUES ('$sid', '27', '$uid', 'ACTIVE', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$number', '$data[8]', NULL)";
                 $run = $conn->query($insert);
 
-                // Send email notification
-                sendEmailNotification($data[8], $data[1], $password, $data[1]);
+                //! Send email notification - DISABLED
+                //sendEmailNotification($data[8], $data[1], $password, $data[1]);
             }
             // closes pointer, deletes csv file
             fclose($handle);

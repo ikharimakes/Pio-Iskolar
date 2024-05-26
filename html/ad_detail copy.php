@@ -73,65 +73,8 @@
                     displayDocumentsTable($documents);
                 ?>
             </table>
-            <br> <br>
-            
-            <table id="scholarshipTable" class="table-container">
-                <tr>
-                    <th colspan="4" class="details2">SCHOLARSHIP 
-                        <ion-icon name="pencil-outline" onclick="toggleEdit('scholarshipTable')"></ion-icon>
-                    </th>
-                </tr> 
-                <tr>
-                    <th class="details2">ACADEMIC YEAR</th>
-                    <th class="details2">1ST SEMESTER</th>
-                    <th class="details2">2ND SEMESTER</th>
-                    <th class="details2">3RD SEMESTER</th>
-                </tr>
-                <tr>
-                    <th class="details2">2023-2024</th>
-                    <td><input type="text" class="input2"></td>
-                    <td><input type="text" class="input2"></td>
-                    <td><input type="text" class="input2"></td>
-                </tr> 
-                <tr>
-                    <th class="details2">2024-2025</th>
-                    <td><input type="text" class="input2"></td>
-                    <td><input type="text" class="input2"></td>
-                    <td><input type="text" class="input2"></td>
-                </tr>
-                <tr>
-                    <th class="details2">2025-2026</th>
-                    <td><input type="text" class="input2"></td>
-                    <td><input type="text" class="input2"></td>
-                    <td><input type="text" class="input2"></td>
-                </tr>
-                <tr>
-                    <th class="details2">2026-2027</th>
-                    <td><input type="text" class="input2"></td>
-                    <td><input type="text" class="input2"></td>
-                    <td><input type="text" class="input2"></td>
-                </tr>
-                <tr>
-                    <th class="details2">2027-2028</th>
-                    <td><input type="text" class="input2"></td>
-                    <td><input type="text" class="input2"></td>
-                    <td><input type="text" class="input2"></td>
-                </tr>
-            </table>
-
-            <br> <br>
-            <table id="remarksTable" class="table-container">
-                <tr>
-                    <th class="details2">REMARKS 
-                        <ion-icon name="pencil-outline" onclick="toggleEdit('remarksTable')"></ion-icon>
-                    </th>
-                </tr>
-                <tr>
-                    <td><textarea rows="10" class="input3"></textarea></td>
-                </tr>
-            </table>  
         </div> <br>
-    </div>
+</div>
     
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

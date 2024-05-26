@@ -1,5 +1,5 @@
 <?php 
-include('../functions/general.php');
+include_once('../functions/general.php');
 include('../functions/view_docx.php');
 
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -33,27 +33,19 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <div class="notif">
-                <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+            <div class="headerName">
+                <h1>SCHOLAR LIST</h1>
             </div>
 
-            <div class="search">
-                <form action="" method="get">
-                    <label>
-                        <input type="text" name="search" placeholder="Search here" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
-                        <ion-icon name="search-outline" onclick="this.closest('form').submit();"></ion-icon>
-                    </label>
-                </form>
+            <div class="headerRight">
+                <div class="notif">
+                    <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+                </div>
+
+                <a class="user" href="profile.php">
+                    <img src="images/profile.png" alt="">
+                </a>
             </div>
-
-            <a class="user" href="ad_settings.php">
-                <img src="images/profile.png" alt="">
-            </a>
-
-            <a class="logOut" href="front_page.php"> 
-                <ion-icon name="log-out-outline"></ion-icon> 
-                <h5> Log Out </h5>
-            </a>
         </div>
 
         <!-- TOP NAV -->
@@ -66,6 +58,18 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
             </div> </center>
         </div>
 
+        
+        <div class="info">
+            <div class="search">
+                <form action="" method="get">
+                    <label>
+                        <input type="text" name="search" placeholder="Search here" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                        <ion-icon name="search-outline" onclick="this.closest('form').submit();"></ion-icon>
+                    </label>
+                </form>
+            </div> 
+        </div>
+
         <!-- SUBMISSION HISTORY -->
         <div class="table">
             <table>
@@ -76,7 +80,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                     <td style="width:18%"> Status </td>
                     <td> Actions </td>
                 </tr>
-                <?php docxDisplay($_SESSION["uid"], $currentPage, $recordsPerPage, $search)?>
+                <?php docxDisplay($_SESSION["sid"], $currentPage, $recordsPerPage, $search)?>
             </table>
         </div>
         

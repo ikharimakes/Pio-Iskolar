@@ -8,77 +8,16 @@
 }
 
 /*SCHOLAR INFO*/
-.info form {
-    padding-top: 50px;
-    padding-right: 5vh;
-    float: right;
-}
-
-/* SEARCH
-.search-container {
-    position: relative;
-    width: 300px;
-    margin: 0 auto;
-    margin-left: 10px;
-}
-.search-input {
-    width: 300px;
-    height: 35px;
-    padding: 8px 10px 8px 35px;
-    border: .5%;
-    border-radius: 10px;
-    font-size: 16px;
-    background-image: url('images/search.png');
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    background-size: 20px;
-    outline: none;
-}*/
-/*FILTER & SORT
-.info .drop-button {
-    padding-top: 50px;
-    position: absolute;
-    top: 70px;
-    right: 35px;
+.info {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    padding: 20px 35px 20px 35px;
 }
-.info .dropdown {
-    position: relative;
-    display: inline-block;
+.add-buttons {
+    display: flex;
+    gap: 10px;
 }
-.info .dropbtn {
-    background-color: #FFF0E0;
-    font-size: 20px;
-    width: 100px;
-    height: 35px;
-    border: .5%;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-right: 5px;
-}
-.info .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    right: 0;
-}
-.info .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-.info .dropdown-content a:hover {
-    background-color: #ddd;
-}
-.info .dropdown:hover .dropdown-content {
-    display: block;
-}*/
-
 .info .btnAdd {
     font-size: 20px;
     width: 200px;
@@ -86,6 +25,8 @@
     background-color: #FFF0E0;
     border: .5%;
     border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
 }
 .info .lblAdd {
     font-size: 20px;
@@ -261,7 +202,6 @@ textarea {
     border: none;
 }
 .button {
-    font-family: 'Poppins', sans-serif;
     font-weight: bold;
     align-content: center;
     background-color: #2F3787; 
@@ -387,7 +327,7 @@ textarea {
 .enter-button {
     font-size: 20px;
     color: white;
-    width: 40%;
+    width: 40px;
     height: 40px;
     background-color: #2F3787;
     border: none;

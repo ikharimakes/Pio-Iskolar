@@ -1,4 +1,4 @@
-<?php include('../functions/general.php');?>
+<?php include_once('../functions/general.php');?>
 
 <!DOCTYPE html>
 <html lang="en">

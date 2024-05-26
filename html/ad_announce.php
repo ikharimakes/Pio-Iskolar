@@ -1,5 +1,5 @@
 <?php 
-include('../functions/general.php');
+include_once('../functions/general.php');
 include('../functions/add_ann.php');
 include('../functions/view_ann.php');
 
@@ -45,10 +45,24 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <div class="notif">
-                <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+            <div class="headerName">
+                <h1>ANNOUNCEMENTS</h1>
             </div>
 
+            <div class="headerRight">
+                <div class="notif">
+                    <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+                </div>
+
+                <a class="user" href="ad_settings.php">
+                    <img src="images/profile.png" alt="">
+                </a>
+            </div>
+        </div>
+
+
+        <!-- ANNOUNCEMENTS -->
+        <div class="info">
             <div class="search">
                 <form action="" method="get">
                     <label>
@@ -57,20 +71,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                     </label>
                 </form>
             </div>
-
-            <a class="user" href="ad_settings.php">
-                <img src="images/profile.png" alt="">
-            </a>
-
-            <a class="logOut" href="front_page.php"> 
-                <ion-icon name="log-out-outline"></ion-icon> 
-                <h5> Log Out </h5>
-            </a>
-        </div>
-
-
-        <!-- ANNOUNCEMENTS -->
-        <div class="info">
+            
             <form>
                 <button type="button" class="btnAnnounce" onclick="openModal('announceModal')"> Add Announcement </button> <br>
             </form> 

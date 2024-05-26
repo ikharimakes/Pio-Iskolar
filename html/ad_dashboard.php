@@ -1,6 +1,5 @@
 <?php
-include('../functions/general.php');
-
+include_once('../functions/general.php');
 // Fetch announcement data
 global $conn;
 $announcements = [];
@@ -37,21 +36,19 @@ if ($result->num_rows > 0) {
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <div class="notif">
-                <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+            <div class="headerWelcome">
+                <h1>Welcome COORDINATOR!</h1>
             </div>
 
-            <div class="search">
+            <div class="headerRight">
+                <div class="notif">
+                    <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+                </div>
+
+                <a class="user" href="ad_settings.php">
+                    <img src="images/profile.png" alt="">
+                </a>
             </div>
-
-            <a class="user" href="ad_settings.php">
-                <img src="images/profile.png" alt="" >
-            </a>
-
-            <a class="logOut" href="front_page.php"> 
-                <ion-icon name="log-out-outline"></ion-icon> 
-                <h5> Log  Out </h5>
-            </a>
         </div>
 
         

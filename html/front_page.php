@@ -1,5 +1,4 @@
-<?php include('../functions/general.php');?>
-<?php include('../functions/login.php');?>
+<?php include_once('../functions/general.php');?>
 <?php include('../functions/display_ann.php');?>
 
 <!DOCTYPE html>

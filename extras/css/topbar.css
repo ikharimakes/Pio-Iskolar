@@ -23,7 +23,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 10px;
-    margin-top: 0px;
+    margin-top: 10px;
 }
 .headerName {
     flex-grow: 1;
@@ -69,7 +69,6 @@
     margin-left: 10px;
 }
 .headerRight {
-    float:right;
     display: flex;
     align-items: center;
 }
@@ -126,7 +125,7 @@
 
 /*TOP NAV*/
 .details h1 {
-    margin-top: 20px;
+    margin-top: 50px;
     font-size: 26px;
     color: #2F3787;
 }
@@ -150,31 +149,4 @@
 }
 .topnav a.active {
     border-bottom: 3px solid #2F3787;
-}
-
-
-.search {
-    flex: 1;
-    display: flex;
-    align-items: center;
-}
-.search label {
-    position: relative;
-    width: 100%;
-}
-.search label input {
-    width: 100%;
-    height: 40px;
-    border-radius: 40px;
-    padding: 5px 20px;
-    padding-left: 35px;
-    font-size: 18px;
-    outline: none;
-    border: 1px solid black;
-}
-.search label ion-icon {
-    position: absolute;
-    top: 0;
-    left: 10px;
-    font-size: 1.2rem;
 }
