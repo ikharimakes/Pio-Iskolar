@@ -12,7 +12,10 @@ function updatePageLinks() {
     ul.innerHTML = "";
     let before_page = current_page - 2;
     let after_page = current_page + 2;
-    let search = new URLSearchParams(window.location.search).get('search') || '';
+    let searchParams = new URLSearchParams(window.location.search);
+    let search = searchParams.get('search') || '';
+    let sort = searchParams.get('sort') || 'batch_num';
+    let order = searchParams.get('order') || 'DESC';
 
     if (current_page == 2) {
         before_page = current_page - 1;
@@ -31,7 +34,7 @@ function updatePageLinks() {
     for (let i = before_page; i <= after_page; i++) {
         if (i > 0 && i <= total_page) {
             let active_page = current_page == i ? "active_page" : "";
-            ul.innerHTML += '<li><a href="?page=' + i + '&search=' + encodeURIComponent(search) + '" class="page_number ' + active_page + '">' + i + '</a></li>';
+            ul.innerHTML += '<li><a href="?page=' + i + '&search=' + encodeURIComponent(search) + '&sort=' + encodeURIComponent(sort) + '&order=' + encodeURIComponent(order) + '" class="page_number ' + active_page + '">' + i + '</a></li>';
         }
     }
 
@@ -49,7 +52,11 @@ prevButton.addEventListener("click", function (e) {
     if (current_page > 1) {
         current_page--;
         updatePageLinks();
-        window.location.href = "?page=" + current_page + "&search=" + encodeURIComponent(new URLSearchParams(window.location.search).get('search') || '');
+        let searchParams = new URLSearchParams(window.location.search);
+        let search = searchParams.get('search') || '';
+        let sort = searchParams.get('sort') || 'batch_num';
+        let order = searchParams.get('order') || 'DESC';
+        window.location.href = "?page=" + current_page + "&search=" + encodeURIComponent(search) + "&sort=" + encodeURIComponent(sort) + "&order=" + encodeURIComponent(order);
     }
 });
 
@@ -58,6 +65,10 @@ nextButton.addEventListener("click", function (e) {
     if (current_page < total_page) {
         current_page++;
         updatePageLinks();
-        window.location.href = "?page=" + current_page + "&search=" + encodeURIComponent(new URLSearchParams(window.location.search).get('search') || '');
+        let searchParams = new URLSearchParams(window.location.search);
+        let search = searchParams.get('search') || '';
+        let sort = searchParams.get('sort') || 'batch_num';
+        let order = searchParams.get('order') || 'DESC';
+        window.location.href = "?page=" + current_page + "&search=" + encodeURIComponent(search) + "&sort=" + encodeURIComponent(sort) + "&order=" + encodeURIComponent(order);
     }
 });

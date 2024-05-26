@@ -1,4 +1,5 @@
 <?php
+    include_once('../functions/general.php');
     global $conn;
 
 //* ANNOUNCEMENT UPLOAD *//

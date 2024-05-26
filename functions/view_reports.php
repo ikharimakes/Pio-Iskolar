@@ -1,4 +1,5 @@
 <?php
+    include_once('../functions/general.php');
 global $conn;
 
 function reportList($currentPage = 1, $recordsPerPage = 15, $search = '') {

@@ -85,30 +85,48 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         <?php include('pagination.php');?>
     </div>
     
-    <!-- VIEW MODAL -->
-    <div id="viewOverlay" class="view">
-        <div class="view-content">
-            <h2 id="view-doc_name">Document Name</h2>
-            <span class="closeView" onclick="closePrev()">&times;</span>
-            <form id="updateForm" method="post" action="">
-                <input type="hidden" id="update-doc_id" name="doc_id">
-                <select id="update-status" name="status">
-                    <option value="" disabled selected>CLICK TO UPDATE STATUS</option>
-                    <option value="APPROVED">APPROVED</option>
-                    <option value="DECLINED">DECLINED</option>
+    <!-- VIEW MODAL --><!-- VIEW MODAL -->
+<div id="viewOverlay" class="view">
+    <div class="view-content">
+        <h2 id="view-doc_name">Document Name</h2>
+        <span class="closeView" onclick="closePrev()">&times;</span>
+        <form id="updateForm" method="post" action="">
+            <input type="hidden" id="update-doc_id" name="doc_id">
+
+            <div>
+                <label>
+                    <input type="radio" name="status" value="APPROVED" id="approveRadio"> APPROVE
+                </label>
+                <label>
+                    <input type="radio" name="status" value="DECLINED" id="declineRadio"> DECLINE
+                </label>
+            </div>
+
+            <div id="declineOptions" style="display: none;">
+                <select id="declineReasonSelect">
+                    <option value="" disabled selected>Select a reason</option>
+                    <option value="OPTION 1">OPTION 1</option>
+                    <option value="OPTION 2">OPTION 2</option>
+                    <option value="OPTION 3">OPTION 3</option>
+                    <option value="OPTION 4">OPTION 4</option>
+                    <option value="OPTION 5">OPTION 5</option>
+                    <option value="OTHER">OTHER</option>
                 </select>
-                <div id="denialReason" style="display: none;">
-                    <h3>DECLINED: REASON</h3>
-                    <textarea name="reason" id="denialReasonText"></textarea>
+
+                <div id="otherReason" style="display: none;">
+                    <textarea name="reason" id="denialReasonText" placeholder="Type your reason here"></textarea>
                 </div>
-                <center>
+            </div>
+
+            <center>
                 <button id="updateButton" type="submit" name="update" class="btnAdd">Update</button>
-                </center>
-            </form>
-            <br>
-            <div id="pdfViewer" style="width: 700px; height: 100%; border: 1px solid #ccc;"></div>
-        </div>
+            </center>
+        </form>
+        <br>
+        <div id="pdfViewer" style="width: 700px; height: 100%; border: 1px solid #ccc;"></div>
     </div>
+</div>
+
 
    <!-- APPROVE MODAL -->
     <div id="approveOverlay" class="deleteOverlay">
@@ -183,120 +201,121 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <script src="../functions/page.js"></script>
     <script src="../functions/notif.js"></script>
     <script>
-        // VIEW
-        function openPrev(elem) {
-            const status = elem.getAttribute("data-doc_status");
-            const reason = elem.getAttribute("data-doc_reason") || "";
+function openPrev(elem) {
+    const status = elem.getAttribute("data-doc_status");
+    const reason = elem.getAttribute("data-doc_reason") || "";
 
-            document.getElementById("view-doc_name").innerText = elem.getAttribute("data-doc_name");
-            document.getElementById("update-doc_id").value = elem.getAttribute("data-submit_id");
+    document.getElementById("view-doc_name").innerText = elem.getAttribute("data-doc_name");
+    document.getElementById("update-doc_id").value = elem.getAttribute("data-submit_id");
 
-            if (status === "PENDING") {
-                document.getElementById("update-status").style.display = "block";
-                document.getElementById("updateButton").style.display = "block";
-            } else {
-                document.getElementById("update-status").style.display = "none";
-                document.getElementById("updateButton").style.display = "none";
+    if (status === "PENDING") {
+        document.getElementById("approveRadio").disabled = false;
+        document.getElementById("declineRadio").disabled = false;
+        document.getElementById("updateButton").style.display = "block";
+    } else {
+        document.getElementById("approveRadio").disabled = true;
+        document.getElementById("declineRadio").disabled = true;
+        document.getElementById("updateButton").style.display = "none";
+    }
+
+    document.getElementById("approveRadio").checked = status === "APPROVED";
+    document.getElementById("declineRadio").checked = status === "DECLINED";
+    document.getElementById("declineOptions").style.display = status === "DECLINED" ? "block" : "none";
+    document.getElementById("otherReason").style.display = reason && status === "DECLINED" ? "block" : "none";
+    document.getElementById("denialReasonText").value = reason;
+
+    const pdfPath = '../assets/' + elem.getAttribute("data-doc_name");
+    loadPDF(pdfPath);
+
+    document.getElementById("viewOverlay").style.display = "block";
+}
+
+document.getElementById("approveRadio").addEventListener("change", function() {
+    if (this.checked) {
+        document.getElementById("declineOptions").style.display = "none";
+    }
+});
+
+document.getElementById("declineRadio").addEventListener("change", function() {
+    if (this.checked) {
+        document.getElementById("declineOptions").style.display = "block";
+    }
+});
+
+document.getElementById("declineReasonSelect").addEventListener("change", function() {
+    if (this.value === "OTHER") {
+        document.getElementById("otherReason").style.display = "block";
+    } else {
+        document.getElementById("otherReason").style.display = "none";
+    }
+});
+
+function closePrev() {
+    const status = document.querySelector('input[name="status"]:checked');
+    localStorage.setItem('update-doc_id', document.getElementById('update-doc_id').value);
+    localStorage.setItem('update-status', status ? status.value : '');
+    localStorage.setItem('update-reason', document.getElementById('declineReasonSelect').value);
+    localStorage.setItem('update-other-reason', document.getElementById('denialReasonText').value);
+    document.getElementById("viewOverlay").style.display = "none";
+}
+
+window.onload = function() {
+    const doc_id = localStorage.getItem('update-doc_id');
+    const status = localStorage.getItem('update-status');
+    const reason = localStorage.getItem('update-reason');
+    const otherReason = localStorage.getItem('update-other-reason');
+
+    if (doc_id) {
+        document.getElementById('update-doc_id').value = doc_id;
+        if (status === "APPROVED") {
+            document.getElementById('approveRadio').checked = true;
+        } else if (status === "DECLINED") {
+            document.getElementById('declineRadio').checked = true;
+            document.getElementById('declineOptions').style.display = 'block';
+            document.getElementById('declineReasonSelect').value = reason;
+            if (reason === "OTHER") {
+                document.getElementById('otherReason').style.display = 'block';
+                document.getElementById('denialReasonText').value = otherReason;
             }
-
-            document.getElementById("denialReason").style.display = status === "DECLINED" ? "block" : "none";
-            document.getElementById("denialReasonText").innerText = reason;
-            document.getElementById("denialReasonText").readOnly = true;
-
-            const pdfPath = '../assets/' + elem.getAttribute("data-doc_name");
-            loadPDF(pdfPath);
-
-            document.getElementById("viewOverlay").style.display = "block";
         }
+    }
+};
 
-        document.getElementById("update-status").addEventListener("change", function() {
-            const denialReason = document.getElementById("denialReason");
-            if (this.value === "DECLINED") {
-                denialReason.style.display = "block";
-            } else {
-                denialReason.style.display = "none";
-            }
-        });
+function loadPDF(pdfPath) {
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.worker.min.js';
 
+    var loadingTask = pdfjsLib.getDocument(pdfPath);
+    loadingTask.promise.then(function(pdf) {
+        console.log('PDF loaded');
 
-        function loadPDF(pdfPath) {
-            var pdfjsLib = window['pdfjs-dist/build/pdf'];
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.1.81/pdf.worker.min.js';
+        pdf.getPage(1).then(function(page) {
+            console.log('Page loaded');
 
-            var loadingTask = pdfjsLib.getDocument(pdfPath);
-            loadingTask.promise.then(function(pdf) {
-                console.log('PDF loaded');
+            var scale = 1.5;
+            var viewport = page.getViewport({ scale: scale });
 
-                pdf.getPage(1).then(function(page) {
-                    console.log('Page loaded');
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
 
-                    var scale = 1.5;
-                    var viewport = page.getViewport({ scale: scale });
-
-                    var canvas = document.createElement('canvas');
-                    var context = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-
-                    var renderContext = {
-                        canvasContext: context,
-                        viewport: viewport
-                    };
-                    var renderTask = page.render(renderContext);
-                    renderTask.promise.then(function() {
-                        console.log('Page rendered');
-                        var pdfViewer = document.getElementById('pdfViewer');
-                        pdfViewer.innerHTML = '';
-                        pdfViewer.appendChild(canvas);
-                    });
-                });
-            }, function (reason) {
-                console.error(reason);
+            var renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            var renderTask = page.render(renderContext);
+            renderTask.promise.then(function() {
+                console.log('Page rendered');
+                var pdfViewer = document.getElementById('pdfViewer');
+                pdfViewer.innerHTML = '';
+                pdfViewer.appendChild(canvas);
             });
-        }
-        
-        function closePrev() {
-            document.getElementById("viewOverlay").style.display = "none";
-        }
-
-        document.getElementById("update-status").addEventListener("change", function() {
-            const denialReason = document.getElementById("denialReason");
-            if (this.value === "DECLINED") {
-                denialReason.style.display = "block";
-            } else {
-                denialReason.style.display = "none";
-            }
         });
-
-        // APPROVE
-        function openApprove(elem) {
-            document.getElementById("approve-id").value = elem.getAttribute("data-id");
-            document.getElementById("approveOverlay").style.display = "block";
-        }
-
-        function closeApprove() {
-            document.getElementById("approveOverlay").style.display = "none";
-        }
-
-        // DECLINE
-        function openDecline(elem) {
-            document.getElementById("decline-id").value = elem.getAttribute("data-id");
-            document.getElementById("declineOverlay").style.display = "block";
-        }
-
-        function closeDecline(elem) {
-            document.getElementById("declineOverlay").style.display = "none";
-        }
-
-        // DELETE
-        function openDelete(elem) {
-            document.getElementById("delete-id").value = elem.getAttribute("data-id");
-            document.getElementById("delete-name").value = elem.getAttribute("data-name");
-            document.getElementById("deleteOverlay").style.display = "block";
-        }
-        function closeDelete() {
-            document.getElementById("deleteOverlay").style.display = "none";
-        }
+    }, function (reason) {
+        console.error(reason);
+    });
+}
     </script>
 </body>
 </html>

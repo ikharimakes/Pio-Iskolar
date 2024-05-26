@@ -6,6 +6,8 @@ include('../functions/add_sch.php');
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $recordsPerPage = 15;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
+$sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'batch_num';
+$sortOrder = isset($_GET['order']) ? $_GET['order'] : 'DESC';
 
 $totalRecords = getTotalRecords($search);
 $totalPages = ceil($totalRecords / $recordsPerPage);
@@ -64,15 +66,15 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         <div class="tables">
             <table>
                 <tr style="font-weight: bold;">
-                    <td style="width:5%"> Batch</td>
-                    <td style="width:10%"> Scholar No. </td>
-                    <td style="width:12%"> Last Name </td>
-                    <td> First Name </td>
-                    <td style="width:20%"> Middle Initial </td>
-                    <td style="width:10%"> Status </td>
+                    <td style="width:5%"> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=batch_num&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">Batch</a></td>
+                    <td style="width:10%"> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=scholar_id&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">Scholar No.</a> </td>
+                    <td style="width:12%"> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=last_name&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">Last Name</a> </td>
+                    <td> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=first_name&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">First Name</a> </td>
+                    <td style="width:20%"> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=middle_name&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">Middle Initial</a> </td>
+                    <td style="width:10%"> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=status&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">Status</a> </td>
                     <td style="width:3%"> Actions </td>
                 </tr>
-                <?php scholarDisplay($currentPage, $recordsPerPage, $search);?>
+                <?php scholarDisplay($currentPage, $recordsPerPage, $search, $sortColumn, $sortOrder);?>
             </table>
         </div>
 

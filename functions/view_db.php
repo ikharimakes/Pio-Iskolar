@@ -1,5 +1,5 @@
 <?php
-    // Fetch announcement data
+    include_once('../functions/general.php');
     global $conn;
     $announcements = [];
     $query = "SELECT announce_id, title, st_date, end_date FROM announcements WHERE _status = 'ACTIVE'";
