@@ -2,13 +2,13 @@
 include_once('../functions/general.php');
 include('../functions/view_reports.php');
 include('../functions/add_reports.php');
-/*
+
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $recordsPerPage = 15;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 
 $totalRecords = getTotalRecords($search);
-$totalPages = ceil($totalRecords / $recordsPerPage);*/
+$totalPages = ceil($totalRecords / $recordsPerPage);
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +52,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);*/
             <div class="search">
                 <form action="" method="get">
                     <label>
-                        <input type="text" name="search" placeholder="Search here" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                        <input type="text" name="search" placeholder="Search here" value="<?= htmlspecialchars($search) ?>">
                         <ion-icon name="search-outline" onclick="this.closest('form').submit();"></ion-icon>
                     </label>
                 </form>
@@ -71,7 +71,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);*/
                     <td style="width:15%"> Date </td>
                     <td style="width:3%"> Actions </td>
                 </tr>
-                <?php reportList();?>
+                <?php reportList($currentPage, $recordsPerPage, $search);?>
             </table>
         </div>
 
@@ -112,10 +112,32 @@ $totalPages = ceil($totalRecords / $recordsPerPage);*/
     </div>
 
     <!-- REPORT MODAL -->
-    <div id="reportOverlay" class="reportOverlay">
-        <div class="reportOverlay-content">
+    <div id="reportOverlay" class="profileReport">
+        <div class="profileReport-content">
             <span class="closeEdit" onclick="closeReportModal()">&times;</span>
             <div id="reportContent">content</div>
+        </div>
+    </div>
+
+    <!-- DELETE MODAL -->
+    <div id="deleteModal" class="deleteOverlay">
+        <div class="delete-content">
+            <div class="infos">
+                <h2>Confirm Delete</h2>
+                <span class="closeDelete" onclick="closeDeleteModal()">&times;</span>
+            </div>
+
+            <div class="message">
+                <h4>Are you sure you want to delete this report?</h4>
+            </div>
+
+            <div class="button-container">
+                <form id="deleteForm" method="post" action="">
+                    <input type="hidden" id="delete-id" name="report_id">
+                    <button type="submit" name="delete" class="yes-button">Yes</button>
+                    <button type="button" class="no-button" onclick="closeDeleteModal()">No</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -127,7 +149,17 @@ $totalPages = ceil($totalRecords / $recordsPerPage);*/
     <script src="../functions/page.js"></script>
     <script src="../functions/notif.js"></script>
     <script>
-        //REPORT MODAL
+        // DELETE MODAL
+        function openDelete(element) {
+            document.getElementById("delete-id").value = element.getAttribute("data-id");
+            document.getElementById("deleteModal").style.display = "block";
+        }
+
+        function closeDeleteModal() {
+            document.getElementById("deleteModal").style.display = "none";
+        }
+
+        // Existing functions
         function openReportModal() {
             document.getElementById("reportOverlay").style.display = "block";
         }
@@ -135,7 +167,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);*/
             document.getElementById("reportOverlay").style.display = "none";
         }
 
-        //GENERATE REPORTS
         function openModal(reportModal) {
             var modal = document.getElementById(reportModal);
             modal.style.display = "block";
@@ -145,10 +176,9 @@ $totalPages = ceil($totalRecords / $recordsPerPage);*/
             modal.style.display = "none";
         }
 
-        //DISPLAY REPORT CONTENT
         function openReport(element) {
             const content = element.getAttribute("data-content");
-            document.getElementById("reportContent").innerHTML = content;
+            document.getElementById("reportContent").innerHTML = content.replace(/\n/g, "<br>");
             openReportModal();
         }
     </script>

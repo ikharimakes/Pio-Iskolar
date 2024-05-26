@@ -1,4 +1,5 @@
 <?php
+include_once('../functions/general.php');
 global $conn;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -199,6 +200,39 @@ if(isset($_SESSION['error_array'])) {
     ';
     unset($_SESSION['error_array']);
 }
+
+//* HANDLE PROFILE UPDATE *//
+
+//* UPDATE SCHOLAR DETAILS *//
+    if (isset($_POST['save'])) {
+        // Sanitize and validate input
+        $school = $conn->real_escape_string($_POST['school']);
+        $course = $conn->real_escape_string($_POST['course']);
+        $scholar_status = $conn->real_escape_string($_POST['scholar_status']);
+        $address = $conn->real_escape_string($_POST['address']);
+        $contact = $conn->real_escape_string($_POST['contact']);
+        $email = $conn->real_escape_string($_POST['email']);
+    
+        $id = $_SESSION['id'];
+    
+        // Update the database
+        $updateQuery = "
+            UPDATE scholar
+            SET school = '$school',
+                course = '$course',
+                status = '$scholar_status',
+                _address = '$address',
+                contact = '$contact',
+                email = '$email'
+            WHERE scholar_id = '$id'
+        ";
+    
+        if ($conn->query($updateQuery) === TRUE) {
+            echo "Record updated successfully";
+        } else {
+            echo "Error updating record: " . $conn->error;
+        }
+    }
 
 //* SCHOLAR DELETION *//
 if(isset($_POST['delete'])){

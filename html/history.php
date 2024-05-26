@@ -34,7 +34,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <div class="main">
         <div class="topBar">
             <div class="headerName">
-                <h1>SCHOLAR LIST</h1>
             </div>
 
             <div class="headerRight">

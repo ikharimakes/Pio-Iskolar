@@ -1,6 +1,7 @@
 <?php include_once('../functions/general.php');?>
 <?php include('../functions/display_prof.php');?>
 <?php include('../functions/view_detail.php');?>
+<?php include('../functions/add_sch.php');?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,10 +24,12 @@
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <button class="headerBack" href="./ad_scholar.php" id="clickableIcon">
+            <a href="./ad_scholar.php" style="text-decoration:none">
+            <button class="headerBack" id="clickableIcon">
                 <ion-icon name="chevron-back-outline"></ion-icon>
                 <h1>Back</h1>
             </button>
+            </a>
 
             <div class="headerRight">
                 <div class="notif">
@@ -132,15 +135,14 @@
             </table>  
         </div> <br>
     </div>
-    
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
-        //EDIT TABLE
+        // EDIT TABLE
         function toggleEdit(tableId) {
             const table = document.getElementById(tableId);
-            const inputs = table.querySelectorAll('input[type="text"]');
+            const inputs = table.querySelectorAll('input[type="text"], textarea');
             const icon = table.querySelector('ion-icon');
 
             inputs.forEach(input => {
@@ -187,6 +189,41 @@
                 modal.style.display = "none";
             }
         }
+    </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const editButton = document.getElementById('editButton');
+    const cancelButton = document.getElementById('cancelButton');
+    const saveButton = document.querySelector('button[name="save"]');
+    const inputs = document.querySelectorAll('input[readonly], select[disabled]');
+
+    editButton.addEventListener('click', function() {
+        inputs.forEach(input => {
+            input.removeAttribute('readonly');
+            input.removeAttribute('disabled');
+        });
+        editButton.style.display = 'none';
+        cancelButton.style.display = 'inline';
+        saveButton.style.display = 'inline';
+    });
+
+    cancelButton.addEventListener('click', function() {
+        inputs.forEach(input => {
+            input.setAttribute('readonly', 'readonly');
+            input.setAttribute('disabled', 'disabled');
+        });
+        editButton.style.display = 'inline';
+        cancelButton.style.display = 'none';
+        saveButton.style.display = 'none';
+        // Optionally, reload the page to revert changes
+        location.reload();
+    });
+
+    saveButton.addEventListener('click', function() {
+        document.getElementById('profileForm').submit();
+    });
+});
+
     </script>
 </body>
 </html>

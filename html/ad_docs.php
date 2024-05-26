@@ -34,10 +34,12 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
+            <a href="./ad_scholar.php" style="text-decoration:none">
             <button class="headerBack" href="./ad_scholar.php" id="clickableIcon">
                 <ion-icon name="chevron-back-outline"></ion-icon>
                 <h1>Back</h1>
             </button>
+            </a>
 
             <div class="headerRight">
                 <div class="notif">

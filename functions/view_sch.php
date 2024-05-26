@@ -4,7 +4,7 @@
     function scholarDisplay($currentPage = 1, $recordsPerPage = 15, $search = '') {
         global $conn;
         $offset = ($currentPage - 1) * $recordsPerPage;
-        $searchQuery = $search ? "WHERE last_name LIKE '%$search%' OR first_name LIKE '%$search%' OR middle_name LIKE '%$search%' OR status_name LIKE '%$search%'" : '';
+        $searchQuery = $search ? "WHERE last_name LIKE '%$search%' OR first_name LIKE '%$search%' OR middle_name LIKE '%$search%' OR status LIKE '%$search%'" : '';
 
         $display = "SELECT batch_num, scholar_id, user_id, last_name, first_name, middle_name, email, status
                     FROM scholar
@@ -53,7 +53,7 @@
 
     function getTotalRecords($search = '') {
         global $conn;
-        $searchQuery = $search ? "WHERE last_name LIKE '%$search%' OR first_name LIKE '%$search%' OR middle_name LIKE '%$search%' OR status_name LIKE '%$search%'" : '';
+        $searchQuery = $search ? "WHERE last_name LIKE '%$search%' OR first_name LIKE '%$search%' OR middle_name LIKE '%$search%' OR status LIKE '%$search%'" : '';
         $countQuery = "SELECT COUNT(*) as total FROM scholar $searchQuery";
         $result = $conn->query($countQuery);
         $row = $result->fetch_assoc();

@@ -128,8 +128,8 @@ function datalisting($column, $table, $id) {
         }
     }
     // SCHOLAR STATUS   datalisting("status_name", "status", "status");
-    // SCHOOLS          datalisting("school", "scholar", "school");
-    // COURSES          datalisting("course", "scholar", "course");
+    // SCHOOLS          datalisting("School", "scholar", "school");
+    // COURSES          datalisting("Course", "scholar", "course");
     // BATCH NUMBER     datalisting("batch_no", "batch_year", "batch");
     // ACADEMIC YEAR    datalisting("acad_year", "batch_year", "year");
     // SEMESTER         datalisting("", "", "sem");
