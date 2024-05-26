@@ -90,7 +90,6 @@
     }
 
     //* ADMIN PROFILE DISPLAY *//
-    //* ADMIN PROFILE DISPLAY *//
     function adminDisplay() {
         global $conn;
         if(isset($_POST['scholar_id'])) {$_SESSION['id'] = $_POST['scholar_id'];}
