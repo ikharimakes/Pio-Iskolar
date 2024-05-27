@@ -1,6 +1,7 @@
 <?php 
 include('../functions/general.php');
-include('../functions/view_pending.php');
+include('../functions/view_docx.php');
+include('../functions/display_prof.php');
 
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $recordsPerPage = 15;
@@ -32,7 +33,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <div class="main">
         <div class="topBar">
             <div class="headerName">
-                <h1>PENDING DOCUMENTS</h1>
+                <h1>Documents</h1>
             </div>
 
             <div class="headerRight">

@@ -51,7 +51,7 @@
             <table id="documentsTable" class="table-container">
                 <tr>
                     <th colspan="10" class="details2">DOCUMENTS 
-                        <ion-icon name="pencil-outline" onclick="toggleEdit('documentsTable')"></ion-icon> 
+                        <ion-icon name="create-outline" onclick="toggleEdit('documentsTable')"></ion-icon>
                     </th>
                 </tr>
                 <tr>
@@ -81,7 +81,7 @@
             <table id="scholarshipTable" class="table-container">
                 <tr>
                     <th colspan="4" class="details2">SCHOLARSHIP 
-                        <ion-icon name="pencil-outline" onclick="toggleEdit('scholarshipTable')"></ion-icon>
+                        <ion-icon name="create-outline" onclick="toggleEdit('scholarshipTable')"></ion-icon>
                     </th>
                 </tr> 
                 <tr>
@@ -126,7 +126,7 @@
             <table id="remarksTable" class="table-container">
                 <tr>
                     <th class="details2">REMARKS 
-                        <ion-icon name="pencil-outline" onclick="toggleEdit('remarksTable')"></ion-icon>
+                        <ion-icon name="create-outline" onclick="toggleEdit('remarksTable')"></ion-icon>
                     </th>
                 </tr>
                 <tr>
@@ -149,10 +149,10 @@
                 input.disabled = !input.disabled;
             });
 
-            if (icon.name === 'pencil-outline') {
+            if (icon.name === 'create-outline') {
                 icon.name = 'close-outline';
             } else {
-                icon.name = 'pencil-outline';
+                icon.name = 'create-outline';
             }
 
             let saveButton = table.querySelector('.save-button');
@@ -162,7 +162,7 @@
                 saveButton.classList.add('save-button');
                 saveButton.onclick = () => {
                     inputs.forEach(input => input.disabled = true);
-                    icon.name = 'pencil-outline';
+                    icon.name = 'create-outline';
                     saveButton.remove();
                     openSave();
                 };

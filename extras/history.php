@@ -1,6 +1,6 @@
 <?php 
 include('../functions/general.php');
-include('../functions/view_pending.php');
+include('../functions/view_docx.php');
 
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $recordsPerPage = 15;
@@ -15,88 +15,72 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholar</title>
+    <title>Requirement History</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="css/ad_docs.css">
+    <link rel="stylesheet" href="css/history.css">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/topbar.css">
     <link rel="stylesheet" href="css/notif.css">
     <link rel="stylesheet" href="css/error.css">
     <link rel="stylesheet" href="css/page.css">
 </head>
+
+
 <body>
     <!-- SIDEBAR -->
-    <?php include('ad_navbar.php');?>
+    <?php include('sk_navbar.php');?>
     
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <div class="headerName">
-                <h1>PENDING DOCUMENTS</h1>
-            </div>
-
-            <div class="headerRight">
-                <div class="notif">
+            <div class="headerRight" >
+                <div class="notif" id="clickableIcon">
                     <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
                 </div>
 
-                <a class="user" href="ad_settings.php">
+                <a class="user" href="ad_settings.php" id="clickableIcon">
                     <img src="images/profile.png" alt="">
                 </a>
             </div>
         </div>
 
+        <!-- TOP NAV -->
+        <div class="details">
+            <center> <h1> REQUIREMENTS </h1>
 
-        <!-- DOCUMENTS -->
-        <div class="info">
-            <div class="search">
-                <form action="" method="get">
-                    <label>
-                        <input type="text" name="search" placeholder="Search here" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
-                        <ion-icon name="search-outline" onclick="this.closest('form').submit();"></ion-icon>
-                    </label>
-                </form>
-            </div>
+            <div class="topnav">
+                <a href="documents.php">Requirements</a>
+                <a href="#">History</a>
+            </div> </center>
         </div>
 
+        <!-- SUBMISSION HISTORY -->
         <div class="table">
             <table>
                 <tr style="font-weight: bold;">
-                    <td style="width:10%"> ID No. </td>
+                    <td style="width:15%"> Submission Date </td>
                     <td style="width:50%"> Document Name </td>
-                    <td style="width:10%"> Date </td>
-                    <td style="width:8%"> Type </td>
-                    <td style="width:10%" class="statusColor"> Status </td>
-                    <td style="width:12%; text-align: right;"> Action </td>
+                    <td style="width:10%"> Type </td>
+                    <td style="width:18%"> Status </td>
+                    <td> Actions </td>
                 </tr>
-                <?php docxList($currentPage, $recordsPerPage, $search)?>
+                <?php docxDisplay($_SESSION["uid"], $currentPage, $recordsPerPage, $search)?>
             </table>
         </div>
-
+        
         <!-- PAGINATION -->
         <?php include('pagination.php');?>
     </div>
-
+    
     <!-- VIEW MODAL -->
     <div id="viewOverlay" class="view">
         <div class="view-content">
             <h2 id="view-doc_name">Document Name</h2>
             <span class="closeView" onclick="closePrev()">&times;</span>
-            <form id="updateForm" method="post" action="">
-                <input type="hidden" id="update-doc_id" name="doc_id">
-                <select id="update-status" name="status">
-                    <option value="" disabled selected>CLICK TO UPDATE STATUS</option>
-                    <option value="APPROVED">APPROVED</option>
-                    <option value="DECLINED">DECLINED</option>
-                </select>
-                <div id="denialReason" style="display: none;">
-                    <h3>DECLINED: REASON</h3>
-                    <textarea name="reason" id="denialReasonText"></textarea>
-                </div>
-                <center>
-                <button id="updateButton" type="submit" name="update" class="btnAdd">Update</button>
-                </center>
-            </form>
+            <div id="denialReason" style="display: none;">
+                <h3>DECLINED: REASON</h3>
+                <textarea id="denialReasonText" readonly></textarea>
+            </div>
             <br>
             <div id="pdfViewer" style="width: 700px; height: 100%; border: 1px solid #ccc;"></div>
         </div>
@@ -134,59 +118,29 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <script src="../functions/page.js"></script>
     <script src="../functions/notif.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const statusCells = document.querySelectorAll('.statusColor');
-
-            statusCells.forEach(cell => {
-                switch (cell.textContent.trim().toLowerCase()) {
-                    case 'approved':
-                        cell.classList.add('statusColor-approved');
-                        break;
-                    case 'pending':
-                        cell.classList.add('statusColor-pending');
-                        break;
-                    case 'declined':
-                        cell.classList.add('statusColor-declined');
-                        break;
-                }
-            });
-        });
-        
-        // VIEW
         function openPrev(elem) {
+            document.getElementById("viewOverlay").style.display = "block";
+            
             const status = elem.getAttribute("data-doc_status");
             const reason = elem.getAttribute("data-doc_reason") || "";
 
             document.getElementById("view-doc_name").innerText = elem.getAttribute("data-doc_name");
-            document.getElementById("update-doc_id").value = elem.getAttribute("data-submit_id");
 
-            if (status === "PENDING") {
-                document.getElementById("update-status").style.display = "block";
-                document.getElementById("updateButton").style.display = "block";
+            // Show reason for denial if status is "DECLINED"
+            if (status === "DECLINED") {
+                document.getElementById("denialReason").style.display = "block";
+                document.getElementById("denialReasonText").value = reason;
             } else {
-                document.getElementById("update-status").style.display = "none";
-                document.getElementById("updateButton").style.display = "none";
+                document.getElementById("denialReason").style.display = "none";
             }
-
-            document.getElementById("denialReason").style.display = status === "DECLINED" ? "block" : "none";
-            document.getElementById("denialReasonText").innerText = reason;
-            document.getElementById("denialReasonText").readOnly = true;
 
             const pdfPath = '../assets/' + elem.getAttribute("data-doc_name");
             loadPDF(pdfPath);
-
-            document.getElementById("viewOverlay").style.display = "block";
         }
 
-        document.getElementById("update-status").addEventListener("change", function() {
-            const denialReason = document.getElementById("denialReason");
-            if (this.value === "DECLINED") {
-                denialReason.style.display = "block";
-            } else {
-                denialReason.style.display = "none";
-            }
-        });
-
+        function closePrev() {
+            document.getElementById("viewOverlay").style.display = "none";
+        }
 
         function loadPDF(pdfPath) {
             var pdfjsLib = window['pdfjs-dist/build/pdf'];
@@ -223,19 +177,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                 console.error(reason);
             });
         }
-        
-        function closePrev() {
-            document.getElementById("viewOverlay").style.display = "none";
-        }
-
-        document.getElementById("update-status").addEventListener("change", function() {
-            const denialReason = document.getElementById("denialReason");
-            if (this.value === "DECLINED") {
-                denialReason.style.display = "block";
-            } else {
-                denialReason.style.display = "none";
-            }
-        });
 
         // DELETE
         function openDelete(elem) {

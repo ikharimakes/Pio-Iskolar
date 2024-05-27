@@ -7,7 +7,7 @@
                 <ion-icon name="trash-outline"></ion-icon> 
                 <p>Delete All</p>
             </button>
-            <h1>Notifications</h1>
+            <h2>Notifications</h2>
             <span class="closeOverlay" onclick="closeOverlay()">&times;</span>
         </div>
             

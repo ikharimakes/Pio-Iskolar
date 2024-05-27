@@ -1,100 +1,54 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+@import url(https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap);
 
 * {
     margin: 0;
-    padding:0;
+    padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins",sans-serif
 }
 
-/*SCHOLAR INFO*/
-.info {
+.search {
+    flex: 1;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 35px 20px 35px;
+    align-items: center
 }
-.add-buttons {
-    display: flex;
-    gap: 10px;
-}
-.info .btnAdd {
-    font-size: 20px;
-    width: 200px;
-    height: 35px;
-    background-color: #FFF0E0;
-    border: .5%;
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: center;
-}
-.info .lblAdd {
-    font-size: 20px;
-    display: inline-block;
-    background-color: #FFF0E0;
-    color: rgb(0, 0, 0);
-    width: 200px;
-    height: 35px;
-    border: 2px solid #000;
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: center;
-}
-/*TABLE*/
-.tables table {
-    font-size: 20px;
-    padding-top: 20px;
-    padding-left: 30px;
-    width: 98%;
-}
-.tables tr td {
-    border-color: #000000;
-    border-bottom: 1px solid black;
-}
-.wrap {
-    display: inline-flex;
-}
-.wrap .icon {
-    margin: 0, 20px;
-    padding-top: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+
+.search label,.wrap .icon span {
     position: relative;
-    z-index: 2;
-    cursor: pointer;
+    width: 100%
 }
+
+.search label input {
+    width: 100%;
+    height: 40px;
+    border-radius: 40px;
+    padding: 5px 20px 5px 35px;
+    font-size: 18px;
+    outline: 0;
+    border: 1px solid #000
+}
+
+.search label ion-icon {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    font-size: 1.2rem
+}
+
 .wrap .icon span {
-    position: relative;
     height: 40px;
     width: 40px;
     display: block;
     text-align: center;
-    z-index: 2;
+    z-index: 2
 }
+
 .wrap .icon span ion-icon {
     font-size: 30px;
     line-height: 40px;
-    color: #000;
+    color: #000
 }
-.wrap .icon .tooltip {
-    position: absolute;
-    top: 0px;
-    background-color: #fff;
-    font-size: 15px;
-    padding: 10px 18px;
-    border-radius: 25px;
-    box-shadow: 0 10px 10px rgba(0,0,0,0.1);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-.wrap .icon:hover .tooltip {
-    top: -70px;
-    opacity: 1;
-    pointer-events: auto;
-}
+
 .wrap .icon .tooltip:before {
     position: absolute;
     content: "";
@@ -103,17 +57,141 @@
     background-color: #fff;
     bottom: -8px;
     left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-}
-.wrap .icon:hover span,
-.wrap .icon:hover .tooltip {
-    text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
-}
-.wrap .icon:hover ion-icon {
-    color: #2F3787;
+    transform: translateX(-50%) rotate(45deg)
 }
 
-/*ADD SCHOLAR*/
+.wrap .icon:hover ion-icon {
+    color: #2f3787
+}
+
+.batchOverlay h2,.overlay h2 {
+    color: #2f3787;
+    padding-top: 30px;
+    font-size: 25px;
+    text-align: center
+}
+
+.overlay td {
+    padding: 8px
+}
+
+textarea {
+    width: 100%;
+    resize: none
+}
+
+.button:hover {
+    background-color: #376fb7
+}
+
+.step h4 {
+    font-size: 20px;
+    font-weight: 600
+}
+
+.batch-input,.tables tr td {
+    border-bottom: 1px solid #000
+}
+
+.batch-input {
+    width: 225px;
+    padding: 10px;
+    font-size: 20px;
+    background-color: transparent;
+    border: 0;
+    border-radius: 5px;
+    outline: 0
+}
+
+.step a ion-icon,.step label ion-icon {
+    font-size: 20px;
+    padding-right: 10px;
+    padding-top: 5px
+}
+
+.step a,.tables table {
+    padding-top: 10px;
+    font-size: 20px
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 35px
+}
+
+.add-buttons {
+    display: flex;
+    gap: 10px
+}
+
+.info .btnAdd,.info .lblAdd {
+    font-size: 20px;
+    width: 200px;
+    height: 35px;
+    background-color: #fff0e0;
+    border: .5%;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center
+}
+
+.info .lblAdd {
+    display: inline-block;
+    color: #000;
+    border: 2px solid #000
+}
+
+.tables table {
+    padding-top: 20px;
+    padding-left: 30px;
+    width: 98%
+}
+
+.tables tr td {
+    border-color: #000
+}
+
+.wrap {
+    display: inline-flex
+}
+
+.wrap .icon {
+    margin: 0,20px;
+    padding-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+    cursor: pointer
+}
+
+.wrap .icon .tooltip {
+    position: absolute;
+    top: 0;
+    background-color: #fff;
+    font-size: 15px;
+    padding: 10px 18px;
+    border-radius: 25px;
+    box-shadow: 0 10px 10px rgba(0,0,0,.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all .4s cubic-bezier(.68,-.55,.265,1.55)
+}
+
+.wrap .icon:hover .tooltip {
+    top: -70px;
+    opacity: 1;
+    pointer-events: auto
+}
+
+.wrap .icon:hover .tooltip,.wrap .icon:hover span {
+    text-shadow: 0-1px 0 rgba(0,0,0,.4)
+}
+
 .overlay {
     display: none;
     position: fixed;
@@ -121,219 +199,187 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: black 0.5;
+    background-color: black .5;
     z-index: 1000;
     padding-left: 50px;
     padding-right: 50px;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins",sans-serif;
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 700
 }
+
 .overlay-content {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #FFEFD8;
+    transform: translate(-50%,-50%);
+    background-color: #ffefd8;
     padding: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
     border-radius: 10px;
     max-width: 90%;
     max-height: 90%;
-    overflow: auto;
+    overflow: auto
 }
-.overlay h2 {
-    color: #2F3787;
-    padding-top: 30px;
-    font-size: 25px;
-    text-align: center;
-}
+
 .table-container {
-    text-align: center;
+    text-align: center
 }
+
 .overlay table {
     width: 100%;
     padding-top: 20px;
     border-collapse: collapse;
-    background-color: #FFEFD8;
+    background-color: #ffefd8
 }
+
 .overlay table td {
-    border: 1px solid black;
+    border: 1px solid #000
 }
-.overlay td {
-    padding: 8px;
-}
-textarea {
-    width: 100%;
-    resize: none;
-}
+
 .details {
     width: 150px;
-    text-align: right;
-    font-weight: bold;
+    text-align: right
 }
-.details2 {  
-    font-weight: bold;
+
+.details,.details2 {
+    font-weight: 700
 }
+
 .input {
     flex: 1;
-    border: none;
-    outline: none;
+    border: 0;
+    outline: 0;
     padding: 3px;
     background-color: transparent;
-    width: 100%;
+    width: 100%
 }
+
 .input2 {
+    text-align: center
+}
+
+.input2,.input3 {
     flex: 1;
-    border: none;
-    outline: none;
+    outline: 0;
     padding: 3px;
     background-color: transparent;
     width: 100%;
-    text-align: center;
+    border: 0
 }
-.input3 {
-    flex: 1;
-    border: none;
-    outline: none;
-    padding: 3px;
-    background-color: transparent;
-    width: 100%;
-    border: none;
-}
+
 .button {
-    font-weight: bold;
+    font-weight: 700;
     align-content: center;
-    background-color: #2F3787; 
-    color: white; 
-    padding: 10px 20px; 
-    border: none; 
-    text-align: center; 
-    text-decoration: none; 
-    display: block; 
-    font-size: 15px; 
-    margin: 0 auto; 
-    cursor: pointer; 
-    border-radius: 8px;
+    background-color: #2f3787;
+    color: #fff;
+    padding: 10px 20px;
+    border: 0;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 15px;
+    margin: 0 auto;
+    cursor: pointer;
+    border-radius: 8px
 }
+
 .button:active {
-    transform: translateY(1px);
+    transform: translateY(1px)
 }
+
 .closeOverlay {
     position: absolute;
     top: 20px;
     right: 20px;
     font-size: 30px;
     color: #aaa;
-    cursor: pointer;
-}
-.closeOverlay:hover {
-    color: #000;
+    cursor: pointer
 }
 
-/* BATCH UPLOAD */
+.closeBatch:hover,.closeOverlay:hover {
+    color: #000
+}
+
 .batchOverlay {
     display: none;
     position: fixed;
-    z-index: 1; 
+    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
+    background-color: rgba(0,0,0,.4);
+    padding-top: 60px
 }
+
 .batch-content {
-    background-color: #FFEFD8;
+    background-color: #ffefd8;
     margin: auto;
-    width: 30%; 
+    width: 30%;
     height: fit-content;
     padding: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 15px;
+    transform: translate(-50%,-50%);
+    border-radius: 15px
 }
-.batchOverlay h2 {
-    color: #2F3787;
-    padding-top: 30px;
-    font-size: 25px;
-    text-align: center;
-}
+
 .closeBatch {
     position: absolute;
     top: 20px;
     right: 20px;
     font-size: 30px;
     color: #aaa;
-    cursor: pointer;
+    cursor: pointer
 }
-.closeBatch:hover {
-    color: #000;
-}
+
 .step {
-    padding-left: 30px;
+    padding-left: 30px
 }
-.step h4 {
-    font-size: 20px;
-    font-weight: 600;
-}
-.step a ion-icon,
-.step label ion-icon {
-    font-size: 20px;
-    padding-right: 10px;
-    padding-top: 5px;
-}
-.step a {
-    padding-top: 10px;
-    font-size: 20px;
-}
+
 .dl-button {
-    display: inline-block;
-    padding: 10px 20px;
     font-size: 20px;
-    color: #000;
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid black;
-    border-radius: 5px;
+    border: 0;
     text-decoration: none;
-    cursor: pointer;
+    cursor: pointer
 }
-.dl-button:hover {
-    background-color: #ffffffde;
+
+.dl-button:hover,.step .lblAdd:hover {
+    background-color: #ffffffde
 }
-.step .lblAdd{
+
+.dl-button,.step .lblAdd {
     display: inline-block;
     padding: 10px 20px;
-    font-size: 20px;
     color: #000;
     background-color: transparent;
-    border: none;
-    border-bottom: 1px solid black;
-    border-radius: 5px;
-    cursor: pointer;
+    border-bottom: 1px solid #000;
+    border-radius: 5px
 }
-.step .lblAdd:hover {
-    background-color: #ffffffde;
-}
+
 .enter-button-container {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 20px
 }
-.enter-button {
+
+.enter-button,.step .lblAdd {
     font-size: 20px;
-    color: white;
+    border: 0;
+    cursor: pointer
+}
+
+.enter-button {
+    color: #fff;
     width: 40px;
     height: 40px;
-    background-color: #2F3787;
-    border: none;
-    cursor: pointer;
-    border-radius: 15px; 
+    background-color: #2f3787;
+    border-radius: 15px
 }
+
 .enter-button:hover {
-    background-color: #376FB7;
+    background-color: #376fb7
 }

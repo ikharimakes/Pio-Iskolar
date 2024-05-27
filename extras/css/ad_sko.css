@@ -12,7 +12,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 35px 20px 35px;
+    padding: 50px 35px 20px 35px;
 }
 .search {
     flex: 1;
@@ -239,23 +239,14 @@ textarea {
     font-size: 15px; 
     margin: 0 auto; 
     cursor: pointer; 
-    border-radius: 8px;
+    border-radius: 15px; 
+}
+.button:hover {
+    background-color: #376FB7;
 }
 .button:active {
     transform: translateY(1px);
 }
-.closeOverlay {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 30px;
-    color: #aaa;
-    cursor: pointer;
-}
-.closeOverlay:hover {
-    color: #000;
-}
-
 /* BATCH UPLOAD */
 .batchOverlay {
     display: none;
@@ -288,7 +279,7 @@ textarea {
     font-size: 25px;
     text-align: center;
 }
-.closeBatch {
+.closeOverlay {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -296,7 +287,7 @@ textarea {
     color: #aaa;
     cursor: pointer;
 }
-.closeBatch:hover {
+.closeOverlay:hover {
     color: #000;
 }
 .step {
@@ -305,6 +296,17 @@ textarea {
 .step h4 {
     font-size: 20px;
     font-weight: 600;
+}
+.batch-input {
+    width: 225px;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 5px;
+    outline: none;
 }
 .step a ion-icon,
 .step label ion-icon {

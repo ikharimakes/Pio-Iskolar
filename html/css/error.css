@@ -1,199 +1,193 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+@import url(https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap);
 
 * {
     margin: 0;
-    padding:0;
+    padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins",sans-serif
 }
 
-/* ERROR MODAL */
+.deleteOverlay h2,.errorOverlay h2,.saveOverlay h2 {
+    color: #2f3787;
+    padding-top: 10px;
+    font-size: 25px;
+    text-align: center
+}
+
+.message h4 {
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center
+}
+
+.closeError:hover {
+    color: #000
+}
+
 .errorOverlay {
     display: block;
     position: fixed;
-    z-index: 1; 
+    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
+    background-color: rgba(0,0,0,.4);
+    padding-top: 60px
 }
+
 .error-content {
-    background-color: #FFEFD8;
+    background-color: #ffefd8;
     margin: auto;
-    width: 20%; 
+    width: 20%;
     height: fit-content;
     padding: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 15px;
+    transform: translate(-50%,-50%);
+    border-radius: 15px
 }
-.errorOverlay h2 {
-    color: #2F3787;
-    padding-top: 10px;
-    font-size: 25px;
-    text-align: center;
-}
+
 .closeError {
     position: absolute;
     top: 20px;
     right: 20px;
     font-size: 30px;
     color: #aaa;
-    cursor: pointer;
+    cursor: pointer
 }
-.closeError:hover {
-    color: #000;
-}
-.message h4 {
-    font-size: 18px;
-    font-weight: 400;
-    text-align: center;
-}
+
 .ok-button-container {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 20px
 }
+
 .ok-button {
     font-size: 20px;
-    color: white;
+    color: #fff;
     width: 40%;
     height: 40px;
-    background-color: #2F3787;
-    border: none;
+    background-color: #2f3787;
+    border: 0;
     cursor: pointer;
-    border-radius: 15px; 
+    border-radius: 15px
 }
+
 .ok-button:hover {
-    background-color: #376FB7;
+    background-color: #376fb7
 }
 
-
-/* DELETE MODAL */
 .deleteOverlay {
     display: none;
     position: fixed;
-    z-index: 1; 
+    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
+    background-color: rgba(0,0,0,.4);
+    padding-top: 60px
 }
+
 .delete-content {
-    background-color: #FFEFD8;
+    background-color: #ffefd8;
     margin: auto;
-    width: 20%; 
+    width: 20%;
     height: fit-content;
     padding: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 15px;
+    transform: translate(-50%,-50%);
+    border-radius: 15px
 }
-.deleteOverlay h2 {
-    color: #2F3787;
-    padding-top: 10px;
-    font-size: 25px;
-    text-align: center;
-}
+
 .closeDelete {
     position: absolute;
     top: 20px;
     right: 20px;
     font-size: 30px;
     color: #aaa;
-    cursor: pointer;
+    cursor: pointer
 }
+
 .closeDelete:hover {
-    color: #000;
+    color: #000
 }
-.message h4 {
-    font-size: 20px;
-    font-weight: 400;
-    text-align: center;
-}
+
 .button-container {
     text-align: center;
     margin-top: 20px;
-    justify-content: space-between;
+    justify-content: space-between
 }
-.yes-button {
+
+.no-button,.yes-button {
     font-size: 20px;
-    color: white;
+    color: #fff;
     width: 40%;
     height: 40px;
-    background-color: #2F3787;
-    border: none;
+    background-color: #2f3787;
+    border: 0;
     cursor: pointer;
-    border-radius: 15px; 
+    border-radius: 15px
 }
+
 .yes-button:hover {
-    background-color: #376FB7;
+    background-color: #376fb7
 }
+
 .no-button {
-    font-size: 20px;
-    color: #2F3787;
-    width: 40%;
-    height: 40px;
+    color: #2f3787;
     background-color: transparent;
-    border: 2px solid #2F3787;
-    cursor: pointer;
-    border-radius: 15px; 
+    border: 2px solid #2f3787
 }
+
 .no-button:hover {
-    background-color: lightgray;
-    border: transparent;
+    background-color: #d3d3d3;
+    border: transparent
 }
-/* SAVE MODAL */
+
 .saveOverlay {
     display: none;
     position: fixed;
-    z-index: 1; 
+    z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
+    background-color: rgba(0,0,0,.4);
+    padding-top: 60px
 }
+
 .save-content {
-    background-color: #FFEFD8;
+    background-color: #ffefd8;
     margin: auto;
-    width: 20%; 
+    width: 20%;
     height: fit-content;
     padding: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 15px;
+    transform: translate(-50%,-50%);
+    border-radius: 15px
 }
-.saveOverlay h2 {
-    color: #2F3787;
-    padding-top: 10px;
-    font-size: 25px;
-    text-align: center;
-}
+
 .closeSave {
     position: absolute;
     top: 20px;
     right: 20px;
     font-size: 30px;
     color: #aaa;
-    cursor: pointer;
+    cursor: pointer
 }
+
 .closeSave:hover {
-    color: #000;
+    color: #000
 }

@@ -54,17 +54,34 @@
         die;
     }
 
-//* DOCUMENT UPLOAD - ADMIN *//
-
-//* PENDING DOCUMENTS *//
-function hasPendingDocument($scholar_id, $doc_type) {
+//* PENDING OR APPROVED DOCUMENTS *//
+function hasPendingDocument($scholar_id, $doc_type, $year, $sem) {
     global $conn;
-    $query = "SELECT COUNT(*) as count FROM submission WHERE scholar_id = ? AND doc_type = ? AND (doc_status = 'PENDING' OR doc_status = 'APPROVED')";
+    $query = "SELECT COUNT(*) as count FROM submission WHERE scholar_id = ? AND doc_type = ? AND acad_year = ? AND sem = ? AND (doc_status = 'PENDING' OR doc_status = 'APPROVED')";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("is", $scholar_id, $doc_type);
+    $stmt->bind_param("issi", $scholar_id, $doc_type, $year, $sem);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
     return $row['count'] > 0;
+}
+
+
+//* DECLINED DOCUMENTS *//
+function getDocumentDetails($scholar_id, $doc_type, $year, $sem) {
+    global $conn;
+    $query = "SELECT doc_name, doc_status FROM submission WHERE scholar_id = ? AND doc_type = ? AND acad_year = ? AND sem = ?";
+    $stmt = $conn->prepare($query);
+    if (!$stmt) {
+        die("Preparation failed: " . $conn->error);
+    }
+    $stmt->bind_param("issi", $scholar_id, $doc_type, $year, $sem);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result) {
+        return $result->fetch_assoc();
+    } else {
+        return null;
+    }
 }
 ?>

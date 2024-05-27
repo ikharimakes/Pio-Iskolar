@@ -1,6 +1,7 @@
 <?php 
 include('../functions/general.php');
-include('../functions/view_pending.php');
+include('../functions/view_docx.php');
+include('../functions/display_prof.php');
 
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $recordsPerPage = 15;
@@ -15,68 +16,61 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholar</title>
+    <title>Documents</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="css/ad_docs.css">
+    <link rel="stylesheet" href="css/ad_skoDocs.css">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/topbar.css">
     <link rel="stylesheet" href="css/notif.css">
     <link rel="stylesheet" href="css/error.css">
     <link rel="stylesheet" href="css/page.css">
+    <style>
+</style>
 </head>
 <body>
     <!-- SIDEBAR -->
     <?php include('ad_navbar.php');?>
-    
+
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <div class="headerName">
-                <h1>PENDING DOCUMENTS</h1>
-            </div>
+            <button class="headerBack" href="ad_scholar.php" id="clickableIcon">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+                <h1>Back</h1>
+            </button>
 
-            <div class="headerRight">
-                <div class="notif">
+            <div class="headerRight" >
+                <div class="notif" id="clickableIcon">
                     <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
                 </div>
 
-                <a class="user" href="ad_settings.php">
+                <a class="user" href="ad_settings.php" id="clickableIcon">
                     <img src="images/profile.png" alt="">
                 </a>
             </div>
         </div>
 
+        <!-- TOP NAV -->
+        <?php navDisplay();?>
 
         <!-- DOCUMENTS -->
-        <div class="info">
-            <div class="search">
-                <form action="" method="get">
-                    <label>
-                        <input type="text" name="search" placeholder="Search here" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
-                        <ion-icon name="search-outline" onclick="this.closest('form').submit();"></ion-icon>
-                    </label>
-                </form>
-            </div>
-        </div>
-
         <div class="table">
             <table>
                 <tr style="font-weight: bold;">
-                    <td style="width:10%"> ID No. </td>
-                    <td style="width:50%"> Document Name </td>
-                    <td style="width:10%"> Date </td>
-                    <td style="width:8%"> Type </td>
+                    <td> Document Name </td>
+                    <td style="width:12%"> Date </td>
+                    <td style="width:10%"> Type </td>
                     <td style="width:10%" class="statusColor"> Status </td>
-                    <td style="width:12%; text-align: right;"> Action </td>
+                    <td style="width:8%; text-align: right;"> Actions </td>
                 </tr>
                 <?php docxList($currentPage, $recordsPerPage, $search)?>
             </table>
-        </div>
+        </div> 
 
         <!-- PAGINATION -->
         <?php include('pagination.php');?>
     </div>
-
+    
     <!-- VIEW MODAL -->
     <div id="viewOverlay" class="view">
         <div class="view-content">

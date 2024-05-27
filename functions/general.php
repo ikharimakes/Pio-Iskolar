@@ -23,44 +23,47 @@ require '../vendor/autoload.php';
     }
 
 //* USER LOGIN *//
-if(isset($_POST['login'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     $user = $_POST['user'];
     $pass = $_POST['pass'];
 
-    $log = $conn->prepare("SELECT * FROM user WHERE username = ? AND passhash = ?");
+    // Prepare and execute the query to check user credentials
+    $log = $conn->prepare("SELECT * FROM user WHERE username = ? AND passhash = ? LIMIT 1");
     $log->bind_param("ss", $user, $pass);
     $log->execute();
     $result = $log->get_result();
 
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
-        if($row["role_id"] == "1"){
+        $_SESSION['uid'] = $row['user_id'];
+        $roleId = $row['role_id'];
+
+        if ($roleId == "1") {
             $_SESSION['role'] = "admin";
-            $_SESSION['uid'] = $row['user_id'];
             header("location: ./ad_dashboard.php");
-            die;
-        } else {
+            exit();
+        } elseif ($roleId == "2") {
             $_SESSION['role'] = "scholar";
-            $_SESSION['uid'] = $row['user_id'];
-            $id = $row['user_id'];
-            
+
+            // Prepare and execute the second query to get scholar_id
             $grab = $conn->prepare("SELECT scholar_id FROM scholar WHERE user_id = ?");
-            $grab->bind_param("i", $id);
+            $grab->bind_param("i", $row['user_id']);
             $grab->execute();
             $account = $grab->get_result();
-            $row = $account->fetch_assoc();
-            $_SESSION['sid'] = $row['scholar_id'];
-            
+            $scholarRow = $account->fetch_assoc();
+            $_SESSION['sid'] = $scholarRow['scholar_id'];
+
             header("location: ./announce.php");
-            die;
+            exit();
         }
     } else {
         echo "<script>alert('Invalid Credentials!')</script>";
     }
 }
 
+
 //* USER LOGOUT *//
-if (isset($_POST['logout'])){
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])){
     session_unset();
     session_destroy();
     
@@ -128,8 +131,8 @@ function datalisting($column, $table, $id) {
         }
     }
     // SCHOLAR STATUS   datalisting("status_name", "status", "status");
-    // SCHOOLS          datalisting("School", "scholar", "school");
-    // COURSES          datalisting("Course", "scholar", "course");
+    // SCHOOLS          datalisting("school", "scholar", "school");
+    // COURSES          datalisting("course", "scholar", "course");
     // BATCH NUMBER     datalisting("batch_no", "batch_year", "batch");
     // ACADEMIC YEAR    datalisting("acad_year", "batch_year", "year");
     // SEMESTER         datalisting("", "", "sem");

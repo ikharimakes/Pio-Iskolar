@@ -25,6 +25,12 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <link rel="stylesheet" href="css/notif.css">
     <link rel="stylesheet" href="css/error.css">
     <link rel="stylesheet" href="css/page.css">
+    <style>
+        a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
 </head>
 <body>
     <!-- SIDEBAR -->

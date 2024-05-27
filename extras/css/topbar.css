@@ -56,7 +56,6 @@
 }
 .headerBack:active {
     transform: scale(0.9);
-    color: #2F3787;
 }
 .headerBack ion-icon {
     color: black;
@@ -71,6 +70,7 @@
 .headerRight {
     display: flex;
     align-items: center;
+    margin-left: auto;
 }
 .notif {
     position: relative;
@@ -84,7 +84,6 @@
 }
 .notif:active {
     transform: scale(0.9);
-    color: #2F3787;
 }
 .notif ion-icon {
     color: black;
@@ -113,7 +112,6 @@
 }
 .user:active {
     transform: scale(0.9);
-    color: #2F3787;
 }
 .user img {
     width: 50px;

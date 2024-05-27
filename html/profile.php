@@ -1,5 +1,6 @@
 <?php include_once('../functions/general.php');?>
 <?php include('../functions/display_prof.php');?>
+<?php include("../functions/password.php")?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,35 +50,38 @@
     </div>
 
 
-    <!-- CHANGE PASS -->
-    <div id="passOverlay" class="passOverlay">
-        <div class="pass-content">
-            <div class="infos">
-                <h2>Change Password</h2>
-                <span class="closePass" onclick="closePass()">&times;</span>
-            </div>
-            <br><br>
-
+    <!-- CHANGE PASS --><!-- CHANGE PASS -->
+<div id="passOverlay" class="passOverlay">
+    <div class="pass-content">
+        <div class="infos">
+            <h2>Change Password</h2>
+            <span class="closePass" onclick="closePass()">&times;</span>
+        </div>
+        <br><br>
+        
+        <form action="" method="POST">
             <div class="inner-content">
                 <label class="passText" for="oldPassword">Enter Current Password:</label> <br>
-                <input class="input" type="password" id="oldPassword" name="oldPassword" placeholder="Current Password">
+                <input class="input" type="password" id="oldPassword" name="oldPassword" placeholder="Current Password" required>
             </div>
 
             <div class="inner-content">
                 <label class="passText" for="newPassword">Enter New Password:</label> <br>
-                <input class="input" type="password" id="newPassword" name="newPassword" placeholder="New Password">
+                <input class="input" type="password" id="newPassword" name="newPassword" placeholder="New Password" required>
             </div>
 
             <div class="inner-content">
                 <label class="passText" for="confirmPassword">Confirm Password:</label> <br>
-                <input class="input" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+                <input class="input" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
             </div>
 
             <div class="enter-button-container">
-                <button class="enter-button"> Enter </button>
+                <button class="enter-button" type="submit"> Enter </button>
             </div>
-        </div>
+        </form>
     </div>
+</div>
+
 
     <!-- NOTIFICATION -->
     <?php include('notification.php');?>

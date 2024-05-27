@@ -1,12 +1,36 @@
 <?php 
-include_once('../functions/general.php');
+include('../functions/general.php');
 include('../functions/add_docx.php');
 
 // Assume $scholar_id is set from the session or another reliable source
 $scholar_id = $_SESSION['uid'];
+global $year, $sem;
 
-function disableUploadIfPending($scholar_id, $doc_type) {
-    return hasPendingDocument($scholar_id, $doc_type) ? 'hidden' : '';
+function getUploadButtonHtml($scholar_id, $doc_type, $year, $sem) {
+    $docDetails = getDocumentDetails($scholar_id, $doc_type, $year, $sem);
+    if ($docDetails) {
+        if ($docDetails['doc_status'] === 'DECLINED') {
+            $buttonLabel = 'Replace Document';
+            $buttonStyle = '';
+        } else {
+            $buttonLabel = '';
+            $buttonStyle = 'hidden';
+        }
+        return "
+            <p>{$docDetails['doc_name']} - {$docDetails['doc_status']}</p>
+            <label type='button' class='lblAdd' for='choose-file-$doc_type' $buttonStyle>
+                <ion-icon name='share-outline'></ion-icon> $buttonLabel
+            </label>
+            <input name='$doc_type' type='file' id='choose-file-$doc_type' accept='.pdf' style='display: none;' $buttonStyle />
+        ";
+    } else {
+        return "
+            <label type='button' class='lblAdd' for='choose-file-$doc_type'>
+                <ion-icon name='share-outline'></ion-icon> Upload File
+            </label>
+            <input name='$doc_type' type='file' id='choose-file-$doc_type' accept='.pdf' style='display: none;' />
+        ";
+    }
 }
 ?>
 
@@ -22,23 +46,6 @@ function disableUploadIfPending($scholar_id, $doc_type) {
     <link rel="stylesheet" href="css/topbar.css">
     <link rel="stylesheet" href="css/notif.css">
     <link rel="stylesheet" href="css/error.css">
-    <style>
-        .custom-file-upload {
-            font-family: 'Poppins', sans-serif;
-            font-size: 16px;
-            border: thin solid grey;
-            border-radius: 3px;
-            padding: 0.5rem;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            color: rgb(112, 112, 112);
-            background-color: #ffffff;
-        }
-        .custom-file-upload:disabled {
-            background-color: #e0e0e0;
-            color: #a0a0a0;
-        }
-    </style>
 </head>
 <body>
     <!-- SIDEBAR -->
@@ -47,15 +54,12 @@ function disableUploadIfPending($scholar_id, $doc_type) {
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <div class="headerName">
-            </div>
-
-            <div class="headerRight">
-                <div class="notif">
+            <div class="headerRight" >
+                <div class="notif" id="clickableIcon">
                     <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
                 </div>
 
-                <a class="user" href="profile.php">
+                <a class="user" href="ad_settings.php" id="clickableIcon">
                     <img src="images/profile.png" alt="">
                 </a>
             </div>
@@ -78,47 +82,67 @@ function disableUploadIfPending($scholar_id, $doc_type) {
 
         <div class="cards">
             <form action="" method="post" enctype="multipart/form-data">
-            <div class="card"> 
-                <div class="container">
-                    <h2 class="reqs"> Photocopy of Certificate of Registration 3rd Year 2nd Semester </h2>
+                <div class="card"> 
+                    <div class="container">
+                        <div class="reqs">
+                            <h2> Photocopy of Certificate of Registration </h2>
+                            <h5>(Current Academic Year and Semester)</h5>
+                        </div>
+                        
+                        <div class="formats">
+                            <p class="file"> Maximum File Size: </p>
+                            <p class="files"> 5MB </p>
+                        </div>
+
+                        <div class="formats">
+                            <p class="file"> File Type:</p>
+                            <p class="files"> PDF File </p>
+                        </div> <br> 
+
+                        <?php echo getUploadButtonHtml($scholar_id, 'COR', $year, $sem); ?> 
+                    </div> <br> <hr> <br>
+
                     
-                    <h3 class="format"> Follow the file name format: </h3>
-                    <p class="file"> DelaCruz_JuanMiguel_DeTorre_3rdyear_2ndsem_COR.pdf</p>
+                    <div class="container">
+                        <div class="reqs">
+                            <h2> Photocopy of Certificate of Registration </h2>
+                            <h5>(Current Academic Year and Semester)</h5>
+                        </div>
+                        
+                        <div class="formats">
+                            <p class="file"> Maximum File Size: </p>
+                            <p class="files"> 5MB </p>
+                        </div>
 
-                    <label for="choose-file1" class="custom-file-upload">
-                    Upload PDF
-                    </label>
-                    <input name="COR" type="file" id="choose-file1" accept=".pdf" style="display: none;" <?php echo disableUploadIfPending($scholar_id, 'COR'); ?> /> 
-                </div> <br> <hr> <br>
+                        <div class="formats">
+                            <p class="file"> File Type:</p>
+                            <p class="files"> PDF File </p>
+                        </div> <br> 
 
-                <div class="container">
-                    <h2 class="reqs"> Photocopy of Certificate of Report Card 3rd Year 1st Semester </h2>
-                    
-                    <h3 class="format"> Follow the file name format: </h3>
-                    <p class="file"> DelaCruz_JuanMiguel_DeTorre_3rdyear_1stsem_Grades.pdf</p>
+                        <?php echo getUploadButtonHtml($scholar_id, 'TOR', $year, $sem); ?> 
+                    </div> <br> <hr> <br>
 
-                    <label for="choose-file2" class="custom-file-upload">
-                    Upload PDF
-                    </label>
-                    <input name="TOR" type="file" id="choose-file2" accept=".pdf" style="display: none;" <?php echo disableUploadIfPending($scholar_id, 'TOR'); ?> /> 
-                </div> <br> <hr> <br>
+                    <div class="container">
+                        <h2 class="reqs"> Social Service Monitoring Record with complete 40 hours </h2>
+                        
+                        <div class="formats">
+                            <p class="file"> Maximum File Size: </p>
+                            <p class="files"> 5MB </p>
+                        </div>
 
-                <div class="container">
-                    <h2 class="reqs"> Social Service Monitoring Record with complete 40 hours </h2>
-                    
-                    <h3 class="format"> Follow the file name format: </h3>
-                    <p class="file"> DelaCruz_JuanMiguel_DeTorre_3rdyear_SocialService.pdf</p>
+                        <div class="formats">
+                            <p class="file"> File Type:</p>
+                            <p class="files"> PDF File </p>
+                        </div> <br> 
 
-                    <label for="choose-file3" class="custom-file-upload">
-                    Upload PDF
-                    </label>
-                    <input name="SCF" type="file" id="choose-file3" accept=".pdf" style="display: none;" <?php echo disableUploadIfPending($scholar_id, 'SCF'); ?> /> 
-                </div> <br> <hr> <br>
+                        <?php echo getUploadButtonHtml($scholar_id, 'SCF', $year, $sem); ?> 
+                    </div> <br> <hr> <br>
 
-                <div class="submit">
-                    <button type="submit" name="submission" class="btnSubmit"> Submit </button> 
-                </div> <br>
-            </div></form>
+                    <div class="submit">
+                        <button type="submit" name="submission" class="btnSubmit"> Submit </button> 
+                    </div> <br>
+                </div>
+            </form>
         </div> <br> <br>
     </div>
 

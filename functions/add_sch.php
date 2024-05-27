@@ -144,8 +144,9 @@ if(isset($_FILES['csv'])){
                 if ($isEmptyRow) {continue;}
 
                 // get the values from the csv
+                $username = $data[8];
                 $password = 'placeholder'; // Ideally, generate a random password and hash it
-                $insert = "INSERT INTO user (user_id, role_id, username, passhash) VALUES (NULL, '2', '$data[1]', '$password')";
+                $insert = "INSERT INTO user (user_id, role_id, username, passhash) VALUES (NULL, '2', '$username', '$password')";
                 $run = $conn->query($insert);
 
                 // inserts into user

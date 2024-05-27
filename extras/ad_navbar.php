@@ -47,14 +47,13 @@
                     </span>
                     <span class="text"> Reports </span>
                 </a> </li>
-<!--
+
                 <li class="navLink"> <a href="ad_settings.php" onclick="activateLink(this)">
                     <span class="icon">
                         <ion-icon name="settings-outline"></ion-icon>
                     </span>
                     <span class="text"> Settings </span>
                 </a> </li>
--->
             </ul>
         </div> 
 

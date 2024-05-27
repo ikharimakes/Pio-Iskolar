@@ -10,8 +10,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="css/front.css">
 </head>
-
-
 <body>
     <!-- HEADER -->
     <header>
@@ -139,7 +137,7 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
-        //ANNOUNCEMENT
+        // ANNOUNCEMENT
         var slideIndex = 1;
         showSlides(slideIndex);
         function plusSlides(n) {
@@ -164,7 +162,7 @@
             dots[slideIndex - 1].className += " active";
         }
 
-        //LOG IN
+        // LOG IN
         var modal = document.getElementById("logInModal");
         var span = document.getElementsByClassName("close")[0];
 
@@ -180,7 +178,7 @@
             }
         };
 
-        //FORGOT PASSWORD
+        // FORGOT PASSWORD
         function openModal(forgotModal) {
             var modal = document.getElementById(forgotModal);
             modal.style.display = "block";
@@ -199,9 +197,9 @@
             modal.style.display = "none";
         }
 
-        //VISIBILITY OF PASSWORD
+        // VISIBILITY OF PASSWORD
         const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password');
+        const password = document.querySelector('input[name="pass"]');
 
         togglePassword.addEventListener('click', function (e) {
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -227,6 +225,44 @@
             this.setAttribute('name', type === 'password' ? 'eye-off-outline' : 'eye-outline');
         });
     </script>
-
 </body>
 </html>
+ <?php
+if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
+    $user = $_POST['user'];
+    $pass = $_POST['pass'];
+
+    $log = $conn->prepare("SELECT * FROM user WHERE username = ? AND passhash = ?");
+    $log->bind_param("ss", $user, $pass);
+    $log->execute();
+    $result = $log->get_result();
+
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        if($row["role_id"] == "2"){
+            $_SESSION['role'] = "scholar";
+            $_SESSION['uid'] = $row['user_id'];
+
+            header("location: ./announce.php");
+            $id = $row['user_id'];
+            
+            $grab = $conn->prepare("SELECT scholar_id FROM scholar WHERE user_id = ?");
+            $grab->bind_param("i", $id);
+            $grab->execute();
+            $account = $grab->get_result();
+            $row = $account->fetch_assoc();
+            $_SESSION['sid'] = $row['scholar_id'];
+            die;
+        }
+        if($row["role_id"] == "1"){
+            $_SESSION['role'] = "admin";
+            $_SESSION['uid'] = $row['user_id'];
+            
+            header("location: ./ad_dashboard.php");
+            die;
+        }
+    } else {
+        echo "<script>alert('Invalid Credentials!')</script>";
+    }
+}
+?>

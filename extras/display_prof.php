@@ -1,5 +1,4 @@
 <?php
-    include_once('../functions/general.php');
     global $conn;
 
 //* SCHOLAR PROFILE DISPLAY *//
@@ -64,8 +63,8 @@
             }
         }
     }
-
-    //* TOP NAV DISPLAY *//
+    
+//* TOP NAV DISPLAY *//
     function navDisplay() {
         global $conn;
         if(isset($_POST['scholar_id'])) {$_SESSION['id'] = $_POST['scholar_id'];}
@@ -90,7 +89,7 @@
         }
     }
 
-    //* ADMIN PROFILE DISPLAY *//
+//* ADMIN PROFILE DISPLAY *//
     function adminDisplay() {
         global $conn;
         if(isset($_POST['scholar_id'])) {$_SESSION['id'] = $_POST['scholar_id'];}
@@ -111,60 +110,28 @@
                     'Contact' => $row['contact'],
                     'Email' => $row['email']
                 ];
-                echo '
-                    <form action="" method="post" id="profileForm">
-                    
+                print '
+                    <form action="" method="post" enctype="multipart/form-data">
                         <div class="profile">
-                            
                             <div class="profile_name">
                                 <img src="images/profile.png" alt="Profile Picture"> <br>
                             </div>
-                            
-                            
 
                             <div class="profile-info">
-                                <div class="button-container">
-                                    <button type="button" class="edit-button" id="editButton">
-                                        <h3> Edit </h3>
-                                    </button>
-                                    <button type="button" class="cancel-button" id="cancelButton" style="display:none;"> 
-                                        <h3> Cancel </h3>
-                                    </button>
-                                </div>
                                 <table>
                 ';
                 foreach ($profile as $key => $value) {
-                    echo '
+                    print '
                         <tr>
-                            <th style="width: 20%">'.$key.'</th>
-                            <td>';
-                    if ($key == 'School') {
-                        echo '<input type="text" list="school" name="school" value="'.$value.'" class="input2" style="text-align: left; width: 100%; font-size: 20px" readonly>';
-                        datalisting("school", "scholar", "school");
-                    } elseif ($key == 'Course') {
-                        echo '<input type="text" list="course" name="course" value="'.$value.'" class="input2" style="text-align: left; font-size: 20px" readonly>';
-                        datalisting("course", "scholar", "course");
-                    } elseif ($key == 'Scholar Status') {
-                        echo '<select name="scholar_status" class="input2" style="text-align: left; font-size: 20px; border: 0px solid; outline: none;" disabled>
-                                <option value="ACTIVE" '.($value == 'ACTIVE' ? 'selected' : '').'>ACTIVE</option>
-                                <option value="PROBATION" '.($value == 'PROBATION' ? 'selected' : '').'>PROBATION</option>
-                                <option value="DROPPED" '.($value == 'DROPPED' ? 'selected' : '').'>DROPPED</option>
-                                <option value="LOA" '.($value == 'LOA' ? 'selected' : '').'>LOA</option>
-                                <option value="GRADUATED" '.($value == 'GRADUATED' ? 'selected' : '').'>GRADUATED</option>
-                              </select>';
-                    } else {
-                        echo '<input type="text" name="'.strtolower(str_replace(' ', '_', $key)).'" value="'.$value.'" class="input2" style="text-align: left; font-size: 20px" readonly>';
-                    }
-                    echo '</td>
+                            <th> '.$key.' </th>
+                            <td> '.$value.'</td>
                         </tr>
                     ';
                 }
-                echo '
+                print '
                                 </table>
-                                <button type="submit" name="save" class="save-button" style="display:none;">Save</button>
                             </div>
                         </div>
-                    </form>
                 ';
             }
         }

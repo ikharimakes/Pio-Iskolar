@@ -1,5 +1,6 @@
 <?php
-include_once('../functions/general.php');
+include('../functions/general.php');
+
 // Fetch announcement data
 global $conn;
 $announcements = [];
@@ -82,7 +83,8 @@ if ($result->num_rows > 0) {
                 
                 <!-- LINE GRAPH -->
                 <div class="chart-container">
-                    <canvas id="canvas" width="900" height="400"></canvas>
+                    <h1> Number of Scholars per Batch </h1>
+                    <canvas id="canvas" width="1000" height="400"></canvas>
                 </div>
             </div>
 
@@ -234,9 +236,9 @@ if ($result->num_rows > 0) {
             labels : ["Batch 1","Batch 2","Batch 3","Batch 4","Batch 5","Batch 6","Batch 7","Batch 8","Batch 9","Batch 10"],
             datasets : [
                 {
-                    fillColor : "rgba(220,220,220,0.5)",
-                    strokeColor : "rgba(220,220,220,1)",
-                    pointColor : "rgba(220,220,220,1)",
+                    fillColor : "#FFEFD8",
+                    strokeColor : "#FFE4C7",
+                    pointColor : "#CCCCCC",
                     pointStrokeColor : "#FFF",
                     data : [200, 195, 250, 257, 270, 186, 204, 237, 178, 241]
                 }

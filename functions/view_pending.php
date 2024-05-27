@@ -2,81 +2,14 @@
     include_once('../functions/general.php');
 	global $conn;
 
-//* DOCUMENT DISPLAY - SCHOLAR *//
-	function docxDisplay($id, $currentPage = 1, $recordsPerPage = 15, $search = ''){
-	    global $conn;
-	    $offset = ($currentPage - 1) * $recordsPerPage;
-	    $searchQuery = $search ? " AND (doc_name LIKE '%$search%' OR doc_type LIKE '%$search%' OR doc_status LIKE '%$search%')" : '';
-
-	    $display = "SELECT * FROM submission WHERE scholar_id = '$id' $searchQuery ORDER BY sub_date DESC LIMIT $recordsPerPage OFFSET $offset";
-	    $result = $conn->query($display);
-
-	    if ($result->num_rows > 0) {
-	        while ($row = $result->fetch_assoc()) {
-				// Determine the color based on status
-				$style = "";
-				if ($row["doc_status"] == "PENDING") {
-					$style = "color: rgb(212, 120, 0);
-					font-weight: 600;";
-				} elseif ($row["doc_status"] == "APPROVED") {
-					$style = "color: rgb(0, 136, 0);
-					font-weight: 600;";
-				} elseif ($row["doc_status"] == "DECLINED") {
-					$style = "color: rgb(189, 0, 0);
-					font-weight: 600;";
-				}
-
-	            print '
-	                <tr> 
-	                    <td> '.$row["sub_date"].' </td>
-	                    <td> '.$row["doc_name"].' </td>
-	                    <td> '.$row["doc_type"].' </td>
-                    	<td style="'.$style.'">'.$row["doc_status"].'</td>
-	                    <td class="wrap" style="width:100%">
-							<div class="icon">
-								<div class="tooltip">View</div>
-								<span> <ion-icon name="eye-outline" onclick="openPrev(this)" 
-									data-doc_status="'.$row["doc_status"].'"
-									data-doc_reason="'.$row["reason"].'"
-									data-doc_name="'.$row["doc_name"].'" ></ion-icon> </span>
-							</div>
-
-	                        <div class="icon">
-								<div class="tooltip">Download</div>
-								<a href="../assets/'.$row["doc_name"].'" download="'.$row["doc_name"].'">
-									<span> <ion-icon name="download-outline"></ion-icon> </span>
-								</a>
-	                        </div>
-
-							<div class="icon">	            
-				';
-				if ($row["doc_status"] != "APPROVED"){
-					print '
-					<div class="tooltip">Delete</div>
-
-					<span> <ion-icon name="trash-outline" onclick="openDelete(this)" 
-						data-id="'.$row["submit_id"].'" 
-						data-name="'.$row["doc_name"].'"></ion-icon> </span>
-					';
-				}
-				print '
-								</div>
-	                        </td>
-	                    </tr>
-	                ';
-	        }
-	    }
-	}
-
-//* DOCUMENT DISPLAY - ADMIN *//
+//* DOCUMENT DISPLAY - PENDING *//
 function docxList($currentPage = 1, $recordsPerPage = 15, $search = ''){ 
     global $conn;
 
     $offset = ($currentPage - 1) * $recordsPerPage;
-    $searchQuery = $search ? " AND (doc_name LIKE '%$search%' OR doc_type LIKE '%$search%' OR doc_status LIKE '%$search%')" : '';
-    $id = $_SESSION['id'];
+    $searchQuery = $search ? " AND (doc_name LIKE '%$search%' OR doc_type LIKE '%$search%')" : '';
 
-    $displayQuery = "SELECT * FROM submission WHERE scholar_id = '$id' $searchQuery ORDER BY sub_date LIMIT $recordsPerPage OFFSET $offset";
+    $displayQuery = "SELECT * FROM submission WHERE doc_status LIKE 'PENDING' $searchQuery ORDER BY sub_date LIMIT $recordsPerPage OFFSET $offset";
     
     $result = $conn->query($displayQuery);
 
@@ -85,18 +18,12 @@ function docxList($currentPage = 1, $recordsPerPage = 15, $search = ''){
             // Determine the color based on status
             $style = "";
             if ($row["doc_status"] == "PENDING") {
-				$style = "color: rgb(212, 120, 0);
-				font-weight: 600;";
-            } elseif ($row["doc_status"] == "APPROVED") {
-				$style = "color: rgb(0, 136, 0);
-				font-weight: 600;";
-            } elseif ($row["doc_status"] == "DECLINED") {
-				$style = "color: rgb(189, 0, 0);
-				font-weight: 600;";
+				$style = "color: rgb(212, 120, 0); font-weight: 600;";
             }
 
             echo '
                 <tr> 
+					<td>'.$row["scholar_id"].'</td>
                     <td>'.$row["doc_name"].'</td>
                     <td>'.$row["sub_date"].'</td>
                     <td>'.$row["doc_type"].'</td>
@@ -112,6 +39,13 @@ function docxList($currentPage = 1, $recordsPerPage = 15, $search = ''){
                         </div>
 
                         <div class="icon">
+                            <div class="tooltip">Download</div>
+                            <a href="../assets/'.$row["doc_name"].'" download="'.$row["doc_name"].'">
+                                <span> <ion-icon name="download-outline"></ion-icon> </span>
+                            </a>
+                        </div>
+
+                        <div class="icon">
                             <div class="tooltip"> Approve</div>
                             <span> <ion-icon name="checkmark-circle-outline" onclick="openApprove(this)" 
                                 data-id="'.$row["submit_id"].'"></ion-icon> </span>
@@ -121,13 +55,6 @@ function docxList($currentPage = 1, $recordsPerPage = 15, $search = ''){
                             <div class="tooltip"> Decline</div>
                             <span> <ion-icon name="close-circle-outline" onclick="openDecline(this)" 
                                 data-id="'.$row["submit_id"].'"></ion-icon> </span>
-                        </div>
-
-                        <div class="icon">
-                            <div class="tooltip">Download</div>
-                            <a href="../assets/'.$row["doc_name"].'" download="'.$row["doc_name"].'">
-                                <span> <ion-icon name="download-outline"></ion-icon> </span>
-                            </a>
                         </div>
 
                         <div class="icon">
@@ -148,9 +75,9 @@ function docxList($currentPage = 1, $recordsPerPage = 15, $search = ''){
 
 function getTotalRecords($search = '') {
     global $conn;
-    $id = $_SESSION['id'];  // Ensure to filter by scholar_id if needed
-    $searchQuery = $search ? " AND (doc_name LIKE '%$search%' OR doc_type LIKE '%$search%' OR doc_status LIKE '%$search%')" : '';
-    $countQuery = "SELECT COUNT(*) as total FROM submission WHERE scholar_id = '$id' $searchQuery";
+
+    $searchQuery = $search ? " AND (doc_name LIKE '%$search%' OR doc_type LIKE '%$search%')" : '';
+    $countQuery = "SELECT COUNT(*) as total FROM submission WHERE doc_status LIKE 'PENDING' $searchQuery";
 
     $result = $conn->query($countQuery);
 
@@ -161,6 +88,7 @@ function getTotalRecords($search = '') {
         return 0;
     }
 }
+
 
 //* DOCUMENT APPROVAL/DENIAL *//
 	if (isset($_POST['update'])) {
