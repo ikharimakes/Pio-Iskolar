@@ -6,9 +6,20 @@ include('../functions/display_prof.php');
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $recordsPerPage = 15;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
+$sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'sub_date';
+$sortOrder = isset($_GET['order']) ? $_GET['order'] : 'DESC';
 
 $totalRecords = getTotalRecords($search);
 $totalPages = ceil($totalRecords / $recordsPerPage);
+
+function getSortIcon($column) {
+    global $sortColumn, $sortOrder;
+    if ($sortColumn === $column) {
+        return $sortOrder === 'DESC' ? '<ion-icon name="chevron-up-outline"></ion-icon>' : '<ion-icon name="chevron-down-outline"></ion-icon>';
+    } else {
+        return '<ion-icon name="chevron-expand-outline"></ion-icon>';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -71,13 +82,25 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         <div class="table">
             <table>
                 <tr style="font-weight: bold;">
-                    <td> Document Name </td>
-                    <td style="width:12%"> Date </td>
+                    <td> 
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=doc_name&order=<?= $sortColumn === 'doc_name' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">
+                            Document Name <?= getSortIcon('doc_name') ?>
+                        </a>
+                    </td>
+                    <td style="width:12%">
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=sub_date&order=<?= $sortColumn === 'sub_date' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">
+                            Date <?= getSortIcon('sub_date') ?>
+                        </a>
+                    </td>
                     <td style="width:10%"> Type </td>
-                    <td style="width:10%"> Status </td>
+                    <td style="width:10%" class="statusColor">
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=doc_status&order=<?= $sortColumn === 'doc_status' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">
+                            Status <?= getSortIcon('doc_status') ?>
+                        </a>
+                    </td>
                     <td style="width:8%; text-align: right;"> Actions </td>
                 </tr>
-                <?php docxList($currentPage, $recordsPerPage, $search)?>
+                <?php docxScholar($currentPage, $recordsPerPage, $search, $sortColumn, $sortOrder);?>
             </table>
         </div> 
 
@@ -90,6 +113,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         <div class="view-content">
             <h2 id="view-doc_name">Document Name</h2>
             <span class="closeView" onclick="closePrev()">&times;</span>
+            
             <form id="updateForm" method="post" action="">
                 <input type="hidden" id="update-doc_id" name="doc_id">
 
@@ -106,13 +130,11 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                 <div id="declineOptions" style="display: none;">
                     <div class="decline">
                         <h4>Reason for Declining:</h4>
-                        <select id="declineReasonSelect">
+                        <select name="declineReason" id="declineReasonSelect">
                             <option value="" disabled selected>Select a reason</option>
-                            <option value="OPTION 1">OPTION 1</option>
-                            <option value="OPTION 2">OPTION 2</option>
-                            <option value="OPTION 3">OPTION 3</option>
-                            <option value="OPTION 4">OPTION 4</option>
-                            <option value="OPTION 5">OPTION 5</option>
+                            <option value="CORRUPTED FILE">CORRUPTED FILE</option>
+                            <option value="NOT LEGIBLE/READABLE">NOT LEGIBLE/READABLE</option>
+                            <option value="WRONG DOCUMENT">WRONG DOCUMENT</option>
                             <option value="OTHER">OTHER</option>
                         </select>
                     </div>
@@ -135,8 +157,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         </div>
     </div>
 
-
-   <!-- APPROVE MODAL -->
+    <!-- APPROVE MODAL -->
     <div id="approveOverlay" class="deleteOverlay">
         <div class="delete-content">
             <div class="infos">
@@ -161,19 +182,37 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         <div class="delete-content">
             <div class="infos">
                 <h2>Confirm Decline</h2>
-                <span class="closeDecline" onclick="closeDecline()">&times;</span>
+                <span class="closeDelete" onclick="closeDecline()">&times;</span>
             </div>
-            <div class="message">
-                <h4>Are you sure you want to decline this document?</h4>
-                <textarea name="reason" id="declineReasonText" placeholder="Reason for declining"></textarea>
-            </div>
-            <div class="button-container">
-                <form id="declineForm" method="post" action="">
-                    <input type="hidden" id="decline-id" name="doc_id">
-                    <button type="submit" name="decline" class="yes-button">Yes</button>
-                    <button type="button" class="no-button" onclick="closeDecline()">No</button>
-                </form>
-            </div>
+            <form id="declineForm" method="post" action="">
+                <input type="hidden" id="decline-id" name="doc_id">
+
+                <div class="message">
+                    <h4>Are you sure you want to decline this document?</h4>
+                </div>
+
+                <div id="declineOptions2">
+                        <div class="decline">
+                            <select name="declineReason_alt" id="declineReasonSelect2" style="width:100%">
+                                <option value="" disabled selected>Reason for Declining</option>
+                                <option value="CORRUPTED FILE">CORRUPTED FILE</option>
+                                <option value="NOT LEGIBLE/READABLE">NOT LEGIBLE/READABLE</option>
+                                <option value="WRONG DOCUMENT">WRONG DOCUMENT</option>
+                                <option value="OTHER">OTHER</option>
+                            </select>
+                        </div>
+
+                        <div id="otherReason2" style="display: none;" class="others">
+                            <h4>Enter other reasons:</h4>
+                            <textarea name="reason_alt" id="denialReasonText2" placeholder="Type your reason here"></textarea>
+                        </div>
+                    </div>
+
+                <div class="button-container">
+                        <button type="submit" name="decline" class="yes-button" id="declineSubmitButton2" class="disabled-button">Yes</button>
+                        <button type="button" class="no-button" onclick="closeDecline()">No</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -236,18 +275,21 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
             loadPDF(pdfPath);
 
             document.getElementById("viewOverlay").style.display = "block";
+            validateForm();  // Add this line to validate form on opening
         }
 
         document.getElementById("approveRadio").addEventListener("change", function() {
             if (this.checked) {
                 document.getElementById("declineOptions").style.display = "none";
             }
+            validateForm();
         });
 
         document.getElementById("declineRadio").addEventListener("change", function() {
             if (this.checked) {
                 document.getElementById("declineOptions").style.display = "block";
             }
+            validateForm();
         });
 
         document.getElementById("declineReasonSelect").addEventListener("change", function() {
@@ -256,7 +298,53 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
             } else {
                 document.getElementById("otherReason").style.display = "none";
             }
+            validateForm();
         });
+
+        document.getElementById("denialReasonText").addEventListener("input", validateForm);
+
+        function validateForm() {
+            const approveRadio = document.getElementById("approveRadio").checked;
+            const declineRadio = document.getElementById("declineRadio").checked;
+            const declineReasonSelected = document.getElementById("declineReasonSelect").value;
+            const otherReasonText = document.getElementById("denialReasonText").value.trim();
+
+            const saveButton = document.getElementById("updateButton");
+
+            if (approveRadio || (declineRadio && declineReasonSelected && (declineReasonSelected !== "OTHER" || otherReasonText))) {
+                saveButton.disabled = false;
+                saveButton.style.background = "#2F3787";
+            } else {
+                saveButton.disabled = true;
+                saveButton.style.background = "grey";
+            }
+        }
+
+        document.getElementById("declineReasonSelect2").addEventListener("change", function() {
+            if (this.value === "OTHER") {
+                document.getElementById("otherReason2").style.display = "block";
+            } else {
+                document.getElementById("otherReason2").style.display = "none";
+            }
+            validateForm2();
+        });
+
+        document.getElementById("denialReasonText2").addEventListener("input", validateForm2);
+
+        function validateForm2() {
+            const declineReasonSelected = document.getElementById("declineReasonSelect2").value;
+            const otherReasonText = document.getElementById("denialReasonText2").value.trim();
+
+            const saveButton = document.getElementById("declineSubmitButton2");
+
+            if (declineReasonSelected && (declineReasonSelected !== "OTHER" || otherReasonText)) {
+                saveButton.disabled = false;
+                saveButton.style.background = "#2F3787";
+            } else {
+                saveButton.disabled = true;
+                saveButton.style.background = "grey";
+            }
+        }
 
         function closePrev() {
             const status = document.querySelector('input[name="status"]:checked');
@@ -269,9 +357,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
 
         window.onload = function() {
             const doc_id = localStorage.getItem('update-doc_id');
-            const status = localStorage.getItem('update-status');
-            const reason = localStorage.getItem('update-reason');
-            const otherReason = localStorage.getItem('update-other-reason');
 
             if (doc_id) {
                 document.getElementById('update-doc_id').value = doc_id;
@@ -286,6 +371,8 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                         document.getElementById('denialReasonText').value = otherReason;
                     }
                 }
+                validateForm();
+                validateForm2();
             }
         };
 

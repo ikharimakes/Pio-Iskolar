@@ -38,7 +38,7 @@ if ($result->num_rows > 0) {
     <div class="main">
         <div class="topBar">
             <div class="headerWelcome">
-                <h1>Welcome COORDINATOR!</h1>
+                <h1>Welcome, COORDINATOR!</h1>
             </div>
 
             <div class="headerRight">
@@ -84,7 +84,7 @@ if ($result->num_rows > 0) {
                 <!-- LINE GRAPH -->
                 <div class="chart-container">
                     <h1> Number of Scholars per Batch </h1>
-                    <canvas id="canvas" width="1000" height="400"></canvas>
+                    <canvas id="canvas" width="950" height="400"></canvas>
                 </div>
             </div>
 

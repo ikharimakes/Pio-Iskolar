@@ -18,28 +18,35 @@
         $conn->query($updateInactive);
     }
 
-    function annList($currentPage = 1, $recordsPerPage = 15, $search = '') {
+    function annList($currentPage = 1, $recordsPerPage = 15, $search = '', $sortColumn = 'title', $sortOrder = 'ASC') {
         global $conn;
-
+    
         // Update the status of the announcements before fetching them
         updateStatus();
-
+    
         $offset = ($currentPage - 1) * $recordsPerPage;
         $searchQuery = $search ? "WHERE title LIKE '%$search%' OR _status LIKE '%$search%' OR st_date LIKE '%$search%' OR end_date LIKE '%$search%'" : '';
-
+    
         $display = "SELECT announce_id, st_date, end_date, title, _status, img_name, content 
                     FROM announcements 
                     $searchQuery
-                    ORDER BY _status ASC, st_date 
+                    ORDER BY $sortColumn $sortOrder
                     LIMIT $recordsPerPage OFFSET $offset";
         $result = $conn->query($display);
-
+    
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
+                $style = "";
+                if ($row["_status"] == "ACTIVE") {
+                    $style = "color: rgb(0, 136, 0); font-weight: 600;";
+                } elseif ($row["_status"] == "INACTIVE") {
+                    $style = "color: rgb(189, 0, 0); font-weight: 600;";
+                }
+
                 print '   
                     <tr>
                         <td> '.$row["title"].' </td>
-                        <td> '.$row["_status"].' </td>
+                        <td style="'.$style.'"> '.$row["_status"].' </td>
                         <td> '.$row["st_date"].' </td>
                         <td> '.$row["end_date"].' </td>
                         <td style="text-align: right;" class="wrap"> 
@@ -65,7 +72,7 @@
                                     data-end_date="'.$row["end_date"].'"
                                     data-content="'.$row["content"].'"></ion-icon> </span>
                             </div>
-
+    
                             <div class="icon">
                                 <div class="tooltip"> Delete</div>
                                 <span> <ion-icon name="trash-outline" onclick="openDelete(this)" 
@@ -76,9 +83,11 @@
                     </tr>
                 ';
             }
-        }    
+        } else {
+            echo "<tr><td colspan='6'>No announcements found</td></tr>";
+        }   
     }
-
+    
     function getTotalRecords($search = '') {
         global $conn;
         $searchQuery = $search ? "WHERE title LIKE '%$search%' OR _status LIKE '%$search%' OR st_date LIKE '%$search%' OR end_date LIKE '%$search%'" : '';

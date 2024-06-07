@@ -47,28 +47,40 @@ function updatePageLinks() {
 updatePageLinks();
 
 // Add event listeners to the Prev and Next buttons
-prevButton.addEventListener("click", function (e) {
-    e.preventDefault();
-    if (current_page > 1) {
-        current_page--;
-        updatePageLinks();
-        let searchParams = new URLSearchParams(window.location.search);
-        let search = searchParams.get('search') || '';
-        let sort = searchParams.get('sort') || 'batch_num';
-        let order = searchParams.get('order') || 'DESC';
-        window.location.href = "?page=" + current_page + "&search=" + encodeURIComponent(search) + "&sort=" + encodeURIComponent(sort) + "&order=" + encodeURIComponent(order);
+document.addEventListener('DOMContentLoaded', function() {
+    const paginationLinks = document.querySelectorAll('.page_number');
+
+    paginationLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const page = this.textContent.trim();
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('page', page);
+            window.location.search = urlParams.toString();
+        });
+    });
+
+    const prevButton = document.querySelector('.prev a');
+    const nextButton = document.querySelector('.next a');
+
+    if (prevButton) {
+        prevButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const currentPage = parseInt(document.querySelector('.ul').dataset.currentPage);
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('page', currentPage - 1);
+            window.location.search = urlParams.toString();
+        });
+    }
+
+    if (nextButton) {
+        nextButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const currentPage = parseInt(document.querySelector('.ul').dataset.currentPage);
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('page', currentPage + 1);
+            window.location.search = urlParams.toString();
+        });
     }
 });
 
-nextButton.addEventListener("click", function (e) {
-    e.preventDefault();
-    if (current_page < total_page) {
-        current_page++;
-        updatePageLinks();
-        let searchParams = new URLSearchParams(window.location.search);
-        let search = searchParams.get('search') || '';
-        let sort = searchParams.get('sort') || 'batch_num';
-        let order = searchParams.get('order') || 'DESC';
-        window.location.href = "?page=" + current_page + "&search=" + encodeURIComponent(search) + "&sort=" + encodeURIComponent(sort) + "&order=" + encodeURIComponent(order);
-    }
-});

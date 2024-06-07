@@ -4,10 +4,21 @@ include('../functions/view_docx.php');
 
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $recordsPerPage = 15;
-$search = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'sub_date';
+$sortOrder = isset($_GET['order']) ? $_GET['order'] : 'DESC';
 
 $totalRecords = getTotalRecords($search);
 $totalPages = ceil($totalRecords / $recordsPerPage);
+
+function getSortIcon($column) {
+    global $sortColumn, $sortOrder;
+    if ($sortColumn === $column) {
+        return $sortOrder === 'DESC' ? '<ion-icon name="chevron-up-outline"></ion-icon>' : '<ion-icon name="chevron-down-outline"></ion-icon>';
+    } else {
+        return '<ion-icon name="chevron-expand-outline"></ion-icon>';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +46,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                 <div class="notif" id="clickableIcon">
                     <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
                 </div>
-                <a class="user" href="ad_settings.php" id="clickableIcon">
+                <a class="user" href="profile.php" id="clickableIcon">
                     <img src="images/profile.png" alt="">
                 </a>
             </div>
@@ -56,13 +67,25 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         <div class="table">
             <table>
                 <tr style="font-weight: bold;">
-                    <td style="width:15%">Submission Date</td>
-                    <td style="width:50%">Document Name</td>
+                    <td style="width:15%">
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=sub_date&order=<?= $sortColumn === 'sub_date' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">
+                            Submission Date <?= getSortIcon('sub_date') ?>
+                        </a>
+                    </td>
+                    <td style="width:50%"> 
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=doc_name&order=<?= $sortColumn === 'doc_name' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">
+                            Document Name <?= getSortIcon('doc_name') ?>
+                        </a>
+                    </td>
                     <td style="width:10%">Type</td>
-                    <td style="width:18%">Status</td>
+                    <td style="width:18%">
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=doc_status&order=<?= $sortColumn === 'doc_status' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">
+                            Status <?= getSortIcon('doc_status') ?>
+                        </a>
+                    </td>
                     <td>Actions</td>
                 </tr>
-                <?php docxDisplay($_SESSION["sid"], $currentPage, $recordsPerPage, $search) ?>
+                <?php docxDisplay($_SESSION["sid"], $currentPage, $recordsPerPage, $search, $sortColumn, $sortOrder);?>
             </table>
         </div>
         
@@ -76,11 +99,12 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
             <h2 id="view-doc_name">Document Name</h2>
             <span class="closeView" onclick="closePrev()">&times;</span>
             <div id="denialReason" style="display: none;">
-                <h3>DECLINED: REASON</h3>
-                <textarea id="denialReasonText" readonly></textarea>
+                <h3 id="denialReasonHeader">REASON FOR DECLINING: <span id="denialReasonText" style="text-decoration: underline;"></span></h3>
             </div>
             <br>
-            <div id="pdfViewer" style="width: 700px; height: 100%; border: 1px solid #ccc;"></div>
+            <center>
+                <div id="pdfViewer" style="width: 700px; height: 100%; border: 1px solid #ccc;"></div>
+            </center>
         </div>
     </div>
 
@@ -124,7 +148,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
 
             if (status === "DECLINED") {
                 document.getElementById("denialReason").style.display = "block";
-                document.getElementById("denialReasonText").value = reason;
+                document.getElementById("denialReasonText").innerText = reason;
             } else {
                 document.getElementById("denialReason").style.display = "none";
             }

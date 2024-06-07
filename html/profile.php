@@ -1,6 +1,5 @@
 <?php include_once('../functions/general.php');?>
 <?php include('../functions/display_prof.php');?>
-<?php include("../functions/password.php")?>
 
 <!DOCTYPE html>
 <html lang="en">

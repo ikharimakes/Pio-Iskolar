@@ -1,6 +1,6 @@
 <?php
 include_once('../functions/general.php');
-global $conn;
+global $conn, $batch;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -12,8 +12,8 @@ function sendEmailNotification($email, $username, $password, $name,) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'raisseille@gmail.com';   //! REPLACE WITH pio.iskolar@gmail.com
-        $mail->Password = 'odaq gskz keoh vnwu';    //! needs 2FA
+        $mail->Username = 'raisseille@gmail.com';   //pio.iskolar@gmail.com
+        $mail->Password = 'odaq gskz keoh vnwu';    //hadj fkxn jxjj kmdr
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
@@ -66,13 +66,15 @@ if(isset($_POST['individual'])){
     $address = strtoupper($_POST['address']);
     $contact = $_POST['contact'];
     $email = $_POST['email'];
-    $password = 'placeholder'; // Ideally, generate a random password and hash it
 
-    $insert = "INSERT INTO user (user_id, role_id, username, passhash) VALUES (NULL, '2', '$last_name', '$password')";
+    $username = substr($scholar_id, 0, 2) . '-' . substr($scholar_id, 2, 3);
+    $password = $last_name;
+
+    $insert = "INSERT INTO user (user_id, role_id, username, passhash) VALUES (NULL, '2', '$username', '$password')";
     $run = $conn->query($insert);
 
     // inserts into user
-    $idquery = "SELECT user_id from user where username = '$last_name'";
+    $idquery = "SELECT user_id from user where username = '$username'";
     $result = $conn->query($idquery);
     while ($row = $result->fetch_assoc()){
         $uid = $row['user_id'];
@@ -84,7 +86,7 @@ if(isset($_POST['individual'])){
     $run = $conn->query($insert);
 
     //! Send email notification - DISABLED
-    //sendEmailNotification($email, $last_name, $password, $last_name);
+    sendEmailNotification($email, $username, $password, $last_name);
 }
 
 //* BATCH CREATION *//
@@ -144,23 +146,25 @@ if(isset($_FILES['csv'])){
                 if ($isEmptyRow) {continue;}
 
                 // get the values from the csv
-                $username = $data[8];
-                $password = 'placeholder'; // Ideally, generate a random password and hash it
+                $username = $batch . '-' . sprintf('%03d', $data[0]);
+                $password = $data['1'];
                 $insert = "INSERT INTO user (user_id, role_id, username, passhash) VALUES (NULL, '2', '$username', '$password')";
                 $run = $conn->query($insert);
 
                 // inserts into user
-                $idquery = "SELECT user_id from user where username = '$data[1]'";
+                $idquery = "SELECT user_id from user where username = '$username'";
                 $result = $conn->query($idquery);
                 while ($row = $result->fetch_assoc()){
                     $uid = $row['user_id'];
                 }
                 // inserts into scholar
                 //! CHANGE BATCH NUMBER
-                $sid = '27' . sprintf('%03d', $data[0]);
+                $sid = $_SESSION['batch_id'] . sprintf('%03d', $data[0]);
                 $string = str_replace(' ', '', $data['7']);
                 $number = '+63' . $string;
-                $insert = "INSERT INTO scholar (scholar_id, batch_num, user_id, status, last_name, first_name, middle_name, school, course, _address, contact, email, remarks) VALUES ('$sid', '27', '$uid', 'ACTIVE', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$number', '$data[8]', NULL)";
+                $batch_no = $_SESSION['batch_id'];
+
+                $insert = "INSERT INTO scholar (scholar_id, batch_num, user_id, status, last_name, first_name, middle_name, school, course, _address, contact, email, remarks) VALUES ('$sid', '$batch_no', '$uid', 'ACTIVE', '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$data[5]', '$data[6]', '$number', '$data[8]', NULL)";
                 $run = $conn->query($insert);
 
                 //! Send email notification - DISABLED
@@ -202,19 +206,17 @@ if(isset($_SESSION['error_array'])) {
     unset($_SESSION['error_array']);
 }
 
-//* HANDLE PROFILE UPDATE *//
-
 //* UPDATE SCHOLAR DETAILS *//
     if (isset($_POST['save'])) {
         // Sanitize and validate input
-        $school = $conn->real_escape_string($_POST['school']);
-        $course = $conn->real_escape_string($_POST['course']);
-        $scholar_status = $conn->real_escape_string($_POST['scholar_status']);
-        $address = $conn->real_escape_string($_POST['address']);
-        $contact = $conn->real_escape_string($_POST['contact']);
+        $school = strtoupper($conn->real_escape_string($_POST['school']));
+        $course = strtoupper($conn->real_escape_string($_POST['course']));
+        $scholar_status = strtoupper($conn->real_escape_string($_POST['scholar_status']));
+        $address = strtoupper($conn->real_escape_string($_POST['address']));
+        $contact = strtoupper($conn->real_escape_string($_POST['contact']));
         $email = $conn->real_escape_string($_POST['email']);
     
-        $id = $_SESSION['id'];
+        $id = $_SESSION['sid'];
     
         // Update the database
         $updateQuery = "
@@ -229,9 +231,7 @@ if(isset($_SESSION['error_array'])) {
         ";
     
         if ($conn->query($updateQuery) === TRUE) {
-            echo "Record updated successfully";
         } else {
-            echo "Error updating record: " . $conn->error;
         }
     }
 

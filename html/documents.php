@@ -3,30 +3,29 @@ include('../functions/general.php');
 include('../functions/add_docx.php');
 
 // Assume $scholar_id is set from the session or another reliable source
-$scholar_id = $_SESSION['uid'];
+$scholar_id = $_SESSION['sid'];
 global $year, $sem;
 
 function getUploadButtonHtml($scholar_id, $doc_type, $year, $sem) {
     $docDetails = getDocumentDetails($scholar_id, $doc_type, $year, $sem);
     if ($docDetails) {
         if ($docDetails['doc_status'] === 'DECLINED') {
-            $buttonLabel = 'Replace Document';
-            $buttonStyle = '';
+            $buttonLabel = 'REPLACE DOCUMENT';
+            $buttonStyle = 'style=""';
         } else {
             $buttonLabel = '';
-            $buttonStyle = 'hidden';
+            $buttonStyle = 'style="display:none;"';
         }
         return "
-            <p>{$docDetails['doc_name']} - {$docDetails['doc_status']}</p>
             <label type='button' class='lblAdd' for='choose-file-$doc_type' $buttonStyle>
-                <ion-icon name='share-outline'></ion-icon> $buttonLabel
+                <ion-icon name='share-outline'></ion-icon> <b> $buttonLabel </b>
             </label>
-            <input name='$doc_type' type='file' id='choose-file-$doc_type' accept='.pdf' style='display: none;' $buttonStyle />
+            <input name='$doc_type' type='file' id='choose-file-$doc_type' accept='.pdf' style='display: none;' $buttonStyle /> <p>{$docDetails['doc_name']} - <b>{$docDetails['doc_status']}</b></p>
         ";
     } else {
         return "
             <label type='button' class='lblAdd' for='choose-file-$doc_type'>
-                <ion-icon name='share-outline'></ion-icon> Upload File
+                <ion-icon name='share-outline'></ion-icon> UPLOAD FILE
             </label>
             <input name='$doc_type' type='file' id='choose-file-$doc_type' accept='.pdf' style='display: none;' />
         ";
@@ -59,7 +58,7 @@ function getUploadButtonHtml($scholar_id, $doc_type, $year, $sem) {
                     <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
                 </div>
 
-                <a class="user" href="ad_settings.php" id="clickableIcon">
+                <a class="user" href="profile.php" id="clickableIcon">
                     <img src="images/profile.png" alt="">
                 </a>
             </div>
@@ -86,7 +85,7 @@ function getUploadButtonHtml($scholar_id, $doc_type, $year, $sem) {
                     <div class="container">
                         <div class="reqs">
                             <h2> Photocopy of Certificate of Registration </h2>
-                            <h5>(Current Academic Year and Semester)</h5>
+                            <h5><?php echo 'A.Y. '.$year.', Semester '.$sem?></h5>
                         </div>
                         
                         <div class="formats">
@@ -105,8 +104,8 @@ function getUploadButtonHtml($scholar_id, $doc_type, $year, $sem) {
                     
                     <div class="container">
                         <div class="reqs">
-                            <h2> Photocopy of Certificate of Registration </h2>
-                            <h5>(Current Academic Year and Semester)</h5>
+                            <h2> Photocopy of Grades/Transcript of Records </h2>
+                            <h5><?php echo 'A.Y. '.$year.', Semester '.$sem?></h5>
                         </div>
                         
                         <div class="formats">

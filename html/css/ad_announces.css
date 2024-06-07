@@ -238,6 +238,7 @@ tr td {
     max-height: 150px;
     min-height: 150px;
     padding-top: 10px;
+    resize:none;
 }
 .announceDate input {
     width: 45%;
@@ -305,4 +306,9 @@ tr td {
     top: 0;
     left: 10px;
     font-size: 1.2rem;
+}
+
+a {
+    text-decoration: none;
+    color: black;
 }

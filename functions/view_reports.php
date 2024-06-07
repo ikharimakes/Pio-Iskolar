@@ -2,7 +2,7 @@
     include_once('../functions/general.php');
 global $conn;
 
-function reportList($currentPage = 1, $recordsPerPage = 15, $search = '') {
+function reportList($currentPage = 1, $recordsPerPage = 15, $search = '', $sortColumn = 'creation_date', $sortOrder = 'DESC'){
     global $conn;
     $offset = ($currentPage - 1) * $recordsPerPage;
     $searchQuery = $search ? "WHERE batch_no LIKE '%$search%' OR title LIKE '%$search%' OR report_type LIKE '%$search%'" : '';
@@ -10,7 +10,7 @@ function reportList($currentPage = 1, $recordsPerPage = 15, $search = '') {
     $display = "SELECT report_id, batch_no, title, report_type, creation_date, content
                 FROM reports
                 $searchQuery
-                ORDER BY creation_date DESC
+                ORDER BY $sortColumn $sortOrder 
                 LIMIT $recordsPerPage OFFSET $offset";
     $result = $conn->query($display);
 
@@ -34,12 +34,14 @@ function reportList($currentPage = 1, $recordsPerPage = 15, $search = '') {
                                 data-content="'.$row["content"].'"></ion-icon>
                         </span>
                     </div>
-
+            '; 
+            /*
                     <div class="icon">
                         <div class="tooltip"> Download</div>
                         <span> <ion-icon name="download-outline"></ion-icon> </span>
                     </div>
-
+            */
+            print '
                     <div class="icon">
                         <div class="tooltip"> Delete</div>
                         <span>

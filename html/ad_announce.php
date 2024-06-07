@@ -6,9 +6,20 @@ include('../functions/view_ann.php');
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $recordsPerPage = 15;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
+$sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'title';
+$sortOrder = isset($_GET['order']) ? $_GET['order'] : 'ASC';
 
 $totalRecords = getTotalRecords($search);
 $totalPages = ceil($totalRecords / $recordsPerPage);
+
+function getSortIcon($column) {
+    global $sortColumn, $sortOrder;
+    if ($sortColumn === $column) {
+        return $sortOrder === 'ASC' ? '<ion-icon name="chevron-down-outline"></ion-icon>' : '<ion-icon name="chevron-up-outline"></ion-icon>';
+    } else {
+        return '<ion-icon name="chevron-expand-outline"></ion-icon>';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +71,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
             </div>
         </div>
 
-
         <!-- ANNOUNCEMENTS -->
         <div class="info">
             <div class="search">
@@ -79,17 +89,33 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
 
         <table>
             <tr style="font-weight: bold;">
-                <td style="width:50%"> Title </td>
-                <td style="width:10%"> Status </td>
-                <td style="width:12%"> Start Date </td>
-                <td style="width:12%"> End Date </td>
+                <td style="width:50%">
+                    <a href="?sort=title&order=<?= $sortColumn === 'title' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>&search=<?= $search ?>&page=<?= $currentPage ?>">
+                        Title <?= getSortIcon('title') ?>
+                </a>
+                </td>
+                <td style="width:10%">
+                    <a href="?sort=_status&order=<?= $sortColumn === '_status' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>&search=<?= $search ?>&page=<?= $currentPage ?>">
+                        Status <?= getSortIcon('_status') ?>
+                </a>
+                </td>
+                <td style="width:12%">
+                    <a href="?sort=st_date&order=<?= $sortColumn === 'st_date' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>&search=<?= $search ?>&page=<?= $currentPage ?>">
+                        Start Date <?= getSortIcon('st_date') ?>
+                </a>
+                </td>
+                <td style="width:12%">
+                    <a href="?sort=end_date&order=<?= $sortColumn === 'end_date' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>&search=<?= $search ?>&page=<?= $currentPage ?>">
+                        End Date <?= getSortIcon('end_date') ?>
+                </a>
+                </td>
                 <td style="width:3%"> Action </td>
             </tr>
-            <?php annList($currentPage, $recordsPerPage, $search);?>
+            <?php annList($currentPage, $recordsPerPage, $search, $sortColumn, $sortOrder); ?>
         </table>
 
         <!-- PAGINATION -->
-        <?php include('pagination.php');?>
+        <?php include('pagination.php'); ?>
     </div>
     
     <!-- ADD ANNOUNCEMENTS MODAL -->

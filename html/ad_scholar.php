@@ -6,11 +6,20 @@ include('../functions/add_sch.php');
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $recordsPerPage = 15;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
-$sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'batch_num';
-$sortOrder = isset($_GET['order']) ? $_GET['order'] : 'DESC';
+$sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'scholar_id';
+$sortOrder = isset($_GET['order']) ? $_GET['order'] : 'ASC';
 
 $totalRecords = getTotalRecords($search);
 $totalPages = ceil($totalRecords / $recordsPerPage);
+
+function getSortIcon($column) {
+    global $sortColumn, $sortOrder;
+    if ($sortColumn === $column) {
+        return $sortOrder === 'DESC' ? '<ion-icon name="chevron-up-outline"></ion-icon>' : '<ion-icon name="chevron-down-outline"></ion-icon>';
+    } else {
+        return '<ion-icon name="chevron-expand-outline"></ion-icon>';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,12 +34,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <link rel="stylesheet" href="css/notif.css">
     <link rel="stylesheet" href="css/error.css">
     <link rel="stylesheet" href="css/page.css">
-    <style>
-        a {
-            text-decoration: none;
-            color: black;
-        }
-    </style>
 </head>
 <body>
     <!-- SIDEBAR -->
@@ -72,13 +75,28 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         <div class="tables">
             <table>
                 <tr style="font-weight: bold;">
-                    <td style="width:5%"> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=batch_num&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">Batch</a></td>
-                    <td style="width:10%"> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=scholar_id&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">Scholar No.</a> </td>
-                    <td style="width:12%"> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=last_name&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">Last Name</a> </td>
-                    <td> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=first_name&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">First Name</a> </td>
-                    <td style="width:20%"> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=middle_name&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">Middle Initial</a> </td>
-                    <td style="width:10%"> <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=status&order=<?= $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">Status</a> </td>
-                    <td style="width:3%"> Actions </td>
+                    <td style="width:10%">
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=scholar_id&order=<?= $sortColumn === 'scholar_id' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">
+                            Scholar No. <?= getSortIcon('scholar_id') ?>
+                        </a>
+                    </td>
+                    <td style="width:12%">
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=last_name&order=<?= $sortColumn === 'last_name' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">
+                            Last Name <?= getSortIcon('last_name') ?>
+                        </a>
+                    </td>
+                    <td style="width:20%">
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=first_name&order=<?= $sortColumn === 'first_name' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">
+                            First Name <?= getSortIcon('first_name') ?>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=school&order=<?= $sortColumn === 'school' && $sortOrder === 'ASC' ? 'DESC' : 'ASC' ?>">
+                            School <?= getSortIcon('school') ?>
+                        </a>
+                    </td>
+                    <td style="width:10%"> Status </td>
+                    <td style="width:3%">Actions</td>
                 </tr>
                 <?php scholarDisplay($currentPage, $recordsPerPage, $search, $sortColumn, $sortOrder);?>
             </table>
@@ -95,7 +113,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
             <div class="overlay-content">
                 <h2>ADD INDIVIDUAL SCHOLAR</h2>
                 <span class="closeOverlay" onclick="closeAdd()">&times;</span>
-                    
                 <table>
                     <tr>
                         <td class="details">SCHOLAR ID</td>
@@ -164,7 +181,12 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
             </div> <br>
 
             <div class="step">
-                <h4>Step 3: Upload here </h4>
+                <label for="textInput" style="font-size: 20px; font-weight: 600;">Step 3: Batch Number</label>
+                <input type="text" id="textInput" name="batch_id" required>
+            </div> <br>
+
+            <div class="step">
+                <h4>Step 4: Upload here </h4>
                 <form action="" method="post" enctype="multipart/form-data">
                     <label type="button" class="lblAdd" for="upload"> 
                         <ion-icon name="share-outline"> </ion-icon>
@@ -219,9 +241,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         function closeAdd() {
             document.getElementById("addOverlay").style.display = "none";
         }
-        function submitForm() {
-            closeAdd();
-        }
 
         // BATCH UPLOAD
         function openBatch() {
@@ -230,9 +249,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         function closeBatch() {
             document.getElementById("batchOverlay").style.display = "none";
         }
-        function submitForm() {
-            closeBatch();
-        }
 
         // VIEW MODAL
         function openPrev() {
@@ -240,9 +256,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         }
         function closePrev() {
             document.getElementById("viewOverlay").style.display = "none";
-        }
-        function submitForm() {
-            closeAdd();
         }
 
         // DELETE

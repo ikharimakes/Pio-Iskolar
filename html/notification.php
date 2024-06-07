@@ -10,11 +10,12 @@
             <h1>Notifications</h1>
             <span class="closeOverlay" onclick="closeOverlay()">&times;</span>
         </div>
-            
+        
+        <p id="noNotifsMessage" style="display: none;">There are currently no notifications.</p>
+
         <ul class="notif-list">
             <?php view_notif($_SESSION['uid']) ?>
         </ul>
-        <p id="noNotifsMessage" style="display: none;">There are currently no notifications.</p>
     </div>
 </div>
 

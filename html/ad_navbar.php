@@ -1,4 +1,4 @@
-<nav class="sidebar">
+    <nav class="sidebar">
         <header>
             <div class="sideHeader">
                 <span class="headerLogo">
@@ -31,7 +31,7 @@
                     <span class="icon">
                         <ion-icon name="document-outline"></ion-icon>
                     </span>
-                    <span class="text"> Documents </span> 
+                    <span class="text"> Pending </span> 
                 </a> </li>
 
                 <li class="navLink"> <a href="ad_announce.php" onclick="activateLink(this)">
@@ -59,11 +59,11 @@
         </div> 
 
         <div class="bottom-content">
-            <li class="navLink"><a href="front_page.php">
+            <li class="navLink"><a href="../functions/logout.php">
                 <span class="icon">
                     <ion-icon name="log-out-outline"></ion-icon>
                 </span>
                 <span class="text"> Log Out </span>
-            </a> </li>
+            </a></li>
         </div>
     </nav>

@@ -1,44 +1,58 @@
 <?php
 include_once('../functions/general.php');
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $uid = $_SESSION['uid'];
-    $oldPassword = $_POST['oldPassword'];
-    $newPassword = $_POST['newPassword'];
-    $confirmPassword = $_POST['confirmPassword'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $response = array('success' => false, 'message' => '');
 
-    // Check if new password and confirm password match
-    if ($newPassword !== $confirmPassword) {
-        echo "New password and confirm password do not match.";
-        exit;
-    }
+    if (isset($_POST['oldPassword'], $_POST['newPassword'], $_POST['confirmPassword'])) {
+        $oldPassword = $_POST['oldPassword'];
+        $newPassword = $_POST['newPassword'];
+        $confirmPassword = $_POST['confirmPassword'];
 
-    // Fetch the current password from the database
-    $query = "SELECT passhash FROM user WHERE user_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $uid);
-    $stmt->execute();
-    $stmt->bind_result($currentPasshash);
-    $stmt->fetch();
-    $stmt->close();
+        if ($newPassword !== $confirmPassword) {
+            $response['message'] = 'New passwords do not match.';
+        } else {
+            // Assuming you have user identification logic
+            if (isset($_SESSION['uid'])) {
+                $userID = $_SESSION['uid'];
 
-    // Verify the old password (simple comparison)
-    if ($oldPassword !== $currentPasshash) {
-        echo "Current password is incorrect.";
-        exit;
-    }
+                // Verify the current password
+                $sql = "SELECT password FROM user WHERE user_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('i', $userID);
+                $stmt->execute();
+                $stmt->store_result();
+                $stmt->bind_result($storedPassword);
+                $stmt->fetch();
 
-    // Update the password in the database
-    $updateQuery = "UPDATE user SET passhash = ? WHERE user_id = ?";
-    $updateStmt = $conn->prepare($updateQuery);
-    $updateStmt->bind_param("si", $newPassword, $uid);
+                if ($storedPassword === $oldPassword) {
+                    // Update the password in the database
+                    $sql = "UPDATE user SET password = ? WHERE user_id = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param('si', $newPassword, $userID);
 
-    if ($updateStmt->execute()) {
-        echo "Password changed successfully.";
+                    if ($stmt->execute()) {
+                        $response['success'] = true;
+                        $response['message'] = 'Password reset successfully';
+                    } else {
+                        $response['message'] = 'Error resetting password';
+                    }
+
+                    $stmt->close();
+                } else {
+                    $response['message'] = 'Current password is incorrect.';
+                }
+                $conn->close();
+            } else {
+                $response['message'] = 'User ID not set in session.';
+            }
+        }
     } else {
-        echo "Error updating password.";
+        $response['message'] = 'Invalid request';
     }
 
-    $updateStmt->close();
+    echo json_encode($response);
+} else {
+    echo json_encode(array('success' => false, 'message' => 'Invalid request method'));
 }
 ?>

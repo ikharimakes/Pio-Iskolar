@@ -1,4 +1,6 @@
-<?php include_once('../functions/general.php');?>
+<?php 
+include_once('../functions/general.php');
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +17,6 @@
     <link rel="stylesheet" href="css/page.css">
 </head>
 
-
 <body>
     <!-- SIDEBAR -->
     <?php include('ad_navbar.php');?>
@@ -23,23 +24,16 @@
     <!-- TOP BAR -->
     <div class="main">
         <div class="topBar">
-            <div class="notif">
-                <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+            <div class="headerRight">
+                <div class="notif">
+                    <ion-icon name="notifications-outline" onclick="openOverlay()"></ion-icon>
+                </div>
+
+                <a class="user" href="ad_settings.php">
+                    <img src="images/profile.png" alt="">
+                </a>
             </div>
-
-            <div class="search">
-            </div>
-
-            <a class="user" href="ad_settings.php">
-                <img src="images/profile.png" alt="" >
-            </a>
-
-            <a class="logOut" href="front_page.php"> 
-                <ion-icon name="log-out-outline"></ion-icon> 
-                <h5> Log  Out </h5>
-            </a>
         </div>
-
 
         <!-- ACCOUNT SETTING -->
         <div class="info">
@@ -89,23 +83,10 @@
                         <th> <a href="#" onclick="openPass()"> Change Password </a></th>
                         <td></td>
                     </tr>
-                    <tr style="height: 40px;">
-                        <th> </th>
-                        <td> </td>
-                    </tr>
-                    <tr>
-                        <th> <a href="front_page.php"> Log Out </a></th>
-                        <td></td>
-                    </tr>
-                    <tr style="height: 70px;">
-                        <th></th>
-                        <td></td>
-                    </tr>
                 </table>
             </div>
         </div>
     </div>
-
 
     <!-- CHANGE PASS -->
     <div id="passOverlay" class="passOverlay">
@@ -132,7 +113,20 @@
             </div>
 
             <div class="enter-button-container">
-                <button class="enter-button"> Enter </button>
+                <button class="enter-button" id="changePasswordBtn"> Enter </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div id="errorOverlay" class="errorOverlay">
+        <div class="error-content">
+            <div class="infos">
+                <span class="closeError" onclick="closeError()">&times;</span>
+            </div>
+            <div class="message"><h4 id="errorMessage"></h4></div>
+            <div class="ok-button-container">
+                <button class="ok-button" onclick="closeError()"> OK </button>
             </div>
         </div>
     </div>
@@ -140,21 +134,50 @@
     <!-- NOTIFICATION -->
     <?php include('notification.php');?>
 
-
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="../functions/notif.js"></script>
     <script>
-        //CHANGE PASS
         function openPass() {
             document.getElementById("passOverlay").style.display = "block";
         }
         function closePass() {
             document.getElementById("passOverlay").style.display = "none";
         }
-        function submitForm() {
-            closePass();
+        function closeError() {
+            document.getElementById("errorOverlay").style.display = "none";
         }
+
+        $(document).ready(function() {
+            $('#changePasswordBtn').click(function() {
+                var oldPassword = $('#oldPassword').val();
+                var newPassword = $('#newPassword').val();
+                var confirmPassword = $('#confirmPassword').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "../functions/password.php",
+                    data: {
+                        oldPassword: oldPassword,
+                        newPassword: newPassword,
+                        confirmPassword: confirmPassword
+                    },
+                    success: function(response) {
+                        var result = JSON.parse(response);
+                        if (result.success) {
+                            $('#errorMessage').text("Password Changed Successfully.");
+                        } else {
+                            $('#errorMessage').text(result.message);
+                        }
+                        $('#errorOverlay').css("display", "block");
+                    },
+                    error: function() {
+                        $('#errorMessage').text("An error occurred. Please try again.");
+                        $('#errorOverlay').css("display", "block");
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>

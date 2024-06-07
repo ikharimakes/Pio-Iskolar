@@ -112,6 +112,13 @@
 .wrap .icon:hover ion-icon {
     color: #2F3787;
 }
+.wrap .icon.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.wrap .icon.disabled .tooltip {
+    display: none;
+}
 
 /*VIEW MODAL*/
 .view {
@@ -207,10 +214,10 @@ textarea {
     opacity: 90%;
     min-width: 100%;
     max-width: 100%;
-    max-height: 150px;
-    min-height: 150px;
+    min-height: 100px;
     padding-top: 10px;
     padding-left: 10px;
+    resize:none;
 }
 .btnSave {
     justify-content: center;
@@ -228,13 +235,8 @@ textarea {
     height: 100%; 
     border: 1px solid #ccc;
 }
-a.nostyle:link {
-    text-decoration: inherit;
-    color: inherit;
-    cursor: auto;
-}
-a.nostyle:visited {
-    text-decoration: inherit;
-    color: inherit;
-    cursor: auto;
+
+a {
+    text-decoration: none;
+    color: black;
 }

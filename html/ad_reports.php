@@ -6,9 +6,20 @@ include('../functions/add_reports.php');
 $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $recordsPerPage = 15;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
+$sortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'creation_date';
+$sortOrder = isset($_GET['order']) ? $_GET['order'] : 'DESC';
 
 $totalRecords = getTotalRecords($search);
 $totalPages = ceil($totalRecords / $recordsPerPage);
+
+function getSortIcon($column) {
+    global $sortColumn, $sortOrder;
+    if ($sortColumn === $column) {
+        return $sortOrder === 'DESC' ? '<ion-icon name="chevron-up-outline"></ion-icon>' : '<ion-icon name="chevron-down-outline"></ion-icon>';
+    } else {
+        return '<ion-icon name="chevron-expand-outline"></ion-icon>';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -66,12 +77,24 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         <div class="tables">
             <table>
                 <tr style="font-weight: bold;">
-                    <td style="width:13%"> Batch Number </td>
-                    <td style="width:60%"> Type of Report </td>
-                    <td style="width:15%"> Date </td>
+                    <td style="width:13%"> 
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=batch_no&order=<?= $sortColumn === 'batch_no' &&  $sortOrder === 'DESC' ? 'ASC' : 'DESC' ?>">
+                            Batch No. <?= getSortIcon('batch_no') ?>
+                        </a>
+                    </td>
+                    <td style="width:60%"> 
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=title&order=<?= $sortColumn === 'title' &&  $sortOrder === 'DESC' ? 'ASC' : 'DESC' ?>">
+                            Report Name <?= getSortIcon('title') ?>
+                        </a>
+                    </td>
+                    <td style="width:15%"> 
+                        <a href="?page=<?= $currentPage ?>&search=<?= $search ?>&sort=creation_date&order=<?= $sortColumn === 'creation_date' && $sortOrder === 'DESC' ? 'ASC' : 'DESC' ?>">
+                            Date <?= getSortIcon('creation_date') ?>
+                        </a>
+                    </td>
                     <td style="width:3%"> Actions </td>
                 </tr>
-                <?php reportList($currentPage, $recordsPerPage, $search);?>
+                <?php reportList($currentPage, $recordsPerPage, $search, $sortColumn, $sortOrder);?>
             </table>
         </div>
 

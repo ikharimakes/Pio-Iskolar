@@ -13,7 +13,7 @@
 }
 .cards{
     padding-top: 50px;
-    width: 60%;
+    width: 70%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -79,8 +79,7 @@
 .container .lblAdd{
     display: inline-block;
     font-size: 16px;
-    padding-left: 10px;
-    width: 250px;
+    margin-right: 1vw;
     color: #000;
     background-color: transparent;
     border: none;
@@ -89,6 +88,9 @@
 }
 .container .lblAdd:hover {
     background-color: #ffffffde;
+}
+.container p {
+    display: inline-block
 }
 
 /*VIEW MODAL*/
@@ -199,13 +201,8 @@
 .drop-status:hover .statusContent {
     display: block;
 }
-a.nostyle:link {
-    text-decoration: inherit;
-    color: inherit;
-    cursor: auto;
-}
-a.nostyle:visited {
-    text-decoration: inherit;
-    color: inherit;
-    cursor: auto;
+
+a {
+    text-decoration: none;
+    color: black;
 }

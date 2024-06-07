@@ -6,16 +6,16 @@ $sortColumn = isset($_GET['sort']) ? htmlspecialchars($_GET['sort']) : 'batch_nu
 $sortOrder = isset($_GET['order']) ? htmlspecialchars($_GET['order']) : 'DESC';
 
 $totalRecords = getTotalRecords($search);
-$totalPages = ceil($totalRecords / $recordsPerPage);
-$startRecord = ($currentPage - 1) * $recordsPerPage + 1;
-$endRecord = min($startRecord + $recordsPerPage - 1, $totalRecords);
+$totalPages = $totalRecords > 0 ? ceil($totalRecords / $recordsPerPage) : 1;
+$startRecord = $totalRecords > 0 ? ($currentPage - 1) * $recordsPerPage + 1 : 0;
+$endRecord = $totalRecords > 0 ? min($startRecord + $recordsPerPage - 1, $totalRecords) : 0;
 ?>
 
 <div class="pagination">
     <p>Showing <?= $startRecord ?> - <?= $endRecord ?> of <?= $totalRecords ?> records</p>
     <div class="box">
-        <button type="button" class="prev" <?= $currentPage == 1 ? 'disabled' : '' ?>>
-            <a href="?page=<?= $currentPage - 1 ?>&search=<?= $search ?>&sort=<?= $sortColumn ?>&order=<?= $sortOrder ?>">Prev</a>
+        <button type="button" class="prev" <?= $currentPage == 1 || $totalRecords == 0 ? 'disabled' : '' ?>>
+            <a href="?page=<?= max(1, $currentPage - 1) ?>&search=<?= $search ?>&sort=<?= $sortColumn ?>&order=<?= $sortOrder ?>">Prev</a>
         </button>
         <ul class="ul" data-total-pages="<?= $totalPages ?>" data-current-page="<?= $currentPage ?>">
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
@@ -26,8 +26,8 @@ $endRecord = min($startRecord + $recordsPerPage - 1, $totalRecords);
                 </li>
             <?php endfor; ?>
         </ul>
-        <button type="button" class="next" <?= $currentPage == $totalPages ? 'disabled' : '' ?>>
-            <a href="?page=<?= $currentPage + 1 ?>&search=<?= $search ?>&sort=<?= $sortColumn ?>&order=<?= $sortOrder ?>">Next</a>
+        <button type="button" class="next" <?= $currentPage == $totalPages || $totalRecords == 0 ? 'disabled' : '' ?>>
+            <a href="?page=<?= min($totalPages, $currentPage + 1) ?>&search=<?= $search ?>&sort=<?= $sortColumn ?>&order=<?= $sortOrder ?>">Next</a>
         </button>
     </div>
 </div>

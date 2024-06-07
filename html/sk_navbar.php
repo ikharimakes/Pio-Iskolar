@@ -1,4 +1,4 @@
-<nav class="sidebar">
+    <nav class="sidebar">
     <header>
         <div class="sideHeader">
             <span class="headerLogo">
@@ -37,15 +37,11 @@
     </div> 
 
     <div class="bottom-content">
-        <form action="" method="post">
-            <li class="nav-link"> <a href="">
-                <button type="submit" name="logout" style="all:unset; display: flex;">
-                        <span class="icon">
-                            <ion-icon name="log-out-outline"></ion-icon>
-                        </span>
-                        <span class="text"> Log Out </span>
-                </button>
-            </a> </li>
-        </form>
+            <li class="navLink"><a href="../functions/logout.php">
+            <span class="icon">
+                <ion-icon name="log-out-outline"></ion-icon>
+            </span>
+            <span class="text"> Log Out </span>
+        </a></li>
     </div>
 </nav>

@@ -28,8 +28,18 @@
                 $upload_temp = $_FILES[$field]['tmp_name'];
                 move_uploaded_file($upload_temp, "../assets/$name");
 
-                $insert = "INSERT INTO submission (submit_id, scholar_id, sub_date, doc_name, doc_type, acad_year, sem, doc_status) VALUES (NULL, '$id', '$date', '$name', '$field', '$year', '$sem', 'PENDING')";
-                $execute = $conn->query($insert);
+                // Check if a declined document exists
+                $declined_doc = getDocumentDetails($id, $field, $year, $sem);
+                if ($declined_doc && $declined_doc['doc_status'] === 'DECLINED') {
+                    // Update the existing declined document record
+                    $update = "UPDATE submission SET sub_date = '$date', doc_name = '$name', doc_status = 'PENDING' WHERE scholar_id = '$id' AND doc_type = '$field' AND acad_year = '$year' AND sem = '$sem'";
+                    $execute = $conn->query($update);
+                } else {
+                    // Insert a new document record
+                    $insert = "INSERT INTO submission (submit_id, scholar_id, sub_date, doc_name, doc_type, acad_year, sem, doc_status) VALUES (NULL, '$id', '$date', '$name', '$field', '$year', '$sem', 'PENDING')";
+                    $execute = $conn->query($insert);
+                }
+                
                 if (!$execute) {
                     die(mysqli_error($conn));
                 }

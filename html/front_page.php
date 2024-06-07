@@ -1,5 +1,5 @@
-<?php include_once('../functions/general.php');?>
-<?php include('../functions/display_ann.php');?>
+<?php include_once('../functions/general.php'); ?>
+<?php include('../functions/display_ann.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,24 +60,23 @@
                 <span id="closeModal" class="close">&times;</span>
             </div>
             <br><br>
-            <form action="" method="post">
+            <form id="loginForm" method="post">
                 <div class="inner-content">
                     <label class="texts" for="user">Username</label> <br>
-                    <input class="inputs" type="text" name="user" placeholder="example">
+                    <input class="inputs" type="text" name="user" placeholder="example" required>
                 </div>
                 <div class="inner-content">
                     <label class="texts" for="password">Password</label> <br>
                     <div class="inputPass">
-                        <input class="inputs" type="password" name="pass" placeholder="password">
+                        <input class="inputs" type="password" name="pass" placeholder="password" required>
                         <ion-icon name="eye-off-outline" id="togglePassword"></ion-icon>
                     </div>
                 </div>
+                <div id="loginError" style="color: red; display: none; text-align: center;">Invalid Credentials!</div>
                 <a href="#" onclick="openModal('forgotModal')">Forgot Password</a>
 
                 <div class="btn">
-                    <input type="submit" name="login" hidden> 
-                        <button type="submit" class="logIn-button"> Log In </button>
-                    </input>
+                    <button type="submit" class="logIn-button"> Log In </button>
                 </div> <br>
             </form>
         </div>
@@ -129,7 +128,7 @@
             </div>
 
             <div class="btn">
-                <button class="logIn-button"> Log In </button>
+                <button class="logIn-button" onclick="resetPassword()"> Reset Password </button>
             </div> <br>
         </div>
     </div>
@@ -224,45 +223,47 @@
             confirmPassword.setAttribute('type', type);
             this.setAttribute('name', type === 'password' ? 'eye-off-outline' : 'eye-outline');
         });
+
+        // AJAX LOGIN
+        $('#loginForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '../functions/login.php',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response === 'admin') {
+                        window.location.href = 'ad_dashboard.php';
+                    } if (response === 'scholar') {
+                        window.location.href = 'announce.php';
+                    } else {
+                        $('#loginError').show();
+                    }
+                }
+            });
+        });
+
+        // RESET PASSWORD
+        function resetPassword() {
+            var newPassword = $('#newPassword').val();
+            var confirmPassword = $('#confirmPassword').val();
+            if (newPassword !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '../functions/password.php',
+                data: { newPassword: newPassword },
+                success: function(response) {
+                    alert(response);
+                    if (response === 'Password reset successfully') {
+                        closeModal('passModal');
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
- <?php
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
-    $user = $_POST['user'];
-    $pass = $_POST['pass'];
-
-    $log = $conn->prepare("SELECT * FROM user WHERE username = ? AND passhash = ?");
-    $log->bind_param("ss", $user, $pass);
-    $log->execute();
-    $result = $log->get_result();
-
-    if ($result->num_rows == 1) {
-        $row = $result->fetch_assoc();
-        if($row["role_id"] == "2"){
-            $_SESSION['role'] = "scholar";
-            $_SESSION['uid'] = $row['user_id'];
-
-            header("location: ./announce.php");
-            $id = $row['user_id'];
-            
-            $grab = $conn->prepare("SELECT scholar_id FROM scholar WHERE user_id = ?");
-            $grab->bind_param("i", $id);
-            $grab->execute();
-            $account = $grab->get_result();
-            $row = $account->fetch_assoc();
-            $_SESSION['sid'] = $row['scholar_id'];
-            die;
-        }
-        if($row["role_id"] == "1"){
-            $_SESSION['role'] = "admin";
-            $_SESSION['uid'] = $row['user_id'];
-            
-            header("location: ./ad_dashboard.php");
-            die;
-        }
-    } else {
-        echo "<script>alert('Invalid Credentials!')</script>";
-    }
-}
-?>

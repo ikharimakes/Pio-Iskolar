@@ -215,4 +215,17 @@ textarea {
     max-height: 150px;
     min-height: 150px;
     padding-top: 10px;
+    resize:none;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+.icon.disabled span {
+    opacity: 0.5;
+    pointer-events: none; /* Disable click */
+}
+
+.icon.disabled .tooltip {
+    display: none; /* Hide the tooltip */
 }
